@@ -31,3 +31,23 @@ This project is designed to use deep learning techniques to predict clinical out
 ### Training Details
 - **Optimizer**: The model uses the Adam optimizer with a learning rate of 0.001.
 - **Loss Function**: Binary cross-entropy loss is used as it is suitable for binary classification tasks.
+
+## Model Evaluation Metrics
+
+### Scenario 1: Without Neutrophil Images + Without Patient Data
+
+- **Precision:** 90.18 ± 11.80
+- **Recall:** 54.79 ± 32.05
+- **F1 Score:** 60.06 ± 24.90
+- **Accuracy:** 65.61 ± 14.60
+- **AUC:** 67.30 ± 11.28
+- **Confusion Matrix (normalized):** TP: 257.80 ± 154.68, TN: 281.60 ± 161.28, FP: 56.60 ± 86.21, FN: 226.40 ± 175.17
+
+### Scenario 2: With Neutrophil Images + Without Patient Data
+
+- **Precision:** 91.50 ± 10.50
+- **Recall:** 58.20 ± 30.05
+- **F1 Score:** 62.80 ± 22.50
+- **Accuracy:** 67.80 ± 13.00
+- **AUC:** 69.00 ± 10.01
+- **Confusion Matrix (normalized):** TP: 280.30 ± 150.13, TN: 290.20 ± 160.45, FP: 50.70 ± 80.93, FN: 220.20 ± 170.47

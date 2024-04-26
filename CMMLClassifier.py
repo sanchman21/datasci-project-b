@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
-class PatientClassifier(nn.Module):
+class CMMLClassifier(nn.Module):
     def __init__(self, num_patient_features):
-        super(PatientClassifier, self).__init__()
+        super(CMMLClassifier, self).__init__()
         #loading the pre-trained resnet
         self.resnet = models.resnet50(pretrained=True)
         # remove the fully connected layer
@@ -14,7 +14,7 @@ class PatientClassifier(nn.Module):
             nn.Linear(2048 + num_patient_features, 512),
             nn.ReLU(),
             nn.Dropout(0.5),
-            nn.Linear(512, 1),
+            nn.Linear(512, 2),
             nn.Sigmoid()
         )
 
