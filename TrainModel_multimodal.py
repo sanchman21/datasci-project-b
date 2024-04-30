@@ -6,7 +6,7 @@ from torchvision import models
 from torch import nn, optim
 from torch.optim.lr_scheduler import LinearLR
 from torch.cuda.amp import GradScaler, autocast
-
+from torchvision.models import resnet50, ResNet50_Weights
 
 from tqdm import tqdm
 import os
@@ -49,7 +49,7 @@ def train_model(config):
     ])
 
     if model_name == 'resnet50':
-        model = models.resnet50(pretrained=True)
+        model = resnet50(weights=ResNet50_Weights.DEFAULT)
         model.fc = nn.Linear(model.fc.in_features, 2)
     elif model_name == 'MultimodalClassifier':
         model = MultimodalClassifier(num_patient_features)
