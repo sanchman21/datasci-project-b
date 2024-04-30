@@ -13,31 +13,25 @@ class MergeMasterDataset(Dataset):
             use_patient_data (bool): Whether to include patient metadata.
             transform (callable, optional): Optional transform to be applied on a sample.
         """
-        self.blood_cell_frame = pd.read_csv(csv_file)
+        self.frame = pd.read_csv(csv_file)
         self.fold = fold
         self.train = train
         self.use_neutrophil_images = use_neutrophil_images
         self.use_patient_data = use_patient_data
-
-        if transform is None:
-            self.transform = transforms.Compose([
-                transforms.ToTensor(),
-            ])
-        else:
-            self.transform = transform
+        self.transform = transform
         
         # Filter out neutrophil images if not used
         if not use_neutrophil_images:
-            self.blood_cell_frame = self.blood_cell_frame[
-                self.blood_cell_frame[['set0', 'set1', 'set2', 'set3', 'set4']].notnull().any(axis=1)
+            self.frame = self.frame[
+                self.frame[['set0', 'set1', 'set2', 'set3', 'set4']].notnull().any(axis=1)
             ]
         
         # Select data for the specified fold
         fold_column = f'set{self.fold}'
         if self.train:
-            self.blood_cell_frame = self.blood_cell_frame[self.blood_cell_frame[fold_column] == 'train']
+            self.frame = self.frame[self.frame[fold_column] == 'train']
         else:
-            self.blood_cell_frame = self.blood_cell_frame[self.blood_cell_frame[fold_column] == 'test']
+            self.frame = self.frame[self.frame[fold_column] == 'test']
 
         # Select only relevant columns
         if self.use_patient_data:
@@ -46,25 +40,37 @@ class MergeMasterDataset(Dataset):
         else:
             self.columns_to_use = ['image_path', 'morphology']
         
-        self.blood_cell_frame = self.blood_cell_frame[self.columns_to_use]
+        self.frame = self.frame[self.columns_to_use]
 
     def __len__(self):
-        return len(self.blood_cell_frame)
+        return len(self.frame)
 
     def __getitem__(self, idx):
-        img_name = self.blood_cell_frame.iloc[idx]['image_path']
+        img_name = self.frame.iloc[idx]['image_path']
         image = Image.open(img_name).convert('RGB')
 
         if self.transform:
             image = self.transform(image)
 
-        morphology = self.blood_cell_frame.iloc[idx]['morphology']
-        sample = {'image': image, 'morphology': morphology}
+        sample = {
+            'image': image,
+            'morphology': self.frame.iloc[idx]['morphology']
+        }
 
-        
         if self.use_patient_data:
-            patient_data = {col: self.blood_cell_frame.iloc[idx][col] for col in self.columns_to_use[2:]}
+            patient_data = {
+                'Age': self.frame.iloc[idx]['Age'],
+                'Gender': self.frame.iloc[idx]['Gender'],
+                'Haemoglobin': self.frame.iloc[idx]['Haemoglobin'],
+                'MCV': self.frame.iloc[idx]['MCV'],
+                'White cell count': self.frame.iloc[idx]['White cell count'],
+                'Neutrophil count': self.frame.iloc[idx]['Neutrophil count'],
+                'Monocyte count': self.frame.iloc[idx]['Monocyte count'],
+                'Platelet count': self.frame.iloc[idx]['Platelet count'],
+                'Blast percentage (PB)': self.frame.iloc[idx]['Blast percentage (PB)'],
+                'LDH': self.frame.iloc[idx]['LDH']
+            }
             sample.update(patient_data)
         
+        return sample
 
-        return image, morphology

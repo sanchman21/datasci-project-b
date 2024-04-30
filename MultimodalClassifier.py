@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torchvision import models
 
-class CMMLClassifier(nn.Module):
+class MultimodalClassifier(nn.Module):
     def __init__(self, num_patient_features):
-        super(CMMLClassifier, self).__init__()
+        super(MultimodalClassifier, self).__init__()
         #loading the pre-trained resnet
         self.resnet = models.resnet50(pretrained=True)
         # remove the fully connected layer

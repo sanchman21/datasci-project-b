@@ -1,0 +1,13 @@
+training:
+  num_epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0005
+  momentum: 0.9
+
+data:
+  csv_file: 'merged_master.csv'
+
+model:
+  image_size: 352
+  model_name: 'resnet50'
