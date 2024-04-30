@@ -1,5 +1,4 @@
 import torch
-import yaml
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torchvision import models
@@ -14,10 +13,7 @@ from MergeMasterDataset import MergeMasterDataset
 from MultimodalClassifier import MultimodalClassifier
 
 
-def load_config(path):
-    with open(path, 'r') as file:
-        return yaml.safe_load(file)
-    
+
 def preprocess_patient_data(batch, device):
     patient_keys = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count', 'Neutrophil count', 'Monocyte count', 'Platelet count', 'Blast percentage (PB)', 'LDH']
     return torch.tensor([list(batch[key]) for key in patient_keys]).float().to(device)

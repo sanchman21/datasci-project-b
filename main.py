@@ -1,6 +1,6 @@
 from TrainModel_resnet50 import train_model
-import TrainModel_resnet50
+import utils
 
 config_path = 'config.yaml'
-config = TrainModel_resnet50.load_config(config_path)
+config = utils.load_config(config_path)
 train_model(config)

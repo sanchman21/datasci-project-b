@@ -1,0 +1,7 @@
+from TrainModel_multimodal import train_model
+import utils
+
+
+config_path = 'configs/config.yaml'
+config = utils.load_config(config_path)
+train_model(config)

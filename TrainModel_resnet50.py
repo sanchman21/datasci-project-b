@@ -1,5 +1,4 @@
 import torch
-import yaml
 from torch.utils.data import DataLoader
 from torchvision import models, transforms
 from torchvision.models import resnet50, ResNet50_Weights
@@ -13,9 +12,6 @@ from tqdm import tqdm
 from MergeMasterDataset import MergeMasterDataset
 import os
 
-def load_config(path):
-    with open(path, 'r') as file:
-        return yaml.safe_load(file)
 
 def train_model(config):
     """
