@@ -11,5 +11,5 @@ training:
 
 model:
   image_size: 352
-  use_neutrophil_images: true
+  use_neutrophil_images: True
   name: 'resnet50'

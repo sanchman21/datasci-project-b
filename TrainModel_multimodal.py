@@ -1,4 +1,12 @@
 import torch
+import numpy as np
+import pandas as pd
+import os
+import datetime
+import io
+import PIL
+import utils
+
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torchvision import models
@@ -6,12 +14,17 @@ from torch import nn, optim
 from torch.optim.lr_scheduler import LinearLR
 from torch.cuda.amp import GradScaler, autocast
 from torchvision.models import resnet50, ResNet50_Weights
+from torch.utils.tensorboard import SummaryWriter
+from sklearn.metrics import confusion_matrix
+from torchvision.transforms import ToTensor
+
 
 from tqdm import tqdm
-import os
 from MergeMasterDataset import MergeMasterDataset
 from MultimodalClassifier import MultimodalClassifier
 
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 def preprocess_patient_data(batch, device):
@@ -19,9 +32,40 @@ def preprocess_patient_data(batch, device):
     return torch.tensor([list(batch[key]) for key in patient_keys]).float().to(device)
 
 
+def log_confusion_matrix(labels, predictions, fold, base_path):
+    matrix_save_path = os.path.join(base_path, f"confusion_matrix_fold_{fold}.csv")
+    cm = confusion_matrix(labels, predictions)
+    df_cm = pd.DataFrame(cm, index=[i for i in range(len(set(labels)))],
+                         columns=[i for i in range(len(set(predictions)))])
+    
+    df_cm.to_csv(matrix_save_path)
+
+
+
+def load_model(model_path, model_type='resnet50', num_patient_features=10):
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    
+    if model_type == 'resnet50':
+        model = resnet50(pretrained=False)
+        model.fc = nn.Linear(model.fc.in_features, 2)
+    elif model_type == 'MultimodalClassifier':
+        model = MultimodalClassifier(num_patient_features)
+    else:
+        raise ValueError(f"Unsupported model type: {model_type}")
+    
+    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.to(device)
+    return model
+
+
 def train_model(config):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
+
+    timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
+    model_save_dir = os.path.join('saved_models', timestamp)
+    os.makedirs(model_save_dir, exist_ok=True)
+
 
     # Load training configurations
     csv_file = config['data']['csv_file']
@@ -47,6 +91,8 @@ def train_model(config):
     all_fold_metrics = [] 
 
     for fold in range(num_folds):
+        writer = SummaryWriter(log_dir=fold + 'logs')
+
         print(f"Training fold {fold+1}/{num_folds}")
 
         if model_name == 'resnet50':
@@ -80,6 +126,8 @@ def train_model(config):
 
 
         fold_metrics = {'train_loss': [], 'train_acc': [], 'val_loss': [], 'val_acc': []}
+        all_labels = []
+        all_preds = []
 
         for epoch in range(num_epochs):
             model.train()
@@ -111,10 +159,13 @@ def train_model(config):
             scheduler.step()
             train_loss = total_loss / total_samples
             train_acc = total_correct / total_samples
-            print(f'Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
+            # print(f'Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Train Acc: {train_acc:.4f}')
 
-            fold_metrics['train_loss'].append(train_loss)
-            fold_metrics['train_acc'].append(train_acc)
+            # fold_metrics['train_loss'].append(train_loss)
+            # fold_metrics['train_acc'].append(train_acc)
+            writer.add_scalar(f'Train/Loss_fold_{fold}', train_loss, epoch)
+            writer.add_scalar(f'Train/Accuracy_fold_{fold}', train_acc, epoch)
+    
 
             # val
             val_loss, val_correct, val_total = 0, 0, 0
@@ -136,10 +187,27 @@ def train_model(config):
                     val_correct += (predicted == labels).sum().item()
                     val_total += labels.size(0)
 
-            val_acc = val_correct / val_total
-            print(f'Epoch {epoch+1}: Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
+                    all_labels.extend(labels.tolist())
+                    all_preds.extend(predicted.tolist())
 
-            fold_metrics['val_loss'].append(val_loss)
-            fold_metrics['val_acc'].append(val_acc)
-        all_fold_metrics.append(fold_metrics)
-    return all_fold_metrics
+            val_acc = val_correct / val_total
+            # print(f'Epoch {epoch+1}: Val Loss: {val_loss:.4f}, Val Acc: {val_acc:.4f}')
+
+            # fold_metrics['val_loss'].append(val_loss)
+            # fold_metrics['val_acc'].append(val_acc)
+
+            #finish val
+            writer.add_scalar(f'Validation/Loss_fold_{fold}', val_loss, epoch)
+            writer.add_scalar(f'Validation/Accuracy_fold_{fold}', val_acc, epoch)
+            writer.close()
+
+        # all_fold_metrics.append(fold_metrics)
+        cm = confusion_matrix(all_labels, all_preds)
+        writer.add_image(f'Confusion Matrix_fold_{fold}', utils.plot_confusion_matrix(cm), epoch)
+        log_confusion_matrix(all_labels, all_preds, fold, './confusion_matrices')
+
+
+        model_save_path = os.path.join(model_save_dir, f'model_fold_{fold}.pt')
+        torch.save(model.state_dict(), model_save_path)
+
+        print(f'Model saved to {model_save_path}')

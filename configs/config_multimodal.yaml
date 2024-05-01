@@ -11,5 +11,5 @@ training:
 
 model:
   image_size: 352
-  use_neutrophil_images: false
+  use_neutrophil_images: False
   name: 'MultimodalClassifier'
