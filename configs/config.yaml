@@ -1,3 +1,6 @@
+data:
+  csv_file: 'merged_master.csv'
+
 training:
   num_epochs: 100
   batch_size: 32
@@ -6,9 +9,7 @@ training:
   weight_decay: 0.0005
   momentum: 0.9
 
-data:
-  csv_file: 'merged_master.csv'
-
 model:
   image_size: 352
   use_neutrophil_images: false
+  name: 'resnet50'
