@@ -17,7 +17,6 @@ class MultimodalClassifier(nn.Module):
             nn.ReLU(),
             nn.Dropout(0.5),
             nn.Linear(512, 2),
-            nn.Sigmoid()
         )
 
     def forward(self, image, patient_info):
