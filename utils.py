@@ -45,7 +45,7 @@ def plot_and_save_confusion_matrix(fold, cm, classes, dir):
     plt.close()
 
 
-def plot_metrics(metrics, fold, epoch, save_dir):
+def plot_metrics(metrics, fold, save_dir):
     # Plot training and validation loss
     plt.figure(figsize=(10, 4))
 
@@ -69,7 +69,7 @@ def plot_metrics(metrics, fold, epoch, save_dir):
     plt.tight_layout()
 
     # Construct the file path for the plot
-    plot_filename = f"fold_{fold}_epoch_{epoch+1}.png"  # epoch+1 because epoch starts at 0
+    plot_filename = f"fold_{fold}.png"  # epoch+1 because epoch starts at 0
     plot_path = os.path.join(save_dir, plot_filename)
     plt.savefig(plot_path)
     # print(f"Plot saved: {plot_path}")

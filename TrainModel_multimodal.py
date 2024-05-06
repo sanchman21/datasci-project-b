@@ -33,6 +33,7 @@ def preprocess_patient_data(batch, device):
     return patient_data
 
 
+#TODO: untested code here
 def load_model(model_path, model_type='resnet50', num_patient_features=10):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
@@ -79,24 +80,24 @@ def train_model(config):
     weight_decay = config['training']['weight_decay']
     momentum = config['training']['momentum']
 
-
     image_size = config['model']['image_size']
     model_name = config['model']['name']
     
-    num_patient_features = 10
-
     transform = transforms.Compose([
         transforms.Resize((image_size, image_size)),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
+
     num_folds = 5
+    num_patient_features = 10
 
     for fold in range(num_folds):
         writer = SummaryWriter(log_dir=os.path.join(logs_dir, f"fold_{fold}"))
 
         print(f"Training fold {fold+1}/{num_folds}")
 
+        #load model by model name
         if model_name == 'resnet50':
             model = resnet50(weights=ResNet50_Weights.DEFAULT)
             model.fc = nn.Linear(model.fc.in_features, 2)
@@ -119,11 +120,12 @@ def train_model(config):
         train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, transform=transform)
         val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, transform=transform)
 
-        # load the patient data if choose multimodal
+        # load the patient data if choose to use multimodal
         if model_name == 'MultimodalClassifier':
             train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, transform=transform)
             val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, transform=transform)
 
+        #TODO: add number of workers into data loader
         train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
@@ -215,8 +217,9 @@ def train_model(config):
             epoch_metrics['train_accuracy'].append(train_acc)
             epoch_metrics['val_accuracy'].append(val_acc)
             epoch_metrics['epoch_time'].append(epoch_time)
-            utils.plot_metrics(epoch_metrics, fold, epoch, plots_dir)
         
+        #end fold operations
+        utils.plot_metrics(epoch_metrics, fold, plots_dir)
         
         cm = confusion_matrix(all_labels, all_preds)
         print(cm)
