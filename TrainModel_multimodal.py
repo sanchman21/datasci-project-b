@@ -65,6 +65,7 @@ def train_model(config):
     confusion_matrices_dir = os.path.join(base_dir, 'confusion_matrices')
     models_dir = os.path.join(base_dir, 'models')
     plots_dir = os.path.join(base_dir, 'plots')
+    
 
     os.makedirs(logs_dir, exist_ok=True)
     os.makedirs(confusion_matrices_dir, exist_ok=True)
@@ -94,6 +95,7 @@ def train_model(config):
     num_folds = 5
     num_patient_features = 10
 
+    all_metrics = []
     for fold in range(num_folds):
         writer = SummaryWriter(log_dir=os.path.join(logs_dir, f"fold_{fold}"))
 
@@ -235,8 +237,20 @@ def train_model(config):
         cm = confusion_matrix(all_labels, all_preds)
         print(cm)
         utils.plot_and_save_confusion_matrix(fold= fold, cm=cm, dir= confusion_matrices_dir, classes= ['0', '1'])
+        metrics = utils.compute_metrics(cm, all_labels= all_labels, all_preds= all_preds)
+        all_metrics.append(metrics)
 
         model_save_path = os.path.join(models_dir, f'model_fold_{fold}.pt')
         torch.save(model.state_dict(), model_save_path)
         writer.close()
         print(f'Model saved to {model_save_path}')
+    
+    average_metrics = {}
+    for key in all_metrics[0]:
+        values = [metric[key] for metric in all_metrics]
+        average_metrics[key] = {
+            'mean': np.mean(values),
+            'std': np.std(values)
+        }
+    utils.save_metrics_to_yaml(average_metrics, confusion_matrices_dir)
+

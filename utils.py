@@ -8,6 +8,39 @@ import pandas as pd
 import numpy as np
 import os
 
+from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
+
+def compute_metrics(cm, all_labels, all_preds):
+    TN, FP, FN, TP = cm.ravel()
+
+    selectivity = TN / (TN + FP)
+    precision = precision_score(all_labels, all_preds)
+    recall = recall_score(all_labels, all_preds)
+    f1 = f1_score(all_labels, all_preds)
+    accuracy = accuracy_score(all_labels, all_preds)
+    specificity = selectivity  # Selectivity 和 Specificity are same in binary classify
+
+    return {
+        'selectivity': selectivity,
+        'precision': precision,
+        'recall': recall,
+        'f1_score': f1,
+        'accuracy': accuracy,
+        'specificity': specificity
+    }
+
+def save_metrics_to_yaml(average_metrics, directory):
+    formatted_metrics = {}
+    for key, value in average_metrics.items():
+        mean = value['mean'] * 100
+        std = value['std'] * 100
+        formatted_metrics[key] = f"{mean:.2f}% ± {std:.2f}%"
+
+    yaml_path = os.path.join(directory, 'final_metrics_results.yaml')
+    os.makedirs(directory, exist_ok=True)
+
+    with open(yaml_path, 'w') as file:
+        yaml.dump(formatted_metrics, file)
 
 
 def load_config(path):
