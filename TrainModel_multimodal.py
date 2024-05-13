@@ -82,6 +82,8 @@ def train_model(config):
 
     image_size = config['model']['image_size']
     model_name = config['model']['name']
+    use_neutrophil_images = config['model']['use_neutrophil_images']
+    freeze_backbone = config['model']['freeze_backbone']
     
     transform = transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -106,6 +108,16 @@ def train_model(config):
         else:
             raise ValueError(f"Unsupported model type: {model_name}")
         
+        if freeze_backbone:    
+            # freeze all conver layer
+            for name, param in model.named_parameters():
+                if "layer" in name:
+                    param.requires_grad = False
+
+            for name, param in model.named_parameters():
+                if "fc" in name:
+                    print(name, param.requires_grad)
+        
         model.to(device)
 
         criterion = nn.CrossEntropyLoss().to(device)
@@ -117,17 +129,16 @@ def train_model(config):
         scaler = GradScaler()
 
         # Dataset and DataLoader setup
-        train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, transform=transform)
-        val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, transform=transform)
+        train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_neutrophil_images= use_neutrophil_images, transform=transform)
+        val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_neutrophil_images= use_neutrophil_images, transform=transform)
 
         # load the patient data if choose to use multimodal
         if model_name == 'MultimodalClassifier':
-            train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, transform=transform)
-            val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, transform=transform)
+            train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
+            val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
 
-        #TODO: add number of workers into data loader
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=8, shuffle=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=8, shuffle=False)
 
         # for the calculation of confusion matrix
         all_labels = []
