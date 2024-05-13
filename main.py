@@ -1,20 +1,29 @@
-from TrainModel_multimodal import train_model
+from Trainer import train_model
 import utils
 
+if __name__ == '__main__':
 
-# config_path = 'configs\config_original.yaml'
-# config = utils.load_config(config_path)
-# train_model(config)
+    # config_path = 'configs\config_original.yaml'
+    # config = utils.load_config(config_path)
+    # train_model(config)
 
-# config_path = 'configs\config_multimodal.yaml'
-# config = utils.load_config(config_path)
-# train_model(config)
+    # config_path = 'configs\config_multimodal.yaml'
+    # config = utils.load_config(config_path)
+    # train_model(config)
 
 
-config_path = 'configs_normalizaed\config_original.yaml'
-config = utils.load_config(config_path)
-train_model(config)
+    # config_path = 'configs_normalizaed\config_original.yaml'
+    # config = utils.load_config(config_path)
+    # train_model(config)
 
-config_path = 'configs_normalizaed\config_multimodal.yaml'
-config = utils.load_config(config_path)
-train_model(config)
+    # config_path = 'configs_normalizaed\config_multimodal.yaml'
+    # config = utils.load_config(config_path)
+    # train_model(config)
+
+    config_path = 'configs_normalizaed\config_resnet50_withNeutrophilImages.yaml'
+    config = utils.load_config(config_path)
+    train_model(config)
+
+    config_path = 'configs_normalizaed\config_multimodal_withNeutrophilImages.yaml'
+    config = utils.load_config(config_path)
+    train_model(config)

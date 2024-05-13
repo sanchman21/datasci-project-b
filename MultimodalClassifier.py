@@ -19,6 +19,7 @@ class MultimodalClassifier(nn.Module):
             nn.Linear(512, 2),
         )
 
+
     def forward(self, image, patient_info):
         
         image_features = self.resnet(image)

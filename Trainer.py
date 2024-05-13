@@ -85,7 +85,8 @@ def train_model(config):
     model_name = config['model']['name']
     use_neutrophil_images = config['model']['use_neutrophil_images']
     freeze_backbone = config['model']['freeze_backbone']
-    
+    use_scheduler = config['model']['use_scheduler']
+
     transform = transforms.Compose([
         transforms.Resize((image_size, image_size)),
         transforms.ToTensor(),
@@ -105,28 +106,37 @@ def train_model(config):
         if model_name == 'resnet50':
             model = resnet50(weights=ResNet50_Weights.DEFAULT)
             model.fc = nn.Linear(model.fc.in_features, 2)
+
+            if freeze_backbone:
+                for name, param in model.named_parameters():
+                    if 'fc' not in name:
+                        param.requires_grad = False
+                    else:
+                        print(f"{name} is not frozen.")
+
         elif model_name == 'MultimodalClassifier':
             model = MultimodalClassifier(num_patient_features)
+            
+            if freeze_backbone:
+                for name, param in model.named_parameters():
+                        if 'resnet' in name:
+                            param.requires_grad = False
+                        else:
+                            print(f"{name} is not frozen.")
         else:
             raise ValueError(f"Unsupported model type: {model_name}")
         
-        if freeze_backbone:    
-            # freeze all conver layer
-            for name, param in model.named_parameters():
-                if "layer" in name:
-                    param.requires_grad = False
 
-            for name, param in model.named_parameters():
-                if "fc" in name:
-                    print(name, param.requires_grad)
+
         
         model.to(device)
 
         criterion = nn.CrossEntropyLoss().to(device)
         optimizer = optim.SGD(model.parameters(), lr=learning_rate, weight_decay=weight_decay, momentum=momentum)
 
-        end_factor = learning_rate_end / learning_rate
-        scheduler = LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
+        if use_scheduler:
+            end_factor = learning_rate_end / learning_rate
+            scheduler = LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
 
         scaler = GradScaler()
 
@@ -139,8 +149,8 @@ def train_model(config):
             train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
             val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
 
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=8, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=8, shuffle=False)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=2, shuffle=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=2, shuffle=False)
 
         # for the calculation of confusion matrix
         all_labels = []
@@ -183,7 +193,9 @@ def train_model(config):
                 total_correct += (predicted == labels).sum().item()
                 total_samples += labels.size(0)
 
-            scheduler.step()
+            if use_scheduler:
+                scheduler.step()
+                
             train_loss = total_loss / total_samples
             train_acc = total_correct / total_samples
 

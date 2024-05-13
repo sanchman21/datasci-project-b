@@ -2,7 +2,7 @@ data:
   csv_file: 'merged_master_normalized.csv'
 
 training:
-  num_epochs: 100
+  num_epochs: 30
   batch_size: 32
   learning_rate: 0.001
   learning_rate_end: 0.0001
@@ -13,4 +13,5 @@ model:
   image_size: 352
   use_neutrophil_images: True
   freeze_backbone: True
+  use_scheduler: False
   name: 'MultimodalClassifier'

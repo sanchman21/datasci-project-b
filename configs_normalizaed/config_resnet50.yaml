@@ -13,4 +13,5 @@ model:
   image_size: 352
   use_neutrophil_images: False
   freeze_backbone: False
+  use_scheduler: True
   name: 'resnet50'

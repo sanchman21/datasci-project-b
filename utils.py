@@ -18,7 +18,7 @@ def compute_metrics(cm, all_labels, all_preds):
     recall = recall_score(all_labels, all_preds)
     f1 = f1_score(all_labels, all_preds)
     accuracy = accuracy_score(all_labels, all_preds)
-    specificity = selectivity  # Selectivity 和 Specificity are same in binary classify
+    specificity = selectivity  # Selectivity and Specificity are same in binary classify
 
     return {
         'selectivity': selectivity,
