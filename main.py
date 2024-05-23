@@ -24,6 +24,22 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
 
-    config_path = 'new_configs\config_resnet50_withNeutrophilImages.yaml'
+    # config_path = 'new_configs\config_resnet50_withNeutrophilImages.yaml'
+    # config = utils.load_config(config_path)
+    # train_model(config)
+
+    config_path = 'configs_random_transfer\config_multimodal_withNeutrophilImages.yaml'
+    config = utils.load_config(config_path)
+    train_model(config)
+
+    config_path = 'configs_random_transfer\config_resnet50_withNeutrophilImages.yaml'
+    config = utils.load_config(config_path)
+    train_model(config)
+
+    config_path = 'configs_random_transfer\config_multimodal.yaml'
+    config = utils.load_config(config_path)
+    train_model(config)
+
+    config_path = 'configs_random_transfer\config_resnet50.yaml'
     config = utils.load_config(config_path)
     train_model(config)

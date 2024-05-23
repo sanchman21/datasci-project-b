@@ -1,0 +1,17 @@
+data:
+  csv_file: 'merged_master_normalized.csv'
+
+training:
+  num_epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  learning_rate_end: 0.00001
+  weight_decay: 0.0005
+  momentum: 0.9
+
+model:
+  image_size: 352
+  use_neutrophil_images: False
+  freeze_backbone: False
+  use_scheduler: True
+  name: 'resnet50'
