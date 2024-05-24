@@ -1,0 +1,6 @@
+accuracy: "85.19% \xB1 7.48%"
+f1_score: "88.46% \xB1 5.36%"
+precision: "84.47% \xB1 7.81%"
+recall: "93.07% \xB1 2.65%"
+selectivity: "71.69% \xB1 18.17%"
+specificity: "71.69% \xB1 18.17%"

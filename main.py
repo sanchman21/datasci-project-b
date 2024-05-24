@@ -22,7 +22,7 @@ if __name__ == '__main__':
 
     # config_path = 'new_configs\config_multimodal_withNeutrophilImages.yaml'
     # config = utils.load_config(config_path)
-    # train_model(config)
+    # train_model(config) 
 
     # config_path = 'new_configs\config_resnet50_withNeutrophilImages.yaml'
     # config = utils.load_config(config_path)
