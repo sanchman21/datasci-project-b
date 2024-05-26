@@ -24,30 +24,8 @@ from MultimodalClassifier import MultimodalClassifier
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+from monocyte_resnet50 import monocyte_dataset
 
-def preprocess_patient_data(batch, device):
-    patient_keys = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count', 'Neutrophil count', 'Monocyte count', 'Platelet count', 'Blast percentage (PB)', 'LDH']
-    # Create a list of tensors, each of shape [batch_size, 1], then concatenate them along dim=1
-    patient_data = [batch[key].unsqueeze(1) for key in patient_keys]
-    patient_data = torch.cat(patient_data, dim=1).float().to(device)
-    return patient_data
-
-
-#TODO: untested code here
-def load_model(model_path, model_type='resnet50', num_patient_features=10):
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    
-    if model_type == 'resnet50':
-        model = resnet50(weights=ResNet50_Weights.DEFAULT)
-        model.fc = nn.Linear(model.fc.in_features, 2)
-    elif model_type == 'MultimodalClassifier':
-        model = MultimodalClassifier(num_patient_features)
-    else:
-        raise ValueError(f"Unsupported model type: {model_type}")
-    
-    model.load_state_dict(torch.load(model_path, map_location=device))
-    model.to(device)
-    return model
 
 
 def train_model(config):
@@ -56,8 +34,8 @@ def train_model(config):
 
     # timestamp for the reference of creating folders
     timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
-    config_details = f"{config['model']['name']}_neutrophils{config['model']['use_neutrophil_images']}"
-    base_dir = os.path.join('saved_models', f"{timestamp}_{config_details}")
+    
+    base_dir = os.path.join('saved_models', f"{timestamp}")
     os.makedirs(base_dir, exist_ok=True)
 
     # Create subdirectories for different types of data
@@ -82,27 +60,22 @@ def train_model(config):
     momentum = config['training']['momentum']
 
     image_size = config['model']['image_size']
-    model_name = config['model']['name']
-    use_neutrophil_images = config['model']['use_neutrophil_images']
-    freeze_backbone = config['model']['freeze_backbone']
     use_scheduler = config['model']['use_scheduler']
 
     transform = transforms.Compose([
-        # transforms.Resize((image_size, image_size)),
+        transforms.Resize((image_size, image_size)),
 
-        transforms.RandomResizedCrop(size=224, scale=(0.8, 1.0)),
+        # transforms.RandomResizedCrop(image_size, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
 
-
-        transforms.RandomHorizontalFlip(),
-        transforms.RandomVerticalFlip(),
-        transforms.RandomRotation(90),
+        # transforms.RandomHorizontalFlip(),
+        # transforms.RandomVerticalFlip(),
+        # transforms.RandomRotation(90),
 
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
 
     num_folds = 5
-    num_patient_features = 10
 
     all_metrics = []
     for fold in range(num_folds):
@@ -110,31 +83,8 @@ def train_model(config):
 
         print(f"Training fold {fold+1}/{num_folds}")
 
-        #load model by model name
-        if model_name == 'resnet50':
-            model = resnet50(weights=ResNet50_Weights.DEFAULT)
-            model.fc = nn.Linear(model.fc.in_features, 2)
-
-            if freeze_backbone:
-                for name, param in model.named_parameters():
-                    if 'fc' not in name:
-                        param.requires_grad = False
-                    else:
-                        print(f"{name} is not frozen.")
-
-        elif model_name == 'MultimodalClassifier':
-            model = MultimodalClassifier(num_patient_features)
-            
-            if freeze_backbone:
-                for name, param in model.named_parameters():
-                        if 'resnet' in name:
-                            param.requires_grad = False
-                        else:
-                            print(f"{name} is not frozen.")
-        else:
-            raise ValueError(f"Unsupported model type: {model_name}")
-        
-
+        model = resnet50(weights=ResNet50_Weights.DEFAULT)
+        model.fc = nn.Linear(model.fc.in_features, 2)
 
         
         model.to(device)
@@ -148,13 +98,9 @@ def train_model(config):
         scaler = GradScaler()
 
         # Dataset and DataLoader setup
-        train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_neutrophil_images= use_neutrophil_images, transform=transform)
-        val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_neutrophil_images= use_neutrophil_images, transform=transform)
+        train_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=True, transform=transform)
+        val_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=False, transform=transform)
 
-        # load the patient data if choose to use multimodal
-        if model_name == 'MultimodalClassifier':
-            train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
-            val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
 
         train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=2, shuffle=True)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=2, shuffle=False)
@@ -182,11 +128,7 @@ def train_model(config):
                 labels = batch['morphology'].to(device)
                 
                 with autocast():
-                    if model_name == 'MultimodalClassifier':
-                        patient_data = preprocess_patient_data(batch, device)
-                        outputs = model(images, patient_data)
-                    else:
-                        outputs = model(images)
+                    outputs = model(images)
 
                     loss = criterion(outputs, labels)
                 
@@ -217,12 +159,8 @@ def train_model(config):
                 for batch in val_loader:
                     images = batch['image'].to(device)
                     labels = batch['morphology'].to(device)
-                    
-                    if model_name == 'MultimodalClassifier':
-                        patient_data = preprocess_patient_data(batch, device)
-                        outputs = model(images, patient_data)
-                    else:
-                        outputs = model(images)
+
+                    outputs = model(images)
 
                     loss = criterion(outputs, labels)
                     val_loss += loss.item() * images.size(0)

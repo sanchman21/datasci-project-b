@@ -21,6 +21,7 @@ class MergeMasterDataset(Dataset):
         self.transform = transform
         
         # Filter out neutrophil images if not used
+        # TODO
         if not use_neutrophil_images:
             self.frame = self.frame[
                 self.frame[['set0', 'set1', 'set2', 'set3', 'set4']].notnull().any(axis=1)
