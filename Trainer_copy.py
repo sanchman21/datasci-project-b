@@ -28,7 +28,7 @@ from monocyte_resnet50 import monocyte_dataset
 
 
 
-def train_model(config):
+def train_model_pure(config):
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Using device: {device}")
 
@@ -78,7 +78,8 @@ def train_model(config):
     num_folds = 5
 
     all_metrics = []
-    for fold in range(num_folds):
+    # TODO: fix temp
+    for fold in range(2, 5):
         writer = SummaryWriter(log_dir=os.path.join(logs_dir, f"fold_{fold}"))
 
         print(f"Training fold {fold+1}/{num_folds}")
