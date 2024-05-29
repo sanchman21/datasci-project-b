@@ -1,4 +1,4 @@
-from Trainer_copy import train_model_pure
+from Puremodel_Trainer import train_model_pure
 from Trainer import train_model
 import utils
 
