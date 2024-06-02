@@ -22,9 +22,8 @@ from MergeMasterDataset import MergeMasterDataset
 from MultimodalClassifier import MultimodalClassifier
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-from monocyte_resnet50 import monocyte_dataset
+from resnet50_model import monocyte_dataset
 
 
 
