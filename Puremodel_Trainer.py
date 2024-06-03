@@ -50,7 +50,7 @@ def train_model_pure(config):
     os.makedirs(plots_dir, exist_ok=True)
 
     # Load training configurations
-    csv_file = config['data']['csv_file']
+    csv_file = utils.convert_path_to_os_specific(config['data']['csv_file'])
     num_epochs = config['training']['num_epochs']
     batch_size = config['training']['batch_size']
     learning_rate = config['training']['learning_rate']
@@ -101,9 +101,9 @@ def train_model_pure(config):
         train_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=True, transform=transform)
         val_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=False, transform=transform)
 
-
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=2, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=2, shuffle=False)
+        # TODO num_workers=2
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
 
         # for the calculation of confusion matrix
         all_labels = []

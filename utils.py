@@ -9,6 +9,31 @@ import os
 
 from sklearn.metrics import precision_score, recall_score, f1_score, accuracy_score
 
+import os
+
+def convert_path_to_os_specific(path: str) -> str:
+    """
+    Convert a file path string to the current OS's path format.
+
+    Args:
+    path (str): The original file path string, which might contain either
+                forward slashes (/) or backslashes (\).
+
+    Returns:
+    str: The converted file path compatible with the current operating system.
+    """
+    # Normalize path to remove redundant separators and up-level references
+    normalized_path = os.path.normpath(path)
+
+    # Replace separators according to the current OS
+    if os.sep == '/':
+        # If the OS separator is '/', replace all '\\' with '/'
+        return normalized_path.replace('\\', os.sep)
+    else:
+        # If the OS separator is '\', replace all '/' with '\\'
+        return normalized_path.replace('/', os.sep)
+
+
 def compute_metrics(cm, all_labels, all_preds):
     TN, FP, FN, TP = cm.ravel()
 
