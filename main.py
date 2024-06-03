@@ -38,7 +38,7 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
 
-    # config_path = 'configs_random_transfer\config_multimodal.yaml'
+    # config_path = 'configs\configs_random_transfer\config_multimodal.yaml'
     # config = utils.load_config(config_path)
     # train_model(config)
 
@@ -50,10 +50,7 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
     
-    config_path = 'monocyte_resnet50\mneutrophils_resnet50.yaml'
+    config_path = 'resnet50_model\\neutrophil_resnet50.yaml'
     config = utils.load_config(config_path)
     train_model_pure(config)
 
-
-
-    

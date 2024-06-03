@@ -22,7 +22,6 @@ from MergeMasterDataset import MergeMasterDataset
 from MultimodalClassifier import MultimodalClassifier
 
 import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 def preprocess_patient_data(batch, device):

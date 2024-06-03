@@ -2,7 +2,6 @@ import yaml
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix
 
-import seaborn as sns
 import pandas as pd
 
 import numpy as np

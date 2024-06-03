@@ -77,8 +77,8 @@ def train_model_pure(config):
     num_folds = 5
 
     all_metrics = []
-    # TODO: fix temp
-    for fold in range(2, 5):
+    
+    for fold in range(num_folds):
         writer = SummaryWriter(log_dir=os.path.join(logs_dir, f"fold_{fold}"))
 
         print(f"Training fold {fold+1}/{num_folds}")
