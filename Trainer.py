@@ -85,6 +85,8 @@ def train_model(config):
     use_neutrophil_images = config['model']['use_neutrophil_images']
     freeze_backbone = config['model']['freeze_backbone']
     use_scheduler = config['model']['use_scheduler']
+    num_workers = config['model']['num_workers']
+
 
     transform = transforms.Compose([
         # transforms.Resize((image_size, image_size)),
@@ -155,8 +157,8 @@ def train_model(config):
             train_dataset = MergeMasterDataset(csv_file, fold=fold, train=True, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
             val_dataset = MergeMasterDataset(csv_file, fold=fold, train=False, use_patient_data= True, use_neutrophil_images= use_neutrophil_images, transform=transform)
 
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers=2, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers=2, shuffle=False)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers= num_workers, shuffle=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers= num_workers, shuffle=False)
 
         # for the calculation of confusion matrix
         all_labels = []

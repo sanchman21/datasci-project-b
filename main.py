@@ -50,9 +50,15 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
     
-    config_path = 'resnet50_model\\neutrophil_resnet50.yaml'
+    # config_path = 'resnet50_model\\neutrophil_resnet50.yaml'
+    # config_path = utils.convert_path_to_os_specific(config_path)
+
+    # config = utils.load_config(config_path)
+    # train_model_pure(config)
+
+    config_path = '_configs\\neutrophil+monocyte+patientmeta.yaml'
     config_path = utils.convert_path_to_os_specific(config_path)
 
     config = utils.load_config(config_path)
-    train_model_pure(config)
+    train_model(config)
 

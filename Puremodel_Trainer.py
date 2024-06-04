@@ -60,6 +60,7 @@ def train_model_pure(config):
 
     image_size = config['model']['image_size']
     use_scheduler = config['model']['use_scheduler']
+    num_workers = config['model']['num_workers']
 
     transform = transforms.Compose([
         transforms.Resize((image_size, image_size)),
@@ -101,9 +102,8 @@ def train_model_pure(config):
         train_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=True, transform=transform)
         val_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=False, transform=transform)
 
-        # TODO num_workers=2
-        train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
-        val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False)
+        train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers = num_workers, shuffle=True)
+        val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers = num_workers, shuffle=False)
 
         # for the calculation of confusion matrix
         all_labels = []
