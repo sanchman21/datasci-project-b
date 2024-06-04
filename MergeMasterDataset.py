@@ -1,6 +1,7 @@
 import pandas as pd
 from torch.utils.data import Dataset
 from PIL import Image
+import utils
 
 class MergeMasterDataset(Dataset):
     def __init__(self, csv_file, fold, train=True, use_neutrophil_images=False, use_patient_data=False, transform=None):
@@ -44,7 +45,7 @@ class MergeMasterDataset(Dataset):
         return len(self.frame)
 
     def __getitem__(self, idx):
-        img_name = self.frame.iloc[idx]['image_path']
+        img_name = utils.convert_path_to_os_specific(self.frame.iloc[idx]['image_path'])
         image = Image.open(img_name).convert('RGB')
 
         if self.transform:

@@ -72,7 +72,7 @@ def train_model(config):
     os.makedirs(plots_dir, exist_ok=True)
 
     # Load training configurations
-    csv_file = config['data']['csv_file']
+    csv_file = utils.convert_path_to_os_specific(config['data']['csv_file'])
     num_epochs = config['training']['num_epochs']
     batch_size = config['training']['batch_size']
     learning_rate = config['training']['learning_rate']
