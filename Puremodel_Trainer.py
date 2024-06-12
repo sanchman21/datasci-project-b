@@ -131,7 +131,7 @@ def train_model_pure(config):
 
         # Dataset and DataLoader setup
         train_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=True, transform=transform)
-        val_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=False, transform=transform)
+        val_dataset = monocyte_dataset.MonocyteDataset(csv_file, fold=fold, train=False, transform=test_transforms)
 
         train_loader = DataLoader(train_dataset, batch_size=batch_size, num_workers = num_workers, shuffle=True)
         val_loader = DataLoader(val_dataset, batch_size=batch_size, num_workers = num_workers, shuffle=False)

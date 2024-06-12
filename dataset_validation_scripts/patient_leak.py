@@ -21,5 +21,5 @@ def check_patient_leak(csv_file):
         print("No patient leak detected across all folds.")
 
 if __name__ == "__main__":
-    csv_file = 'datasets\\reassigned_monocyte.csv'
+    csv_file = 'datasets\monocyte_reassigned+neutrophil.csv'
     check_patient_leak(csv_file)
