@@ -20,7 +20,7 @@ class MonocyteDataset(Dataset):
             self.frame = self.frame[self.frame[fold_column] == 'test']
 
 
-        self.columns_to_use = ['image_path', 'morphology']
+        self.columns_to_use = ['image_path', 'morphology', 'patient_id']
         self.frame = self.frame[self.columns_to_use]
 
     def __len__(self):
@@ -35,7 +35,9 @@ class MonocyteDataset(Dataset):
 
         sample = {
             'image': image,
-            'morphology': self.frame.iloc[idx]['morphology']
+            'morphology': self.frame.iloc[idx]['morphology'],
+            'patient_id': self.frame.iloc[idx]['patient_id']
+
         }
 
         return sample

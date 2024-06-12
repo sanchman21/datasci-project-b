@@ -22,7 +22,7 @@ from MergeMasterDataset import MergeMasterDataset
 from MultimodalClassifier import MultimodalClassifier
 
 import matplotlib.pyplot as plt
-
+import torchvision.transforms.functional
 from resnet50_model import monocyte_dataset
 
 
@@ -63,17 +63,48 @@ def train_model_pure(config):
     num_workers = config['model']['num_workers']
 
     transform = transforms.Compose([
-        transforms.Resize((image_size, image_size)),
 
-        # transforms.RandomResizedCrop(image_size, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
+        transforms.RandomHorizontalFlip(),
+        transforms.RandomVerticalFlip(),
+        transforms.RandomResizedCrop(image_size, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
 
-        # transforms.RandomHorizontalFlip(),
-        # transforms.RandomVerticalFlip(),
-        # transforms.RandomRotation(90),
+        transforms.RandomRotation(90),
 
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
     ])
+
+    #TTA
+    test_transforms = transforms.Compose([
+        transforms.Resize(size=(352, 352)),
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+
+    # test_augmented_transforms = [
+    #     transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),
+    #     transforms.Compose([transforms.RandomHorizontalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),  
+    #     transforms.Compose([transforms.RandomVerticalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),
+    #     transforms.Compose([transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),  
+    #     transforms.Compose([transforms.RandomHorizontalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+    #     transforms.Compose([transforms.RandomVerticalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),  
+    #     transforms.Compose([transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+    #     transforms.Compose([transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]) 
+    # ]
+
+    desired_height = 352
+    desired_width = 352
+
+    test_augmented_transforms = [
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomHorizontalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomVerticalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),  
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomHorizontalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomVerticalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]), 
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalFlip(p=1.0), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])]),
+        transforms.Compose([transforms.Resize((desired_height, desired_width)), transforms.RandomHorizontalFlip(p=1.0), transforms.RandomVerticalFlip(p=1.0), transforms.RandomRotation(degrees=90), transforms.ToTensor(), transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])])
+    ]
 
     num_folds = 5
 
@@ -108,6 +139,8 @@ def train_model_pure(config):
         # for the calculation of confusion matrix
         all_labels = []
         all_preds = []
+        all_patient_ids = []
+
 
         # Stores metrics for each epoch
         epoch_metrics = {
@@ -152,15 +185,28 @@ def train_model_pure(config):
             writer.add_scalar(f'Train/Accuracy_fold_{fold}', train_acc, epoch)
     
 
+
             # val
             val_loss, val_correct, val_total = 0, 0, 0
             model.eval()
             with torch.no_grad():
                 for batch in val_loader:
-                    images = batch['image'].to(device)
+                    images = batch['image']
                     labels = batch['morphology'].to(device)
+                    patient_ids = batch['patient_id'].tolist()
 
-                    outputs = model(images)
+
+                    # outputs = model(images)
+                    outputs_list = []
+                    for transform in test_augmented_transforms:
+                        augmented_images = torch.stack([transform(torchvision.transforms.functional.to_pil_image(image)) for image in images])
+                        augmented_images = augmented_images.to(device)
+
+                        outputs = model(augmented_images)
+                        outputs_list.append(outputs)
+                    
+                    outputs = torch.stack(outputs_list).mean(0)
+                    
 
                     loss = criterion(outputs, labels)
                     val_loss += loss.item() * images.size(0)
@@ -170,6 +216,8 @@ def train_model_pure(config):
 
                     all_labels.extend(labels.tolist())
                     all_preds.extend(predicted.tolist())
+                    all_patient_ids.extend(patient_ids)
+
 
             val_acc = val_correct / val_total
             val_loss = val_loss / val_total
@@ -190,7 +238,24 @@ def train_model_pure(config):
         
         #end fold operations
         utils.plot_metrics(epoch_metrics, fold, plots_dir)
-        
+
+        results_df = pd.DataFrame({
+            'patient_id': all_patient_ids,
+            'predicted': all_preds,
+            'label': all_labels
+        })
+        results_df.to_csv(os.path.join(base_dir,'labelandpredic'))
+
+        patient_predictions = results_df.groupby('patient_id')['predicted'].mean().round().astype(int)
+        patient_labels = results_df.groupby('patient_id')['label'].first()
+
+        patient_correct = (patient_predictions == patient_labels).sum()
+        patient_total = patient_labels.size
+
+        patient_acc = patient_correct / patient_total
+
+        print(f'Patient-level accuracy: {patient_acc}')
+
         cm = confusion_matrix(all_labels, all_preds)
         print(cm)
         utils.plot_and_save_confusion_matrix(fold= fold, cm=cm, dir= confusion_matrices_dir, classes= ['0', '1'])

@@ -1,7 +1,7 @@
 import pandas as pd
 
 
-df = pd.read_csv('new_split2.csv')
+df = pd.read_csv('datasets\merged.csv')
 
 results = pd.DataFrame()
 sets = ['set0', 'set1', 'set2', 'set3', 'set4']

@@ -90,7 +90,6 @@ def train_model(config):
 
     transform = transforms.Compose([
         # transforms.Resize((image_size, image_size)),
-
         transforms.RandomResizedCrop(size=224, scale=(0.8, 1.0)),
 
 
@@ -211,7 +210,17 @@ def train_model(config):
             writer.add_scalar(f'Train/Accuracy_fold_{fold}', train_acc, epoch)
     
 
+
+
             # val
+            num_augmentations = 5
+            # Test-time augmentation transformations
+            augmentations = transforms.Compose([
+                transforms.RandomHorizontalFlip(),
+                transforms.RandomRotation(10),
+                transforms.RandomResizedCrop(224, scale=(0.8, 1.0))
+            ])
+            
             val_loss, val_correct, val_total = 0, 0, 0
             model.eval()
             with torch.no_grad():
@@ -219,11 +228,18 @@ def train_model(config):
                     images = batch['image'].to(device)
                     labels = batch['morphology'].to(device)
                     
-                    if model_name == 'MultimodalClassifier':
-                        patient_data = preprocess_patient_data(batch, device)
-                        outputs = model(images, patient_data)
-                    else:
-                        outputs = model(images)
+                    outputs_list = []
+                    for _ in range(num_augmentations):
+                        augmented_images = augmentations(images)# apply TTA
+                        if model_name == 'MultimodalClassifier':
+                            patient_data = preprocess_patient_data(batch, device)
+                            outputs = model(augmented_images, patient_data)
+                        else:
+                            outputs = model(augmented_images)
+                        outputs_list.append(outputs)
+
+                    outputs = torch.stack(outputs_list).mean(0)
+                    # torch.mean(torch.stack(predictions), dim=0)
 
                     loss = criterion(outputs, labels)
                     val_loss += loss.item() * images.size(0)

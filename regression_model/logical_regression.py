@@ -24,10 +24,8 @@ scoring = {
     'f1_score': make_scorer(f1_score, average='weighted', zero_division=0)
 }
 
-# 执行交叉验证
 cv_results = cross_validate(model, X_scaled, y, cv=cv, scoring=scoring, return_train_score=False)
 
-# 打印交叉验证结果
 print("Cross-validation results:")
 for metric, scores in cv_results.items():
     print(f"{metric}: {scores.mean():.3f} ± {scores.std():.3f}")
