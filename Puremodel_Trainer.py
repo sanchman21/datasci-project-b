@@ -191,21 +191,21 @@ def train_model_pure(config):
             model.eval()
             with torch.no_grad():
                 for batch in val_loader:
-                    images = batch['image']
+                    images = batch['image'].to(device)
                     labels = batch['morphology'].to(device)
                     patient_ids = batch['patient_id'].tolist()
 
 
-                    # outputs = model(images)
-                    outputs_list = []
-                    for transform in test_augmented_transforms:
-                        augmented_images = torch.stack([transform(torchvision.transforms.functional.to_pil_image(image)) for image in images])
-                        augmented_images = augmented_images.to(device)
+                    outputs = model(images)
+                    # outputs_list = []
+                    # for transform in test_augmented_transforms:
+                    #     augmented_images = torch.stack([transform(torchvision.transforms.functional.to_pil_image(image)) for image in images])
+                    #     augmented_images = augmented_images.to(device)
 
-                        outputs = model(augmented_images)
-                        outputs_list.append(outputs)
+                    #     outputs = model(augmented_images)
+                    #     outputs_list.append(outputs)
                     
-                    outputs = torch.stack(outputs_list).mean(0)
+                    # outputs = torch.stack(outputs_list).mean(0)
                     
 
                     loss = criterion(outputs, labels)
