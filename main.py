@@ -62,7 +62,7 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
 
-    config_path = '_configs\puremodel-m-reassigned+neutrophil.csv.yaml'
+    config_path = '_configs\puremodel-monocyte_reassigned.yaml'
     config_path = utils.convert_path_to_os_specific(config_path)
 
     config = utils.load_config(config_path)
