@@ -67,3 +67,9 @@ if __name__ == '__main__':
 
     config = utils.load_config(config_path)
     train_model_pure(config)
+
+    config_path = '_configs\puremodel-nutrophil.yaml'
+    config_path = utils.convert_path_to_os_specific(config_path)
+
+    config = utils.load_config(config_path)
+    train_model_pure(config)
