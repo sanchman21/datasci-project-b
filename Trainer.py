@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 import datetime
-import utils
+import utils_zhenzhuo
 import time
 
 
@@ -72,7 +72,7 @@ def train_model(config):
     os.makedirs(plots_dir, exist_ok=True)
 
     # Load training configurations
-    csv_file = utils.convert_path_to_os_specific(config['data']['csv_file'])
+    csv_file = utils_zhenzhuo.convert_path_to_os_specific(config['data']['csv_file'])
     num_epochs = config['training']['num_epochs']
     batch_size = config['training']['batch_size']
     learning_rate = config['training']['learning_rate']
@@ -268,12 +268,12 @@ def train_model(config):
             epoch_metrics['epoch_time'].append(epoch_time)
         
         #end fold operations
-        utils.plot_metrics(epoch_metrics, fold, plots_dir)
+        utils_zhenzhuo.plot_metrics(epoch_metrics, fold, plots_dir)
         
         cm = confusion_matrix(all_labels, all_preds)
         print(cm)
-        utils.plot_and_save_confusion_matrix(fold= fold, cm=cm, dir= confusion_matrices_dir, classes= ['0', '1'])
-        metrics = utils.compute_metrics(cm, all_labels= all_labels, all_preds= all_preds)
+        utils_zhenzhuo.plot_and_save_confusion_matrix(fold= fold, cm=cm, dir= confusion_matrices_dir, classes= ['0', '1'])
+        metrics = utils_zhenzhuo.compute_metrics(cm, all_labels= all_labels, all_preds= all_preds)
         all_metrics.append(metrics)
 
         model_save_path = os.path.join(models_dir, f'model_fold_{fold}.pt')
@@ -288,5 +288,5 @@ def train_model(config):
             'mean': np.mean(values),
             'std': np.std(values)
         }
-    utils.save_metrics_to_yaml(average_metrics, confusion_matrices_dir)
+    utils_zhenzhuo.save_metrics_to_yaml(average_metrics, confusion_matrices_dir)
 

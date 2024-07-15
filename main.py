@@ -1,6 +1,6 @@
 from Puremodel_Trainer import train_model_pure
 from Trainer import train_model
-import utils
+import utils_zhenzhuo
 
 
 if __name__ == '__main__':
@@ -63,13 +63,13 @@ if __name__ == '__main__':
     # train_model(config)
 
     config_path = '_configs\puremodel-monocyte_reassigned.yaml'
-    config_path = utils.convert_path_to_os_specific(config_path)
+    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path)
 
-    config = utils.load_config(config_path)
+    config = utils_zhenzhuo.load_config(config_path)
     train_model_pure(config)
 
     config_path = '_configs\puremodel-nutrophil.yaml'
-    config_path = utils.convert_path_to_os_specific(config_path)
+    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path)
 
-    config = utils.load_config(config_path)
+    config = utils_zhenzhuo.load_config(config_path)
     train_model_pure(config)

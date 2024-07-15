@@ -1,0 +1,50 @@
+monocyte Fold 0
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/monocyte_fold_0_without_TTA
+[TTA] Image level Accuracy: 93.46781940441883 AUC: 98.96635413169861
+Patient level with clinical variable => Accuracy: 100.0 AUC: 98.96635413169861
+monocyte Fold 1
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/monocyte_fold_1_without_TTA
+[TTA] Image level Accuracy: 80.99378881987577 AUC: 88.54635953903198
+Patient level with clinical variable => Accuracy: 82.85714285714286 AUC: 88.54635953903198
+monocyte Fold 2
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/monocyte_fold_2_without_TTA
+[TTA] Image level Accuracy: 87.45945945945945 AUC: 90.75895547866821
+Patient level with clinical variable => Accuracy: 91.42857142857143 AUC: 90.75895547866821
+monocyte Fold 3
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/monocyte_fold_3_without_TTA
+[TTA] Image level Accuracy: 90.66455696202532 AUC: 96.19168043136597
+Patient level with clinical variable => Accuracy: 100.0 AUC: 96.19168043136597
+monocyte Fold 4
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/monocyte_fold_4_without_TTA
+[TTA] Image level Accuracy: 93.4659090909091 AUC: 98.51946234703064
+Patient level with clinical variable => Accuracy: 97.14285714285714 AUC: 98.51946234703064
+neutrophil Fold 0
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/neutrophil_fold_0_without_TTA
+[TTA] Image level Accuracy: 95.7214121258634 AUC: 98.74948263168335
+Patient level with clinical variable => Accuracy: 100.0 AUC: 98.74948263168335
+neutrophil Fold 1
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/neutrophil_fold_1_without_TTA
+[TTA] Image level Accuracy: 87.22307104660045 AUC: 76.63557529449463
+Patient level with clinical variable => Accuracy: 85.71428571428571 AUC: 76.63557529449463
+neutrophil Fold 2
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/neutrophil_fold_2_without_TTA
+[TTA] Image level Accuracy: 90.64538276690696 AUC: 92.6978051662445
+Patient level with clinical variable => Accuracy: 91.42857142857143 AUC: 92.6978051662445
+neutrophil Fold 3
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/neutrophil_fold_3_without_TTA
+[TTA] Image level Accuracy: 94.49805315727103 AUC: 96.9430923461914
+Patient level with clinical variable => Accuracy: 97.14285714285714 AUC: 96.9430923461914
+neutrophil Fold 4
+Model: Resnet50
+/home/tchowdhury/data/code/CMML-v2/townim/models/neutrophil_fold_4_without_TTA
+[TTA] Image level Accuracy: 96.92809335850352 AUC: 97.54972457885742
+Patient level with clinical variable => Accuracy: 97.14285714285714 AUC: 97.54972457885742

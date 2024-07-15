@@ -2,7 +2,7 @@ import pandas as pd
 import torch
 from torch.utils.data import Dataset
 from PIL import Image
-import utils
+import utils_zhenzhuo
 
 class MonocyteDataset(Dataset):
     def __init__(self, csv_file, fold, train=True, transform=None):
@@ -27,7 +27,7 @@ class MonocyteDataset(Dataset):
         return len(self.frame)
 
     def __getitem__(self, idx):
-        img_name = utils.convert_path_to_os_specific(self.frame.iloc[idx]['image_path'])
+        img_name = utils_zhenzhuo.convert_path_to_os_specific(self.frame.iloc[idx]['image_path'])
         image = Image.open(img_name).convert('RGB')
 
         if self.transform:
