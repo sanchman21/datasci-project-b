@@ -5,9 +5,9 @@ import utils
 
 # NEUTROPHIL_CSV_PATH = '/home/tchowdhury/data/code/CMML-v2/datasets/neutrophil.csv'
 # MONOCYTE_CSV_PATH = '/home/tchowdhury/data/code/CMML-v2/datasets/monocyte_reassigned.csv'
-NEUTROPHIL_CSV_PATH = './datasets/neutrophil.csv'
-MONOCYTE_CSV_PATH = './datasets/monocyte_reassigned.csv'
-CHECKED_LABELS_XLSX_PATH = './datasets/checked_labels.xlsx'
+NEUTROPHIL_CSV_PATH = '../datasets/neutrophil.csv'
+MONOCYTE_CSV_PATH = '../datasets/monocyte_reassigned.csv'
+CHECKED_LABELS_XLSX_PATH = '../datasets/checked_labels.xlsx'
 
 rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
 
