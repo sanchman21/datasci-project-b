@@ -1,5 +1,7 @@
 # readme
 
+Note: Please keep the neutrophil_images_kevin and a dated folder, both containing images into a directory named data which is in the same folder as the github repository (not inside the repository). Maintaining the same file structure and using relative paths across all users should be better.
+
 1. without any neutrophil images + without any patient data
 2. with neutrophil images [they will be all K fold for training] + without any patient data
 3. without any neutrophil image + with patient data [you will not count the patient's images if the whole row are empty]
