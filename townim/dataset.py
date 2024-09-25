@@ -13,7 +13,7 @@ rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802
 
 class CustomDataset(Dataset):
     # DATA_DIR = '/home/tchowdhury/data/cmml'
-    DATA_DIR = '../data'
+    DATA_DIR = '../../data' # keeping the data folder in the same folder as the github repo (not inside the repo)
     def __init__(self, partition, csv_path, set_id, transform=None):
         # csv_path = f'{self.DATA_DIR}/master_s0_with_feat.csv'
         df = pd.read_csv(csv_path).drop_duplicates()
