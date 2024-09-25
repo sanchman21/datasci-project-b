@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 df = pd.read_csv('datasets\merged.csv')
 
 results = pd.DataFrame()

@@ -62,14 +62,12 @@ if __name__ == '__main__':
     # config = utils.load_config(config_path)
     # train_model(config)
 
-    config_path = '_configs\puremodel-monocyte_reassigned.yaml'
-    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path)
+    config_path = '_configs\puremodel-monocyte_reassigned.yaml' # select the config file (yaml) to use
+    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path) # convert the path to os specific
+    config = utils_zhenzhuo.load_config(config_path) # load the config file
+    train_model_pure(config) # train the model using the config file
 
-    config = utils_zhenzhuo.load_config(config_path)
-    train_model_pure(config)
-
-    config_path = '_configs\puremodel-nutrophil.yaml'
-    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path)
-
-    config = utils_zhenzhuo.load_config(config_path)
-    train_model_pure(config)
+    config_path = '_configs\puremodel-nutrophil.yaml' # select the config file (yaml) to use
+    config_path = utils_zhenzhuo.convert_path_to_os_specific(config_path) # convert the path to os specific
+    config = utils_zhenzhuo.load_config(config_path) # load the config file
+    train_model_pure(config) # train the model using the config file

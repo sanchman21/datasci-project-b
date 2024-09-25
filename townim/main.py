@@ -13,13 +13,21 @@ from PIL import Image
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
+# sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
+sys.path.append('./townim')
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
-torch.cuda.empty_cache()
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available(): # if cuda is available
+    torch.cuda.empty_cache() # empty the cache
+    device = "cuda" # set the device to cuda
+elif torch.backends.mps.is_available(): # if mps is available
+    torch.mps.empty_cache() # empty the cache
+    device = "mps" # set the device to mps
+else: # otherwise
+    torch.cpu.empty_cache() # empty the cache
+    device = "cpu" # set the device to cpu
+print(f"Using device: {device}") # print the device being used
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--fold', type=int, default=0, help='fold_id')
@@ -28,8 +36,8 @@ args = parser.parse_args()
 set_id = int(args.fold)
 
 # Training loop
-data_type = 'monocyte' # neutrophil, monocyte
-is_tta = False
+data_type = 'neutrophil' # neutrophil, monocyte
+is_tta = True
 num_epochs = 50 if data_type == 'neutrophil' else 100
 best_test_acc = 0
 best_epoch = 0
@@ -41,6 +49,7 @@ logs = ''
 CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PATH
 
 
+# output_dir = f'./models/{data_type}_fold_{args.fold}'
 output_dir = f'./models/{data_type}_fold_{args.fold}'
 output_dir+='_with_TTA' if is_tta else '_without_TTA'
 
@@ -48,18 +57,15 @@ output_dir+='_with_TTA' if is_tta else '_without_TTA'
 if not os.path.exists(output_dir):
     os.makedirs(output_dir, exist_ok=True)
     
-shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py'))
-    
-
+# shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py'))
+shutil.copyfile('./townim/main.py', os.path.join(output_dir, 'main.py'))
 utils.set_random_seed(123)
-
 
 # Create data loaders
 batch_size = 32
 IMAGE_SIZE = 352
 IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
 IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
-
 
 train_transform = T.Compose([
     # T.RandomResizedCrop(IMAGE_SIZE, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
@@ -71,13 +77,11 @@ train_transform = T.Compose([
     T.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-
 test_transform = T.Compose([
     T.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     T.ToTensor(),
     T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
 ])
-
 
 test_transform = T.Compose([
     T.Resize((IMAGE_SIZE, IMAGE_SIZE)),
@@ -106,10 +110,9 @@ TTAs = [
 
 test_dataset = CustomDataset('test', CSV_PATH, set_id, transform=test_transform)
 test_loaders =[
-    DataLoader(CustomDataset('test', CSV_PATH, set_id, transform=transform), batch_size=8, shuffle=False, pin_memory=True, num_workers=8)
+    DataLoader(CustomDataset('test', CSV_PATH, set_id, transform=transform), batch_size=8, shuffle=False, pin_memory=True, num_workers=4)
     for transform in TTAs
 ]
-
 
 # dataset
 train_dataset = CustomDataset('train', CSV_PATH, set_id, transform=train_transform)
@@ -122,8 +125,8 @@ weights = utils.make_weights_for_balanced_classes(train_dataset.labels, device)
 weighted_sampler = sampler.WeightedRandomSampler(weights, len(weights))
 train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, 
                         sampler=weighted_sampler,
-                        num_workers=8, worker_init_fn=utils.worker_init_fn)
-val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
+                        num_workers=4, worker_init_fn=utils.worker_init_fn)
+val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=4)
 print("Dataset loaded")
 
 num_classes = len(set(train_dataset.labels))
@@ -161,7 +164,6 @@ accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes, ave
 confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
 class_accuracy = torchmetrics.Accuracy(task="multiclass", num_classes=num_classes, average=None).to(device)
 
-
 for epoch in range(num_epochs):
     t = tqdm(enumerate(train_loader, 0), total=len(train_loader), 
                 smoothing=0.9, position=0, leave=True, 
@@ -190,7 +192,6 @@ for epoch in range(num_epochs):
     train_accuracies.append(float(train_accuracy))
     accuracy.reset()
     
-
     # Validation
     model.eval()
     val_correct = 0
@@ -225,8 +226,6 @@ for epoch in range(num_epochs):
                 confmat.update(outputs, labels)
                 val_class_accuracy = class_accuracy(outputs, labels)
     
-            
-    
     val_class_accuracy = class_accuracy.compute()   
 
     val_loss = val_loss / len(val_loader)
@@ -256,7 +255,6 @@ for epoch in range(num_epochs):
     # Save the model checkpoint
     torch.save(model.state_dict(), os.path.join(output_dir, f'last.pth'))
     # torchvision.utils.save_image(utils.denormalize(inputs[:30, :,:,:], IMAGENET_MEAN, IMAGENET_STD), os.path.join(output_dir, f"samples.jpg"), nrow=10, normalize=True, padding=0)
-    
     
     if best_test_acc <= test_accuracy and epoch!=0:
         best_epoch = epoch+1
@@ -289,7 +287,6 @@ for epoch in range(num_epochs):
     # resetting all metrics
     accuracy.reset(); class_accuracy.reset(); confmat.reset()
     
-
 # Save the printed outputs to a log.txt file
 with open(os.path.join(output_dir, 'log.txt'), 'w') as log_file:
     log_file.write(logs)
@@ -316,10 +313,5 @@ plt.title('Train and Validation Accuracy')
 plt.savefig(os.path.join(output_dir, 'loss_accuracy_graph.png'))
 plt.close()
 
-
 print("CMML classifier model completed")
 print("Model saved location :", output_dir)
-
-
-
-
