@@ -6,3 +6,4 @@ PyYAML==6.0.1
 PyYAML==6.0.1
 scikit_learn==1.4.2
 tensorboard==2.16.2
+torchmetrics==1.4.2
