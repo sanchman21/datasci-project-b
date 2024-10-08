@@ -29,7 +29,7 @@ else: # otherwise
 print(f"Using device: {device}") # print the device being used
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=0, help='fold_id')
+parser.add_argument('--fold', type=int, default=1, help='fold_id')
 args = parser.parse_args()
 
 set_id = int(args.fold)
@@ -50,14 +50,14 @@ CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PA
 
 # output_dir = f'./models/{data_type}_fold_{args.fold}'
 output_dir = f'./experiments/{data_type}_fold_{args.fold}'
-output_dir += '_with_TTA' if is_tta else '_without_TTA'
+output_dir+='_with_TTA' if is_tta else '_without_TTA'
 model_dir = output_dir + "/model"
-figure_dir = output_dir + "/figures/train"
+figure_dir = output_dir + "/figures"
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
-os.makedirs(model_dir, exist_ok=True)
-os.makedirs(figure_dir, exist_ok=True)
+os.makedirs(output_dir + "/model", exist_ok=True)
+os.makedirs(output_dir + "/figures", exist_ok=True)
     
 shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py')) # copying code file used to train the model
 utils.set_random_seed(123)
@@ -228,7 +228,7 @@ for epoch in range(num_epochs):
 
     df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
                                              'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
-    df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
+    df.to_csv(os.path.join(output_dir, 'metrics.csv'), index=False)
 
     # Early stopping check
     if val_loss < best_val_loss:

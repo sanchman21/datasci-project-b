@@ -7,17 +7,74 @@ import torch.optim as optim
 import torch.nn.functional as F
 from torch.utils.data import DataLoader, sampler
 import torchvision.transforms as T
-import torchmetrics
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, roc_curve
 from torchvision import models
 from tqdm import tqdm
 from PIL import Image
 import matplotlib.pyplot as plt
 from tqdm import tqdm
 
-sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
+# sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
+sys.path.append('./towmin')
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+# Function to save or update metrics CSV
+def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path):
+    new_metrics = pd.DataFrame([[fold, round(accuracy, 3), round(precision, 3), round(recall, 3), round(f1, 3), round(auroc, 3)]], 
+                                columns=["fold", "accuracy", "precision", "recall", "f1", "auroc"])
+
+    if os.path.exists(metrics_path):
+        df = pd.read_csv(metrics_path)
+        if fold in df['fold'].values:
+            df.loc[df['fold'] == fold] = new_metrics
+        else:
+            df = pd.concat([df, new_metrics], ignore_index=True)
+    else:
+        df = new_metrics
+    
+    df.to_csv(metrics_path, index=False)
+
+# Function to plot and save ROC curve
+def plot_save_roc_curve(labels, logits, figure_path, num_classes):
+    fpr, tpr = dict(), dict()
+    roc_auc = dict()
+    for i in range(num_classes):
+        fpr[i], tpr[i], _ = roc_curve(labels[:, i], logits[:, i])
+        roc_auc[i] = roc_auc_score(labels[:, i], logits[:, i])
+
+    plt.figure()
+    for i in range(num_classes):
+        plt.plot(fpr[i], tpr[i], label=f'ROC curve class {i} (area = {roc_auc[i]:.2f})')
+
+    plt.plot([0, 1], [0, 1], 'k--')
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.0])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+    plt.xticks(np.arange(0.0, 1.1, step=0.1))
+    plt.yticks(np.arange(0.0, 1.1, step=0.1))
+    plt.savefig(figure_path)
+    plt.close()
+
+# Confusion matrix plot function
+def plot_confusion_matrix(confmat_vals, num_classes, figure_path, title):
+    fig, ax = plt.subplots()
+    im = ax.imshow(confmat_vals)
+    ax.set_xticks(np.arange(num_classes))
+    ax.set_yticks(np.arange(num_classes))
+    ax.set_xlabel('Predicted class')
+    ax.set_ylabel('True class')
+
+    for i in range(num_classes):
+        for j in range(num_classes):
+            ax.text(j, i, confmat_vals[i, j], ha="center", va="center", color="black", fontsize=12)
+
+    ax.set_title(title)
+    plt.savefig(figure_path)
+    plt.close()
 
 torch.cuda.empty_cache()
 
@@ -25,10 +82,12 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--fold', type=int, default=0, help='fold_id')
-parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil'), help='data type')
+parser.add_argument('--data_type', type=str, default='neutrophil', choices=('monocyte', 'neutrophil'), help='data type')
+parser.add_argument('--tta', type=bool, default=True, choices=(False, True), help="Test Time Augmentations")
 args = parser.parse_args()
 
 set_id = int(args.fold)
+is_tta = args.tta
 
 # Create data loaders
 data_type = args.data_type # neutrophil, monocyte
@@ -85,16 +144,22 @@ model.fc = nn.Sequential(
 )
 
 model = model.to(device)
-model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
+# model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
+exp_dir = f'./experiments'
+exp_subdir = exp_dir + f'/{data_type}_fold_{args.fold}_'
+exp_subdir += "with_TTA" if is_tta else "without_TTA"
+model_dir = exp_subdir + "/model"
+figure_dir = exp_subdir + "/figures/test"
+os.makedirs(figure_dir, exist_ok=True)
 model.load_state_dict(torch.load(os.path.join(model_dir, f'last.pth')))
 model.eval()
 print(model_dir)
 
-# collect predictions
-confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='none').to(device)
-auroc = torchmetrics.AUROC(task="multiclass", num_classes=num_classes).to(device)
 with torch.no_grad():
     correct = 0
+    preds = []
+    labels = []
+    logits = []
     # for i, (inputs, targets) in tqdm(enumerate(test_loaders[0]), total=len(test_loaders[0]), smoothing=0.9, position=0, leave=True,):
     for i, (inputs, targets) in enumerate(test_loaders[0]):
         inputs, targets = inputs.to(device).float(), targets.to(device).long()
@@ -102,14 +167,31 @@ with torch.no_grad():
         outputs = F.softmax(outputs, dim=-1)
         _, predicted = torch.max(outputs, 1)
         correct += (predicted == targets).sum().item()
-        auroc.update(outputs, targets)
-    
-    accuracy = 100*correct/len(test_dataset)
-    auc = 100*float(auroc.compute())
-    auroc.reset()
+        preds.append(predicted.detach().cpu().numpy())
+        labels.append(targets.detach().cpu().numpy())
+        logits.append(outputs.detach().cpu().numpy().astype(np.float32))
+
+    preds = np.concatenate(preds, axis=0)
+    labels = np.concatenate(labels, axis=0)
+    logits = np.concatenate(logits, axis=0)
+
+    # Calculate metrics at image level
+    accuracy = accuracy_score(labels, preds)
+    precision = precision_score(labels, preds, average="weighted")
+    recall = recall_score(labels, preds, average="weighted")
+    f1 = f1_score(labels, preds, average="weighted")
+    auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
+
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
+
+    # Confusion matrix
+    confmat_vals = confusion_matrix(labels, preds)
+    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
+
+    # ROC curve
+    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"), num_classes)
     
     print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
-    
     
     preds = []
     logits = []
@@ -121,23 +203,33 @@ with torch.no_grad():
         outputs = model(inputs)
         outputs = F.softmax(outputs, dim=-1)
         outputs = outputs.reshape(len(data), int(inputs.shape[0]/len(data)), -1).mean(dim=0)
-        confmat.update(outputs, targets)
-        auroc.update(outputs, targets)
+
         _, predicted = torch.max(outputs, 1)
         correct += (predicted == targets).sum().item()
         preds.append(predicted.detach().cpu().numpy())
         labels.append(targets.detach().cpu().numpy())
         logits.append(outputs.detach().cpu().numpy().astype(np.float32))
-        # if i==100:break
-        
+
     preds = np.concatenate(preds, axis=0)
     labels = np.concatenate(labels, axis=0)
     logits = np.concatenate(logits, axis=0)
-    # print(preds.shape, labels.shape, logits.shape)
-    
-    accuracy = 100*correct/len(test_dataset)
-    auc = 100*float(auroc.compute())
-    auroc.reset()
+
+    # Calculate metrics with TTA
+    accuracy = accuracy_score(labels, preds)
+    precision = precision_score(labels, preds, average="weighted")
+    recall = recall_score(labels, preds, average="weighted")
+    f1 = f1_score(labels, preds, average="weighted")
+    auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
+
+    # Save metrics to CSV
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
+
+    # Confusion matrix
+    confmat_vals = confusion_matrix(labels, preds)
+    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
+
+    # ROC curve
+    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"), num_classes)
     print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
     np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
@@ -145,26 +237,6 @@ with torch.no_grad():
             preds=preds,
             logits=logits,
     )
-
-fig, ax = plt.subplots()
-confmat_vals = np.around(confmat.compute().cpu().detach().numpy(), 3)
-im = ax.imshow(confmat_vals)
-# Show all ticks and label them with the respective list entries
-ax.set_xticks(np.arange(num_classes))
-ax.set_yticks(np.arange(num_classes))
-ax.set_xlabel('Predicted class')
-ax.set_ylabel('True class')
-
-# Loop over data dimensions and create text annotations.
-for i in range(num_classes):
-    for j in range(num_classes):
-        text = ax.text(j, i, confmat_vals[i, j],ha="center", va="center", color="black", fontsize=12)
-
-ax.set_title("Confusion Matrix on Test [Image level]")
-fig.savefig(os.path.join(model_dir, "image_level_conf_mat.png"))
-plt.close()
-confmat.reset()
-
 
 ##### patient level
 id_patients = []
@@ -184,44 +256,20 @@ for id in np.unique(patient_ids):
     id_patients.append(id)
     
     
-accuracy = 100*correct/len(id_patients)
-auroc.update(torch.tensor(logits).to(device), torch.tensor(labels).to(device))
-auc = 100*float(auroc.compute())
-auroc.reset()
-
-print(f'Patient level Accuracy: {accuracy} AUC: {auc}')
-
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)
 logits = np.array(id_patient_logits)
-# print(labels, preds.shape, labels.shape, logits.shape, len(id_patients))
 
-np.savez_compressed(os.path.join(model_dir, 'patient_level_results'),
-    labels=labels, 
-    preds=preds,
-    logits=logits,
-    patient_ids=np.array(id_patients)
-)
+# Calculate patient-level metrics
+accuracy = accuracy_score(labels, preds)
+precision = precision_score(labels, preds, average="weighted")
+recall = recall_score(labels, preds, average="weighted")
+f1 = f1_score(labels, preds, average="weighted")
+auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
 
-# confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
-fig, ax = plt.subplots()
-confmat.update(torch.from_numpy(logits).to(device), torch.from_numpy(labels).to(device))
-confmat_vals = np.around(confmat.compute().cpu().detach().numpy(), 3)
-im = ax.imshow(confmat_vals)
+# Save patient-level metrics to CSV
+save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
 
-# Show all ticks and label them with the respective list entries
-ax.set_xticks(np.arange(num_classes))
-ax.set_yticks(np.arange(num_classes))
-ax.set_xlabel('Predicted class')
-ax.set_ylabel('True class')
-
-# Loop over data dimensions and create text annotations.
-for i in range(num_classes):
-    for j in range(num_classes):
-        text = ax.text(j, i, confmat_vals[i, j],ha="center", va="center", color="black", fontsize=12)
-
-ax.set_title("Confusion Matrix on Test [Patient level]")
-fig.savefig(os.path.join(model_dir, "patient_level_conf_mat.png"))
-plt.close()
-
-
+# Confusion matrix for patient-level
+confmat_vals = confusion_matrix(labels, preds)
+plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
