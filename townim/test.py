@@ -86,7 +86,7 @@ torch.cuda.empty_cache()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=4, help='fold_id')
+parser.add_argument('--fold', type=int, default=0, help='fold_id')
 parser.add_argument('--data_type', type=str, default='neutrophil', choices=('monocyte', 'neutrophil'), help='data type')
 parser.add_argument('--tta', type=bool, default=True, choices=(False, True), help="Test Time Augmentations")
 args = parser.parse_args()
@@ -182,9 +182,9 @@ with torch.no_grad():
 
     # Calculate metrics at image level
     accuracy = accuracy_score(labels, preds)
-    precision = precision_score(labels, preds, average="weighted")
-    recall = recall_score(labels, preds, average="weighted")
-    f1 = f1_score(labels, preds, average="weighted")
+    precision = precision_score(labels, preds, average="binary")
+    recall = recall_score(labels, preds, average="binary")
+    f1 = f1_score(labels, preds, average="binary")
     auc = roc_auc_score(labels, logits[:, 1])
 
     save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
@@ -221,9 +221,9 @@ with torch.no_grad():
 
     # Calculate metrics with TTA
     accuracy = accuracy_score(labels, preds)
-    precision = precision_score(labels, preds, average="weighted")
-    recall = recall_score(labels, preds, average="weighted")
-    f1 = f1_score(labels, preds, average="weighted")
+    precision = precision_score(labels, preds, average="binary")
+    recall = recall_score(labels, preds, average="binary")
+    f1 = f1_score(labels, preds, average="binary")
     auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
@@ -267,9 +267,9 @@ logits = np.array(id_patient_logits)
 
 # Calculate patient-level metrics
 accuracy = accuracy_score(labels, preds)
-precision = precision_score(labels, preds, average="weighted")
-recall = recall_score(labels, preds, average="weighted")
-f1 = f1_score(labels, preds, average="weighted")
+precision = precision_score(labels, preds, average="binary")
+recall = recall_score(labels, preds, average="binary")
+f1 = f1_score(labels, preds, average="binary")
 auc = roc_auc_score(labels, logits[:, 1])
 
 # Save patient-level metrics to CSV

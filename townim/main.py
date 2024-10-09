@@ -70,10 +70,10 @@ utils.set_random_seed(123)
 # Create data loaders
 batch_size = 32
 IMAGE_SIZE = 352
-# IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
-# IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
-IMAGENET_MEAN = [0.5, 0.5, 0.5]
-IMAGENET_STD = [0.5, 0.5, 0.5]
+IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
+IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
+# IMAGENET_MEAN = [0.5, 0.5, 0.5]
+# IMAGENET_STD = [0.5, 0.5, 0.5]
 
 train_transform = T.Compose([
     # T.RandomResizedCrop(IMAGE_SIZE, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
@@ -170,8 +170,8 @@ for epoch in range(num_epochs):
 
     # Training loop
     t = tqdm(enumerate(train_loader, 0), total=len(train_loader),
-             smoothing=0.9, position=0, leave=True,
-             desc="Train: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
+            smoothing=0.9, position=0, leave=True,
+            desc="Train: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
     model.train()
     running_loss = 0.0
     all_preds, all_labels = [], []
@@ -205,8 +205,8 @@ for epoch in range(num_epochs):
 
     with torch.no_grad():
         t = tqdm(enumerate(val_loader, 0), total=len(val_loader),
-                 smoothing=0.9, position=0, leave=True,
-                 desc="Val: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
+                smoothing=0.9, position=0, leave=True,
+                desc="Val: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
         for i, (inputs, labels) in t:
             inputs, labels = inputs.to(device).float(), labels.to(device).long()
             outputs = model(inputs)
@@ -236,14 +236,14 @@ for epoch in range(num_epochs):
     df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
-    if val_loss < best_val_loss:
-        best_val_loss = val_loss
-        epochs_no_improve = 0
-        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth'))
+    if val_loss < best_val_loss: # if current loss is less than best loss
+        best_val_loss = val_loss # update best loss
+        epochs_no_improve = 0 # set early stopping epochs to 0
+        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth')) # save the best model
     else:
-        epochs_no_improve += 1
-        if epochs_no_improve == patience:
-            early_stop = True
+        epochs_no_improve += 1 # increment early stopping epochs
+        if epochs_no_improve == patience: # if early stopping epochs is equal to the patience
+            early_stop = True # early stop
             break  # Stop training
 
     # Save confusion matrix and model when validation accuracy improves

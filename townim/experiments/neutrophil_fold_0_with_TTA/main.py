@@ -18,6 +18,11 @@ sys.path.append('../townim') # running python main.py from the directory the fil
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+# creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
+cache_dir = "../cache"
+os.makedirs(cache_dir, exist_ok=True)
+os.environ['TORCH_HOME'] = cache_dir # set cache directory
+
 if torch.cuda.is_available(): # if cuda is available
     torch.cuda.empty_cache() # empty the cache
     device = "cuda" # set the device to cuda
@@ -50,14 +55,14 @@ CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PA
 
 # output_dir = f'./models/{data_type}_fold_{args.fold}'
 output_dir = f'./experiments/{data_type}_fold_{args.fold}'
-output_dir+='_with_TTA' if is_tta else '_without_TTA'
+output_dir += '_with_TTA' if is_tta else '_without_TTA'
 model_dir = output_dir + "/model"
-figure_dir = output_dir + "/figures"
+figure_dir = output_dir + "/figures/train"
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
-os.makedirs(output_dir + "/model", exist_ok=True)
-os.makedirs(output_dir + "/figures", exist_ok=True)
+os.makedirs(model_dir, exist_ok=True)
+os.makedirs(figure_dir, exist_ok=True)
     
 shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py')) # copying code file used to train the model
 utils.set_random_seed(123)
@@ -65,10 +70,10 @@ utils.set_random_seed(123)
 # Create data loaders
 batch_size = 32
 IMAGE_SIZE = 352
-# IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
-# IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
-IMAGENET_MEAN = [0.5, 0.5, 0.5]
-IMAGENET_STD = [0.5, 0.5, 0.5]
+IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
+IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
+# IMAGENET_MEAN = [0.5, 0.5, 0.5]
+# IMAGENET_STD = [0.5, 0.5, 0.5]
 
 train_transform = T.Compose([
     # T.RandomResizedCrop(IMAGE_SIZE, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
@@ -188,10 +193,10 @@ for epoch in range(num_epochs):
 
     train_loss = running_loss / len(train_loader)
     train_accuracy = accuracy_score(all_labels, all_preds)
-    train_precision = precision_score(all_labels, all_preds, average='weighted')
-    train_recall = recall_score(all_labels, all_preds, average='weighted')
-    train_f1 = f1_score(all_labels, all_preds, average='weighted')
-    train_auroc = roc_auc_score(all_labels, all_preds, average='weighted', multi_class='ovo')
+    train_precision = precision_score(all_labels, all_preds, average='binary')
+    train_recall = recall_score(all_labels, all_preds, average='binary')
+    train_f1 = f1_score(all_labels, all_preds, average='binary')
+    train_auroc = roc_auc_score(all_labels, all_preds)
 
     # Validation loop
     model.eval()
@@ -216,36 +221,35 @@ for epoch in range(num_epochs):
 
     val_loss = val_loss / len(val_loader)
     val_accuracy = accuracy_score(val_labels, val_preds)
-    val_precision = precision_score(val_labels, val_preds, average='weighted')
-    val_recall = recall_score(val_labels, val_preds, average='weighted')
-    val_f1 = f1_score(val_labels, val_preds, average='weighted')
-    val_auroc = roc_auc_score(val_labels, val_preds, average='weighted', multi_class='ovo')
+    val_precision = precision_score(val_labels, val_preds, average='binary')
+    val_recall = recall_score(val_labels, val_preds, average='binary')
+    val_f1 = f1_score(val_labels, val_preds, average='binary')
+    val_auroc = roc_auc_score(val_labels, val_preds)
 
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file
     metrics_data.append([epoch+1, train_loss, train_accuracy, train_precision, train_recall, train_f1, train_auroc,
-                         val_loss, val_accuracy, val_precision, val_recall, val_f1, val_auroc])
+                        val_loss, val_accuracy, val_precision, val_recall, val_f1, val_auroc])
 
     df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
-                                             'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
-    df.to_csv(os.path.join(output_dir, 'metrics.csv'), index=False)
+                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
+    df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
-    if val_loss < best_val_loss:
-        best_val_loss = val_loss
-        epochs_no_improve = 0
-        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth'))
+    if val_loss < best_val_loss: # if current loss is less than best loss
+        best_val_loss = val_loss # update best loss
+        epochs_no_improve = 0 # set early stopping epochs to 0
+        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth')) # save the best model
     else:
-        epochs_no_improve += 1
-        if epochs_no_improve == patience:
-            early_stop = True
+        epochs_no_improve += 1 # increment early stopping epochs
+        if epochs_no_improve == patience: # if early stopping epochs is equal to the patience
+            early_stop = True # early stop
             break  # Stop training
 
     # Save confusion matrix and model when validation accuracy improves
     if best_test_acc <= val_accuracy and epoch != 0:
         best_epoch = epoch + 1
         best_test_acc = val_accuracy
-        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth'))
 
         # Confusion matrix
         conf_matrix = confusion_matrix(val_labels, val_preds, normalize='true')
@@ -263,6 +267,8 @@ for epoch in range(num_epochs):
         ax.set_title("Confusion Matrix on Validation Set (Best Accuracy)")
         fig.savefig(os.path.join(figure_dir, "conf_mat_best.png"))
         plt.close()
+
+torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth')) # save the last model
 
 # Plot ROC curve after training
 fpr, tpr, _ = roc_curve(val_labels, val_probs, pos_label=1)
