@@ -193,10 +193,10 @@ for epoch in range(num_epochs):
 
     train_loss = running_loss / len(train_loader)
     train_accuracy = accuracy_score(all_labels, all_preds)
-    train_precision = precision_score(all_labels, all_preds, average='weighted')
-    train_recall = recall_score(all_labels, all_preds, average='weighted')
-    train_f1 = f1_score(all_labels, all_preds, average='weighted')
-    train_auroc = roc_auc_score(all_labels, all_preds, average='weighted', multi_class='ovo')
+    train_precision = precision_score(all_labels, all_preds, average='binary')
+    train_recall = recall_score(all_labels, all_preds, average='binary')
+    train_f1 = f1_score(all_labels, all_preds, average='binary')
+    train_auroc = roc_auc_score(all_labels, all_preds)
 
     # Validation loop
     model.eval()
@@ -221,10 +221,10 @@ for epoch in range(num_epochs):
 
     val_loss = val_loss / len(val_loader)
     val_accuracy = accuracy_score(val_labels, val_preds)
-    val_precision = precision_score(val_labels, val_preds, average='weighted')
-    val_recall = recall_score(val_labels, val_preds, average='weighted')
-    val_f1 = f1_score(val_labels, val_preds, average='weighted')
-    val_auroc = roc_auc_score(val_labels, val_preds, average='weighted', multi_class='ovo')
+    val_precision = precision_score(val_labels, val_preds, average='binary')
+    val_recall = recall_score(val_labels, val_preds, average='binary')
+    val_f1 = f1_score(val_labels, val_preds, average='binary')
+    val_auroc = roc_auc_score(val_labels, val_preds)
 
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file

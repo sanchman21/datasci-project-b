@@ -185,7 +185,7 @@ with torch.no_grad():
     precision = precision_score(labels, preds, average="weighted")
     recall = recall_score(labels, preds, average="weighted")
     f1 = f1_score(labels, preds, average="weighted")
-    auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
+    auc = roc_auc_score(labels, logits[:, 1])
 
     save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
 
@@ -224,7 +224,7 @@ with torch.no_grad():
     precision = precision_score(labels, preds, average="weighted")
     recall = recall_score(labels, preds, average="weighted")
     f1 = f1_score(labels, preds, average="weighted")
-    auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
+    auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
     save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
@@ -270,7 +270,7 @@ accuracy = accuracy_score(labels, preds)
 precision = precision_score(labels, preds, average="weighted")
 recall = recall_score(labels, preds, average="weighted")
 f1 = f1_score(labels, preds, average="weighted")
-auc = roc_auc_score(labels, logits[:, 1], multi_class="ovr", average="weighted")
+auc = roc_auc_score(labels, logits[:, 1])
 
 # Save patient-level metrics to CSV
 save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
