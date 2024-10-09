@@ -19,6 +19,11 @@ sys.path.append('./towmin')
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+# creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
+cache_dir = "../cache"
+os.makedirs(cache_dir, exist_ok=True)
+os.environ['TORCH_HOME'] = cache_dir # set cache directory
+
 # Function to save or update metrics CSV
 def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path):
     new_metrics = pd.DataFrame([[fold, round(accuracy, 3), round(precision, 3), round(recall, 3), round(f1, 3), round(auroc, 3)]], 
@@ -81,7 +86,7 @@ torch.cuda.empty_cache()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=0, help='fold_id')
+parser.add_argument('--fold', type=int, default=4, help='fold_id')
 parser.add_argument('--data_type', type=str, default='neutrophil', choices=('monocyte', 'neutrophil'), help='data type')
 parser.add_argument('--tta', type=bool, default=True, choices=(False, True), help="Test Time Augmentations")
 args = parser.parse_args()

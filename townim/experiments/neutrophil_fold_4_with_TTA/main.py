@@ -18,6 +18,11 @@ sys.path.append('../townim') # running python main.py from the directory the fil
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+# creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
+cache_dir = "../cache"
+os.makedirs(cache_dir, exist_ok=True)
+os.environ['TORCH_HOME'] = cache_dir # set cache directory
+
 if torch.cuda.is_available(): # if cuda is available
     torch.cuda.empty_cache() # empty the cache
     device = "cuda" # set the device to cuda
@@ -50,14 +55,14 @@ CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PA
 
 # output_dir = f'./models/{data_type}_fold_{args.fold}'
 output_dir = f'./experiments/{data_type}_fold_{args.fold}'
-output_dir+='_with_TTA' if is_tta else '_without_TTA'
+output_dir += '_with_TTA' if is_tta else '_without_TTA'
 model_dir = output_dir + "/model"
-figure_dir = output_dir + "/figures"
+figure_dir = output_dir + "/figures/train"
 
 # Create the output directory if it doesn't exist
 os.makedirs(output_dir, exist_ok=True)
-os.makedirs(output_dir + "/model", exist_ok=True)
-os.makedirs(output_dir + "/figures", exist_ok=True)
+os.makedirs(model_dir, exist_ok=True)
+os.makedirs(figure_dir, exist_ok=True)
     
 shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py')) # copying code file used to train the model
 utils.set_random_seed(123)
@@ -228,7 +233,7 @@ for epoch in range(num_epochs):
 
     df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
                                              'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
-    df.to_csv(os.path.join(output_dir, 'metrics.csv'), index=False)
+    df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
     if val_loss < best_val_loss:
@@ -239,13 +244,13 @@ for epoch in range(num_epochs):
         epochs_no_improve += 1
         if epochs_no_improve == patience:
             early_stop = True
+            torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth'))
             break  # Stop training
 
     # Save confusion matrix and model when validation accuracy improves
     if best_test_acc <= val_accuracy and epoch != 0:
         best_epoch = epoch + 1
         best_test_acc = val_accuracy
-        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth'))
 
         # Confusion matrix
         conf_matrix = confusion_matrix(val_labels, val_preds, normalize='true')

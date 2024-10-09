@@ -10,3 +10,4 @@ myenv/
 master.csv
 models/
 townim/experiments/*/model
+cache/

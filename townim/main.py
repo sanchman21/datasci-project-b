@@ -18,6 +18,11 @@ sys.path.append('../townim') # running python main.py from the directory the fil
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+# creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
+cache_dir = "../cache"
+os.makedirs(cache_dir, exist_ok=True)
+os.environ['TORCH_HOME'] = cache_dir # set cache directory
+
 if torch.cuda.is_available(): # if cuda is available
     torch.cuda.empty_cache() # empty the cache
     device = "cuda" # set the device to cuda
@@ -29,7 +34,7 @@ else: # otherwise
 print(f"Using device: {device}") # print the device being used
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=0, help='fold_id')
+parser.add_argument('--fold', type=int, default=4, help='fold_id')
 args = parser.parse_args()
 
 set_id = int(args.fold)
@@ -224,10 +229,10 @@ for epoch in range(num_epochs):
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file
     metrics_data.append([epoch+1, train_loss, train_accuracy, train_precision, train_recall, train_f1, train_auroc,
-                         val_loss, val_accuracy, val_precision, val_recall, val_f1, val_auroc])
+                        val_loss, val_accuracy, val_precision, val_recall, val_f1, val_auroc])
 
     df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
-                                             'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
+                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
     df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
@@ -245,7 +250,6 @@ for epoch in range(num_epochs):
     if best_test_acc <= val_accuracy and epoch != 0:
         best_epoch = epoch + 1
         best_test_acc = val_accuracy
-        torch.save(model.state_dict(), os.path.join(model_dir, 'best.pth'))
 
         # Confusion matrix
         conf_matrix = confusion_matrix(val_labels, val_preds, normalize='true')
@@ -263,6 +267,8 @@ for epoch in range(num_epochs):
         ax.set_title("Confusion Matrix on Validation Set (Best Accuracy)")
         fig.savefig(os.path.join(figure_dir, "conf_mat_best.png"))
         plt.close()
+
+torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth')) # save the last model
 
 # Plot ROC curve after training
 fpr, tpr, _ = roc_curve(val_labels, val_probs, pos_label=1)
