@@ -88,7 +88,7 @@ def train_model(config: dict) -> None:
     timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
     # Create a base directory for saving models
     config_details = f"{config['model']['name']}_neutrophils{config['model']['use_neutrophil_images']}"
-    base_dir = os.path.join('saved_models', f"{timestamp}_{config_details}")
+    base_dir = f"./townim/experiments/{config['data']['type']}"
     os.makedirs(base_dir, exist_ok=True)
 
     # Create subdirectories for different types of data

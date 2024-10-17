@@ -126,7 +126,8 @@ with torch.no_grad():
     
 
 ##### patient level
-clinical_variable_df = pd.read_csv('/home/tchowdhury/data/code/CMML-v2/datasets/patients_fold.csv')
+# clinical_variable_df = pd.read_csv('/home/tchowdhury/data/code/CMML-v2/datasets/patients_fold.csv')
+clinical_variable_df = pd.read_csv('../datasets/patients_fold.csv')
 feature_columns = ['Age', 'Gender', 'Haemoglobin',
     'MCV', 'White cell count', 'Neutrophil count', 'Monocyte count',
     'Platelet count', 'Blast percentage (PB)', 'LDH'

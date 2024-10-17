@@ -24,8 +24,6 @@ import matplotlib.pyplot as plt # import the matplotlib library for plotting
 import torchvision.transforms.functional # import the functional module from torchvision.transforms
 from resnet50_model import monocyte_dataset # import the monocyte_dataset module from the resnet50_model package
 
-
-
 def train_model_pure(config: dict) -> None:
     '''
     Function: Train the model using the specified configuration
@@ -44,14 +42,14 @@ def train_model_pure(config: dict) -> None:
     # timestamp for the reference of creating folders
     timestamp = datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
     
-    base_dir = os.path.join('saved_models', f"{timestamp}") # get the base directory for saving the models
+    base_dir = f"./towmim/experiments/{config['date']['type']}" # get the base directory for saving the models
     os.makedirs(base_dir, exist_ok=True) # create the base directory if it does not exist
 
     # Create subdirectories for different types of data
     logs_dir = os.path.join(base_dir, 'logs') # create a directory for logs
     confusion_matrices_dir = os.path.join(base_dir, 'confusion_matrices') # create a directory for confusion matrices
     models_dir = os.path.join(base_dir, 'models') # create a directory for models
-    plots_dir = os.path.join(base_dir, 'plots') # create a directory for plots
+    plots_dir = os.path.join(base_dir, '') # create a directory for plots
     
     os.makedirs(logs_dir, exist_ok=True) # create the logs directory
     os.makedirs(confusion_matrices_dir, exist_ok=True) # create the confusion matrices directory

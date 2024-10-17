@@ -40,7 +40,7 @@ args = parser.parse_args()
 set_id = int(args.fold)
 
 # Training loop
-data_type = 'neutrophil' # neutrophil, monocyte
+data_type = 'monocyte' # neutrophil, monocyte
 is_tta = True
 num_epochs = 50 if data_type == 'neutrophil' else 100
 best_test_acc = 0
@@ -54,7 +54,8 @@ CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PA
 
 
 # output_dir = f'./models/{data_type}_fold_{args.fold}'
-output_dir = f'./experiments/{data_type}_fold_{args.fold}'
+os.makedirs(f"./experiments/{data_type}")
+output_dir = f'./experiments/{data_type}/{data_type}_fold_{args.fold}'
 output_dir += '_with_TTA' if is_tta else '_without_TTA'
 model_dir = output_dir + "/model"
 figure_dir = output_dir + "/figures/train"
