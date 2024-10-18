@@ -1,7 +1,9 @@
 import pandas as pd
 import os
 
-df = pd.read_csv("../datasets/neutrophil.csv")
+data_type = "monocyte" # neutrophil, monocyte
+CSV_PATH = "../datasets/neutrophil.csv" if data_type == "neutrophil" else "../datasets/monocyte_reassigned.csv"
+df = pd.read_csv(CSV_PATH)
 df["morphology"] = 1-df["morphology"]
 rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
 dont_consider = 2209801848
@@ -42,7 +44,7 @@ df2 = pd.concat([df2, new_df], ignore_index=True)
 index = [f"Fold {i}" for i in range(0, 5)] + ["Total"]
 df2.index = index
 df2.rename_axis("Fold")
-df2.to_csv("../datasets/summary_train.csv", index=True)
+df2.to_csv(f"../datasets/summary_train_{data_type}.csv", index=True)
 
 df3 = pd.DataFrame(columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 
@@ -75,4 +77,4 @@ df3 = pd.concat([df3, new_df], ignore_index=True)
 index = [f"Fold {i}" for i in range(0, 5)] + ["Total"]
 df3.index = index
 df3.rename_axis("Fold")
-df3.to_csv("../datasets/summary_test.csv", index=True)
+df3.to_csv(f"../datasets/summary_test_{data_type}.csv", index=True)
