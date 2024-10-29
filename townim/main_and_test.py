@@ -34,13 +34,13 @@ else: # otherwise
 print(f"Using device: {device}") # print the device being used
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=1, help='fold_id')
+parser.add_argument('--fold', type=int, default=4, help='fold_id')
 args = parser.parse_args()
 
 set_id = int(args.fold)
 
 # Training loop
-data_type = 'monocyte' # neutrophil, monocyte
+data_type = 'neutrophil' # neutrophil, monocyte
 num_epochs = 50 if data_type == "neutrophil" else 100
 best_test_acc = 0
 best_epoch = 0
@@ -149,14 +149,17 @@ count = torch.bincount(torch.tensor(train_dataset.labels)).to(device)
 class_weight = len(train_dataset.labels) / count
 
 print('Loss class weight:', class_weight)
-class_weight = None
-optimizer = optim.SGD(model.parameters(), lr=5e-5, weight_decay=1e-4, momentum=0.9)
+# optimizer = optim.Adam(model.parameters(), lr=2e-7, weight_decay=1e-4)
+use_scheduler = True
+optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-4, momentum=0.9)
+end_factor = 1e-4/1e-3
+scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
 
 # CSV file to store metrics
 metrics_data = []
 
 # Early stopping variables
-patience = 20  # Number of epochs to wait for improvement
+patience = 100  # Number of epochs to wait for improvement
 best_val_loss = float('inf')
 best_test_acc = 0.0
 best_epoch = 0
@@ -225,15 +228,13 @@ for epoch in range(num_epochs):
     val_f1 = f1_score(val_labels, val_preds, average='binary')
     val_auroc = roc_auc_score(val_labels, val_preds)
 
+    if use_scheduler:
+        scheduler.step()
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file
-    metrics_data.append([epoch+1, train_loss, round(train_accuracy, 4), round(train_precision, 4), round(train_recall, 4), 
+    metrics_data.append([epoch+1, round(optimizer.param_groups[0]['lr'], 4), train_loss, round(train_accuracy, 4), round(train_precision, 4), round(train_recall, 4), 
                         round(train_f1, 4), round(train_auroc, 4), val_loss, round(val_accuracy, 4), round(val_precision, 4), 
                         round(val_recall, 4), round(val_f1, 4), round(val_auroc, 4)])
-
-    df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
-                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
-    df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
     if val_loss < best_val_loss: # if current loss is less than best loss
@@ -269,6 +270,9 @@ for epoch in range(num_epochs):
         fig.savefig(os.path.join(figure_dir, "conf_mat_best.png"))
         plt.close()
 
+df = pd.DataFrame(metrics_data, columns=['Epoch', 'LR', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
+                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
+df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth')) # save the last model
 
 # Plot ROC curve after training
@@ -526,7 +530,6 @@ for id in np.unique(patient_ids):
     correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     # print(id_patient_labels[-1], id_patient_logits[-1])
     id_patients.append(id)
-    
     
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)

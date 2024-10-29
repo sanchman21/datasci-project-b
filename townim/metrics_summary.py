@@ -16,4 +16,4 @@ for data_type in data_types:
             if os.path.exists(path2):
                 df = pd.read_csv(path2)
                 for metric in metrics:
-                    print(f"{metric}: {df[metric].mean()} +- {df[metric].std()}")
+                    print(f"{metric}: {round(df[metric].mean()*100, 2)} +- {round(df[metric].std()*100, 2)}")

@@ -103,7 +103,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 parser = argparse.ArgumentParser()
 parser.add_argument('--fold', type=int, default=1, help='fold_id')
 parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil'), help='data type')
-parser.add_argument('--tta', type=bool, default=True, choices=(False, True), help="Test Time Augmentations")
+parser.add_argument('--tta', type=bool, default=False, choices=(False, True), help="Test Time Augmentations")
 args = parser.parse_args()
 
 set_id = int(args.fold)
@@ -165,10 +165,10 @@ model.fc = nn.Sequential(
 
 model = model.to(device)
 # model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
-exp_dir = f'./experiments/{data_type}'
+exp_dir = f'./old_models'
 exp_subdir = exp_dir + f'/{data_type}_fold_{args.fold}_'
 exp_subdir += "with_TTA" if is_tta else "without_TTA"
-model_dir = exp_subdir + "/model"
+model_dir = exp_subdir
 figure_dir = exp_subdir + "/figures/test"
 os.makedirs(figure_dir, exist_ok=True)
 model.load_state_dict(torch.load(os.path.join(model_dir, f'last.pth')))
@@ -202,14 +202,14 @@ with torch.no_grad():
     f1 = f1_score(labels, preds, average="binary")
     auc = roc_auc_score(labels, logits[:, 1])
 
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
+    # save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
 
     # # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
-    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
+    # plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
 
     # # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"))
+    # plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"))
     
     print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
@@ -242,21 +242,21 @@ with torch.no_grad():
     auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
+    # save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
 
     # # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
-    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
+    # plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
 
     # # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
+    # plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
     print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
-    np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
-            labels=labels, 
-            preds=preds,
-            logits=logits,
-    )
+    # np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
+    #         labels=labels, 
+    #         preds=preds,
+    #         logits=logits,
+    # )
 
 ##### patient level
 id_patients = []
@@ -266,7 +266,6 @@ id_patient_labels = []
 patient_ids = test_dataset.df['patient_id'].to_numpy()
 correct = 0
 incorrect_ids = []
-confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
 for id in np.unique(patient_ids):
     indices = np.where(patient_ids==id)[0]
     id_patient_logits.append(np.mean(logits[indices,:], axis=0))
@@ -279,8 +278,8 @@ for id in np.unique(patient_ids):
     correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     id_patients.append(id)
     
-for id_data in incorrect_ids:
-    print(f"Patient Id: {id_data[0]}, Ground Truth: {id_data[1]}, Predicted: {id_data[2]}")
+# for id_data in incorrect_ids:
+#     print(f"Patient Id: {id_data[0]}, Ground Truth: {id_data[1]}, Predicted: {id_data[2]}")
 
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)
@@ -294,10 +293,10 @@ f1 = f1_score(labels, preds, average="binary")
 auc = roc_auc_score(labels, logits[:, 1])
 
 # Save patient-level metrics to CSV
-save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
+# save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
 
 # # Confusion matrix for patient-level
 confmat_vals = confusion_matrix(labels, preds)
-plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
+# plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
 
 print(f'[TTA] Patient level Accuracy: {accuracy} AUC: {auc}')

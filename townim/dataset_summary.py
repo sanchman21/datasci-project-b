@@ -43,7 +43,7 @@ new_df = pd.DataFrame([[patients_total, cmml_total, normal_total, image_total, c
 df2 = pd.concat([df2, new_df], ignore_index=True)
 index = [f"Fold {i}" for i in range(0, 5)] + ["Total"]
 df2.index = index
-df2.rename_axis("Fold")
+df2.rename_axis("Fold", inplace=True)
 df2.to_csv(f"../datasets/summary_train_{data_type}.csv", index=True)
 
 df3 = pd.DataFrame(columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
@@ -76,5 +76,5 @@ new_df = pd.DataFrame([[patients_total, cmml_total, normal_total, image_total, c
 df3 = pd.concat([df3, new_df], ignore_index=True)
 index = [f"Fold {i}" for i in range(0, 5)] + ["Total"]
 df3.index = index
-df3.rename_axis("Fold")
+df3.rename_axis("Fold", inplace=True)
 df3.to_csv(f"../datasets/summary_test_{data_type}.csv", index=True)

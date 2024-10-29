@@ -41,7 +41,7 @@ set_id = int(args.fold)
 
 # Training loop
 data_type = 'neutrophil' # neutrophil, monocyte
-num_epochs = 50
+num_epochs = 50 if data_type == "neutrophil" else 100
 best_test_acc = 0
 best_epoch = 0
 train_losses = []  # To store training losses
@@ -149,14 +149,17 @@ count = torch.bincount(torch.tensor(train_dataset.labels)).to(device)
 class_weight = len(train_dataset.labels) / count
 
 print('Loss class weight:', class_weight)
-class_weight = None
-optimizer = optim.SGD(model.parameters(), lr=5e-5, weight_decay=1e-4, momentum=0.9)
+# optimizer = optim.Adam(model.parameters(), lr=2e-7, weight_decay=1e-4)
+use_scheduler = True
+optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-4, momentum=0.9)
+end_factor = 1e-4/1e-3
+scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
 
 # CSV file to store metrics
 metrics_data = []
 
 # Early stopping variables
-patience = 20  # Number of epochs to wait for improvement
+patience = 100  # Number of epochs to wait for improvement
 best_val_loss = float('inf')
 best_test_acc = 0.0
 best_epoch = 0
@@ -225,15 +228,13 @@ for epoch in range(num_epochs):
     val_f1 = f1_score(val_labels, val_preds, average='binary')
     val_auroc = roc_auc_score(val_labels, val_preds)
 
+    if use_scheduler:
+        scheduler.step()
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file
-    metrics_data.append([epoch+1, train_loss, round(train_accuracy, 4), round(train_precision, 4), round(train_recall, 4), 
+    metrics_data.append([epoch+1, round(optimizer.param_groups[0]['lr'], 4), train_loss, round(train_accuracy, 4), round(train_precision, 4), round(train_recall, 4), 
                         round(train_f1, 4), round(train_auroc, 4), val_loss, round(val_accuracy, 4), round(val_precision, 4), 
                         round(val_recall, 4), round(val_f1, 4), round(val_auroc, 4)])
-
-    df = pd.DataFrame(metrics_data, columns=['Epoch', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
-                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
-    df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 
     # Early stopping check
     if val_loss < best_val_loss: # if current loss is less than best loss
@@ -244,6 +245,7 @@ for epoch in range(num_epochs):
         epochs_no_improve += 1 # increment early stopping epochs
         if epochs_no_improve == patience: # if early stopping epochs is equal to the patience
             early_stop = True # early stop
+            print("Early Stopping....")
             break  # Stop training
 
     # Save confusion matrix and model when validation accuracy improves
@@ -268,6 +270,9 @@ for epoch in range(num_epochs):
         fig.savefig(os.path.join(figure_dir, "conf_mat_best.png"))
         plt.close()
 
+df = pd.DataFrame(metrics_data, columns=['Epoch', 'LR', 'Train Loss', 'Train Accuracy', 'Train Precision', 'Train Recall', 'Train F1', 'Train AUROC',
+                                            'Val Loss', 'Val Accuracy', 'Val Precision', 'Val Recall', 'Val F1', 'Val AUROC'])
+df.to_csv(os.path.join(output_dir, 'train_time_metrics.csv'), index=False)
 torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth')) # save the last model
 
 # Plot ROC curve after training
@@ -320,7 +325,11 @@ def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path)
     if os.path.exists(metrics_path):
         df = pd.read_csv(metrics_path)
         if fold in df['fold'].values:
-            df.loc[df['fold'] == fold] = new_metrics
+            df.loc[df['fold'] == fold, 'accuracy'] = round(accuracy, 4)
+            df.loc[df['fold'] == fold, 'precision'] = round(precision, 4)
+            df.loc[df['fold'] == fold, 'recall'] = round(recall, 4)
+            df.loc[df['fold'] == fold, 'f1'] = round(f1, 4)
+            df.loc[df['fold'] == fold, 'auroc'] = round(auroc, 4)
         else:
             df = pd.concat([df, new_metrics], ignore_index=True)
     else:
@@ -328,27 +337,36 @@ def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path)
     
     df.to_csv(metrics_path, index=False)
 
-# Function to plot and save ROC curve
-def plot_save_roc_curve(labels, logits, figure_path, num_classes):
-    fpr, tpr = dict(), dict()
-    roc_auc = dict()
-    for i in range(num_classes):
-        fpr[i], tpr[i], _ = roc_curve(labels[:, i], logits[:, i])
-        roc_auc[i] = roc_auc_score(labels[:, i], logits[:, i])
+def plot_save_roc_curve(labels, logits, figure_path):
+    # Compute ROC curve and ROC area
+    if labels.ndim > 1:
+        labels = labels[:, 1]
+        
+    if logits.ndim > 1:
+        logits = logits[:, 1]
+    fpr, tpr, _ = roc_curve(labels, logits)
+    roc_auc = roc_auc_score(labels, logits)
 
+    # Plot ROC curve
     plt.figure()
-    for i in range(num_classes):
-        plt.plot(fpr[i], tpr[i], label=f'ROC curve class {i} (area = {roc_auc[i]:.2f})')
+    plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
 
+    # Plot the diagonal line (no discrimination)
     plt.plot([0, 1], [0, 1], 'k--')
+
+    # Set plot limits and labels
     plt.xlim([0.0, 1.0])
     plt.ylim([0.0, 1.0])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
     plt.title('ROC Curve')
     plt.legend(loc="lower right")
+    
+    # Set x and y ticks
     plt.xticks(np.arange(0.0, 1.1, step=0.1))
     plt.yticks(np.arange(0.0, 1.1, step=0.1))
+
+    # Save figure to path
     plt.savefig(figure_path)
     plt.close()
 
@@ -404,8 +422,8 @@ test_loaders =[
 ]
 
 # model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
-exp_dir = f'./experiments'
-exp_subdir = exp_dir + f'/{data_type}/{data_type}_fold_{args.fold}_with_TTA'
+exp_dir = f'./experiments/{data_type}'
+exp_subdir = exp_dir + f'/{data_type}_fold_{args.fold}_with_TTA'
 figure_dir = exp_subdir + "/figures/test"
 os.makedirs(figure_dir, exist_ok=True)
 model.eval()
@@ -437,14 +455,14 @@ with torch.no_grad():
     f1 = f1_score(labels, preds, average="binary")
     auc = roc_auc_score(labels, logits[:, 1])
 
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir + f"/{data_type}", "metrics_image.csv"))
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
 
     # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
     plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
 
     # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"), num_classes)
+    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"))
     
     print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
@@ -477,14 +495,14 @@ with torch.no_grad():
     auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir + f"/{data_type}", "metrics_image_tta.csv"))
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
 
     # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
     plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
 
     # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"), num_classes)
+    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
     print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
     np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
@@ -501,15 +519,17 @@ id_patient_labels = []
 patient_ids = test_dataset.df['patient_id'].to_numpy()
 correct = 0
 # confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
+rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
 for id in np.unique(patient_ids):
     indices = np.where(patient_ids==id)[0]
     id_patient_logits.append(np.mean(logits[indices,:], axis=0))
     id_patient_labels.append(np.mean(labels[indices], axis=0))
     id_patient_preds.append(id_patient_logits[-1].argmax())
+    if id in rechecked_patient_ids:
+        print(f"Patient Id: {id}, Ground Truth: {id_patient_labels[-1]}, Predicted: {id_patient_preds[-1]}")
     correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     # print(id_patient_labels[-1], id_patient_logits[-1])
     id_patients.append(id)
-    
     
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)
@@ -523,8 +543,10 @@ f1 = f1_score(labels, preds, average="binary")
 auc = roc_auc_score(labels, logits[:, 1])
 
 # Save patient-level metrics to CSV
-save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir + f"/{data_type}", "metrics_patient.csv"))
+save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
 
 # Confusion matrix for patient-level
 confmat_vals = confusion_matrix(labels, preds)
 plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
+
+print(f'[TTA] Patient level Accuracy: {accuracy} AUC: {auc}')
