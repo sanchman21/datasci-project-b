@@ -15,18 +15,22 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import xgboost as xgb
 
-sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
+# file not used
+
+# sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 import utils
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 
+cache_dir = "../cache"
+os.makedirs(cache_dir, exist_ok=True)
+os.environ['TORCH_HOME'] = cache_dir # set cache directory
 
 torch.cuda.empty_cache()
-
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=0, help='fold_id')
-parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil'), help='data type')
+parser.add_argument('--fold', type=int, default=4, help='fold_id')
+parser.add_argument('--data_type', type=str, default='neutrophil', choices=('monocyte', 'neutrophil'), help='data type')
 args = parser.parse_args()
 
 set_id = int(args.fold)
@@ -36,8 +40,8 @@ data_type = args.data_type # neutrophil, monocyte
 CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PATH
 batch_size = 32
 IMAGE_SIZE = 352
-IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
-IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
+IMAGENET_MEAN = [0.485, 0.456, 0.406] # Mean of ImageNet dataset (used for normalization)
+IMAGENET_STD = [0.229, 0.224, 0.225] # Std of ImageNet dataset (used for normalization)
 
 
 test_transform = T.Compose([
@@ -86,7 +90,12 @@ model.fc = nn.Sequential(
 )
 
 model = model.to(device)
-model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
+# model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
+model_dir = f"./experiments/{data_type}/{data_type}_fold_{set_id}_with_TTA/model"
+new_dir = f"./experiments/{data_type}_clinical"
+new_dir_with_fold = new_dir + f"/fold_{set_id}"
+os.makedirs(new_dir, exist_ok=True)
+os.makedirs(new_dir_with_fold, exist_ok=True)
 model.load_state_dict(torch.load(os.path.join(model_dir, f'last.pth')))
 model.eval()
 print(model_dir)
@@ -132,6 +141,9 @@ feature_columns = ['Age', 'Gender', 'Haemoglobin',
     'MCV', 'White cell count', 'Neutrophil count', 'Monocyte count',
     'Platelet count', 'Blast percentage (PB)', 'LDH'
 ]
+rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
+clinical_variable_df = clinical_variable_df.loc[clinical_variable_df["patient_id"] != 2209801848]
+clinical_variable_df.loc[clinical_variable_df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0
 target_column = 'morphology'
 n=200
 params = {
@@ -150,7 +162,6 @@ model_xgb = xgb.XGBClassifier(**params, importance_type='gain', validate_paramet
 model_xgb.fit(X_train, y_train)
 preds_prob_clinical_variables = model_xgb.predict_proba(X_test)
 patient_ids_clinical_variables = clinical_variable_df[clinical_variable_df[set_col] == 'test']['patient_id'].values
-
 
 id_patients = []
 id_patient_logits = []
@@ -171,21 +182,35 @@ for id in np.unique(patient_ids):
     id_patient_preds.append(id_patient_logits[-1].argmax())
     correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     
-    
-    
-accuracy = 100*correct/len(id_patients)
+accuracy = correct/len(id_patients)
 auroc.update(torch.tensor(logits).to(device), torch.tensor(labels).to(device))
-auc = 100*float(auroc.compute())
+auc = float(auroc.compute())
 auroc.reset()
 
-print(f'Patient level with clinical variable => Accuracy: {accuracy} AUC: {auc}')
+def save_metrics_csv(fold, accuracy, auroc, metrics_path):
+    new_metrics = pd.DataFrame([[fold, round(accuracy, 4), round(auroc, 4)]], 
+                                columns=["fold", "accuracy", "auroc"])
+
+    if os.path.exists(metrics_path):
+        df = pd.read_csv(metrics_path)
+        if fold in df['fold'].values:
+            df.loc[df['fold'] == fold] = new_metrics
+        else:
+            df = pd.concat([df, new_metrics], ignore_index=True)
+    else:
+        df = new_metrics
+    
+    df.to_csv(metrics_path, index=False)
+
+print(f'Patient level with clinical variable => Accuracy: {accuracy*100} AUC: {auc*100}')
+save_metrics_csv(set_id, accuracy, auc, os.path.join(new_dir, "metrics_patient.csv"))
 
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)
 logits = np.array(id_patient_logits)
 # print(labels, preds.shape, labels.shape, logits.shape, len(id_patients))
 
-np.savez_compressed(os.path.join(model_dir, 'patient_level_with_clinical_variables_results'),
+np.savez_compressed(os.path.join(new_dir_with_fold, 'patient_level_with_clinical_variables_results'),
     labels=labels, 
     preds=preds,
     logits=logits,

@@ -152,7 +152,7 @@ print('Loss class weight:', class_weight)
 # optimizer = optim.Adam(model.parameters(), lr=2e-7, weight_decay=1e-4)
 use_scheduler = True
 optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-4, momentum=0.9)
-end_factor = 1e-4/1e-3
+end_factor = 1e-5/1e-3
 scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
 
 # CSV file to store metrics

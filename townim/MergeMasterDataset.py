@@ -38,10 +38,10 @@ class MergeMasterDataset(Dataset):
 
         # Select only relevant columns
         if self.use_patient_data:
-            self.columns_to_use = ['image_path', 'morphology', 'Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count',
+            self.columns_to_use = ['patient_id', 'image_path', 'morphology', 'Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count',
                                 'Neutrophil count', 'Monocyte count', 'Platelet count', 'Blast percentage (PB)', 'LDH']
         else:
-            self.columns_to_use = ['image_path', 'morphology']
+            self.columns_to_use = ['patient_id', 'image_path', 'morphology']
         
         self.frame = self.frame[self.columns_to_use] # select the columns to use for the dataset
 

@@ -37,7 +37,7 @@ else: # otherwise
 print(f"Using device: {device}") # print the device being used
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=4, help='fold_id')
+parser.add_argument('--fold', type=int, default=2, help='fold_id')
 args = parser.parse_args()
 
 set_id = int(args.fold)
@@ -128,14 +128,16 @@ print("Model: Resnet50")
 model = MultimodalClassifier(num_patient_features) # load the MultimodalClassifier model
 model = model.to(device)
 
-class_weights = None
-optimizer = optim.SGD(model.parameters(), lr=1e-5, weight_decay=1e-4, momentum=0.5)
+use_scheduler = True
+optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-4, momentum=0.5)
+end_factor = 1e-5/1e-3
+scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_factor=end_factor, total_iters=num_epochs)
 
 # CSV file to store metrics
 metrics_data = []
 
 # Early stopping variables
-patience = 20  # Number of epochs to wait for improvement
+patience = 100  # Number of epochs to wait for improvement
 best_val_loss = float('inf')
 best_test_acc = 0.0
 best_epoch = 0
@@ -219,6 +221,9 @@ for epoch in range(num_epochs):
     val_recall = recall_score(val_labels, val_preds, average='binary')
     val_f1 = f1_score(val_labels, val_preds, average='binary')
     val_auroc = roc_auc_score(val_labels, val_preds)
+    
+    if use_scheduler:
+        scheduler.step()
 
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
     # Store metrics in a CSV file
@@ -401,11 +406,11 @@ TTAs = [
     T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)])
 ]
 
-test_dataset = CustomDataset('test', CSV_PATH, set_id, transform=test_transform)
-test_loaders =[
-    DataLoader(CustomDataset('test', CSV_PATH, set_id, transform=transform), batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
+test_dataset = MergeMasterDataset(CSV_PATH, fold=set_id, train=False, use_patient_data=True, transform=None)
+test_loaders = [
+    DataLoader(MergeMasterDataset(CSV_PATH, fold=set_id, train=False, use_patient_data=True, transform=transform), batch_size=batch_size, num_workers=8, shuffle=False) 
     for transform in TTAs
-]
+    ]# create a DataLoader for the validation dataset
 
 # model_dir = f'/home/tchowdhury/data/code/CMML-v2/townim/models/{data_type}_fold_{args.fold}_without_TTA'
 exp_dir = f'./experiments/{data_type}'
@@ -420,9 +425,11 @@ with torch.no_grad():
     labels = []
     logits = []
     # for i, (inputs, targets) in tqdm(enumerate(test_loaders[0]), total=len(test_loaders[0]), smoothing=0.9, position=0, leave=True,):
-    for i, (inputs, targets) in enumerate(test_loaders[0]):
-        inputs, targets = inputs.to(device).float(), targets.to(device).long()
-        outputs = model(inputs)
+    for i, batch in enumerate(test_loaders[0]):
+        inputs = batch['image'].to(device).float()
+        targets = batch['morphology'].to(device).long()
+        patient_data = preprocess_patient_data(batch, device)
+        outputs = model(inputs, patient_data)
         outputs = F.softmax(outputs, dim=-1)
         _, predicted = torch.max(outputs, 1)
         correct += (predicted == targets).sum().item()
@@ -452,57 +459,59 @@ with torch.no_grad():
     
     print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
-    preds = []
-    logits = []
-    labels = []
-    correct = 0
-    # for i, data in tqdm(enumerate(zip(*test_loaders)), total=len(test_loaders[0]), smoothing=0.9, position=0, leave=True,):
-    for i, data in enumerate(zip(*test_loaders)):
-        inputs, targets = torch.cat([img for img,_ in data], dim=0).to(device).float(), data[0][1].to(device).long()#torch.stack([l.squeeze(0) for _,l in data], dim=0).to(device).long()
-        outputs = model(inputs)
-        outputs = F.softmax(outputs, dim=-1)
-        outputs = outputs.reshape(len(data), int(inputs.shape[0]/len(data)), -1).mean(dim=0)
+    # preds = []
+    # logits = []
+    # labels = []
+    # correct = 0
+    # # for i, data in tqdm(enumerate(zip(*test_loaders)), total=len(test_loaders[0]), smoothing=0.9, position=0, leave=True,):
+    # for i, batch in enumerate(zip(*test_loaders)):
+    #     inputs = batch['image'].to(device).float()
+    #     targets = batch['morphology'].to(device).long()
+    #     patient_data = preprocess_patient_data(batch, device)
+    #     outputs = model(inputs, patient_data)
+    #     outputs = F.softmax(outputs, dim=-1)
+    #     outputs = outputs.reshape(len(batch), int(inputs.shape[0]/len(batch)), -1).mean(dim=0)
 
-        _, predicted = torch.max(outputs, 1)
-        correct += (predicted == targets).sum().item()
-        preds.append(predicted.detach().cpu().numpy())
-        labels.append(targets.detach().cpu().numpy())
-        logits.append(outputs.detach().cpu().numpy().astype(np.float32))
+    #     _, predicted = torch.max(outputs, 1)
+    #     correct += (predicted == labels).sum().item()
+    #     preds.append(predicted.detach().cpu().numpy())
+    #     labels.append(targets.detach().cpu().numpy())
+    #     logits.append(outputs.detach().cpu().numpy().astype(np.float32))
 
-    preds = np.concatenate(preds, axis=0)
-    labels = np.concatenate(labels, axis=0)
-    logits = np.concatenate(logits, axis=0)
+    # preds = np.concatenate(preds, axis=0)
+    # labels = np.concatenate(labels, axis=0)
+    # logits = np.concatenate(logits, axis=0)
 
-    # Calculate metrics with TTA
-    accuracy = accuracy_score(labels, preds)
-    precision = precision_score(labels, preds, average="binary")
-    recall = recall_score(labels, preds, average="binary")
-    f1 = f1_score(labels, preds, average="binary")
-    auc = roc_auc_score(labels, logits[:, 1])
+    # # Calculate metrics with TTA
+    # accuracy = accuracy_score(labels, preds)
+    # precision = precision_score(labels, preds, average="binary")
+    # recall = recall_score(labels, preds, average="binary")
+    # f1 = f1_score(labels, preds, average="binary")
+    # auc = roc_auc_score(labels, logits[:, 1])
 
-    # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
+    # # Save metrics to CSV
+    # save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
 
-    # Confusion matrix
-    confmat_vals = confusion_matrix(labels, preds)
-    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
+    # # Confusion matrix
+    # confmat_vals = confusion_matrix(labels, preds)
+    # plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
 
-    # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
-    print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
+    # # ROC curve
+    # plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
+    # print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
     
-    np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
-            labels=labels, 
-            preds=preds,
-            logits=logits,
-    )
+    # np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
+    #         labels=labels, 
+    #         preds=preds,
+    #         logits=logits,
+    # )
 
 ##### patient level
 id_patients = []
 id_patient_logits = []
 id_patient_preds = []
 id_patient_labels = []
-patient_ids = test_dataset.df['patient_id'].to_numpy()
+patient_ids = test_dataset.frame['patient_id'].to_numpy()
 correct = 0
 # confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
 for id in np.unique(patient_ids):
@@ -513,7 +522,6 @@ for id in np.unique(patient_ids):
     correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     # print(id_patient_labels[-1], id_patient_logits[-1])
     id_patients.append(id)
-    
     
 preds = np.array(id_patient_preds)
 labels = np.array(id_patient_labels)
@@ -533,4 +541,4 @@ save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(e
 confmat_vals = confusion_matrix(labels, preds)
 plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
 
-print(f'[TTA] Patient level Accuracy: {accuracy} AUC: {auc}')
+print(f'[W/O TTA] Patient level Accuracy: {accuracy} AUC: {auc}')

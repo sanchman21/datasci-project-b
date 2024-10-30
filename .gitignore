@@ -13,3 +13,13 @@ townim/old_models
 townim/old_models
 townim/experiments/*/*/model
 cache/
+townim/experiments/monocyte_clinical/fold_0
+townim/experiments/monocyte_clinical/fold_1
+townim/experiments/monocyte_clinical/fold_2
+townim/experiments/monocyte_clinical/fold_3
+townim/experiments/monocyte_clinical/fold_4
+townim/experiments/neutrophil_clinical/fold_0
+townim/experiments/neutrophil_clinical/fold_1
+townim/experiments/neutrophil_clinical/fold_2
+townim/experiments/neutrophil_clinical/fold_3
+townim/experiments/neutrophil_clinical/fold_4
