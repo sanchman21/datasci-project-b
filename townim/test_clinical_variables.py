@@ -169,28 +169,51 @@ id_patient_preds = []
 id_patient_labels = []
 patient_ids = test_dataset.df['patient_id'].to_numpy()
 correct = 0
-# confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
+
 for id in np.unique(patient_ids):
-    indices = np.where(patient_ids==id)[0]
-    # print(id_patient_labels[-1], id_patient_logits[-1])
+    indices = np.where(patient_ids == id)[0]
     id_patients.append(id)
-    # add clinical variables
-    ind = np.where(patient_ids_clinical_variables==id)[0]
-    # id_patient_logits.append( (np.mean(logits[indices,:], axis=0)+preds_prob_clinical_variables[ind, :][0])/2 )
-    id_patient_logits.append(np.mean(np.concatenate((logits[indices,:], preds_prob_clinical_variables[ind, :]), axis=0), axis=0) )
-    id_patient_labels.append(np.mean(labels[indices], axis=0))
-    id_patient_preds.append(id_patient_logits[-1].argmax())
-    correct += int(id_patient_preds[-1]==id_patient_labels[-1])
     
-accuracy = correct/len(id_patients)
-auroc.update(torch.tensor(logits).to(device), torch.tensor(labels).to(device))
+    # Average CNN logits for all images of the patient
+    mean_cnn_logit = np.mean(logits[indices, :], axis=0)
+    print("Mean CNN Logit for Patient:", mean_cnn_logit)
+    
+    ind = np.where(patient_ids_clinical_variables == id)[0]
+    
+    # XGB logit for the patient
+    xgb_logit = preds_prob_clinical_variables[ind, :][0]
+    print("XGB Logit for Patient:", xgb_logit)
+    
+    # Combine the averaged CNN logit with the XGB logit
+    combined_logit = (mean_cnn_logit + xgb_logit) / 2
+    id_patient_logits.append(combined_logit)
+    
+    # Average the labels for the patient to determine the ground truth label
+    id_patient_labels.append(np.mean(labels[indices], axis=0))
+    id_patient_preds.append(combined_logit.argmax())
+    
+    # Update the correct predictions count
+    correct += int(id_patient_preds[-1] == id_patient_labels[-1])
+
+# Convert lists to arrays for further processing
+id_patient_logits = np.array(id_patient_logits)
+id_patient_labels = np.array(id_patient_labels)
+id_patient_preds = np.array(id_patient_preds)
+
+# Calculate accuracy
+accuracy = correct / len(id_patients)
+
+# Calculate AUROC using the combined patient-level logits and labels
+id_patient_labels_int = torch.tensor(id_patient_labels).round().long()
+auroc.update(torch.tensor(id_patient_logits).to(device), id_patient_labels_int.to(device))
 auc = float(auroc.compute())
 auroc.reset()
 
-def save_metrics_csv(fold, accuracy, auroc, metrics_path):
-    new_metrics = pd.DataFrame([[fold, round(accuracy, 4), round(auroc, 4)]], 
+# Save metrics to CSV
+def save_metrics_csv(fold, accuracy, auc, metrics_path):
+    new_metrics = pd.DataFrame([[fold, round(accuracy, 4), round(auc, 4)]], 
                                 columns=["fold", "accuracy", "auroc"])
-
+    
     if os.path.exists(metrics_path):
         df = pd.read_csv(metrics_path)
         if fold in df['fold'].values:
@@ -199,40 +222,37 @@ def save_metrics_csv(fold, accuracy, auroc, metrics_path):
             df = pd.concat([df, new_metrics], ignore_index=True)
     else:
         df = new_metrics
-    
+
     df.to_csv(metrics_path, index=False)
 
 print(f'Patient level with clinical variable => Accuracy: {accuracy*100} AUC: {auc*100}')
-save_metrics_csv(set_id, accuracy, auc, os.path.join(new_dir, "metrics_patient.csv"))
+save_metrics_csv(int(set_id), accuracy, auc, os.path.join(new_dir, "metrics_patient.csv"))
 
-preds = np.array(id_patient_preds)
-labels = np.array(id_patient_labels)
-logits = np.array(id_patient_logits)
-# print(labels, preds.shape, labels.shape, logits.shape, len(id_patients))
-
+# Save predictions and logits for each patient
 np.savez_compressed(os.path.join(new_dir_with_fold, 'patient_level_with_clinical_variables_results'),
-    labels=labels, 
-    preds=preds,
-    logits=logits,
+    labels=id_patient_labels,
+    preds=id_patient_preds,
+    logits=id_patient_logits,
     patient_ids=np.array(id_patients)
 )
 
-# confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
-fig, ax = plt.subplots()
-confmat.update(torch.from_numpy(logits).to(device), torch.from_numpy(labels).to(device))
+# Confusion matrix calculation
+confmat = torchmetrics.ConfusionMatrix(task="multiclass", num_classes=num_classes, normalize='true').to(device)
+confmat.update(torch.from_numpy(id_patient_logits).to(device), torch.from_numpy(id_patient_labels).to(device))
 confmat_vals = np.around(confmat.compute().cpu().detach().numpy(), 3)
-im = ax.imshow(confmat_vals)
 
-# Show all ticks and label them with the respective list entries
+# Plot confusion matrix
+fig, ax = plt.subplots()
+im = ax.imshow(confmat_vals)
 ax.set_xticks(np.arange(num_classes))
 ax.set_yticks(np.arange(num_classes))
 ax.set_xlabel('Predicted class')
 ax.set_ylabel('True class')
 
-# Loop over data dimensions and create text annotations.
+# Annotate each cell in the confusion matrix
 for i in range(num_classes):
     for j in range(num_classes):
-        text = ax.text(j, i, confmat_vals[i, j],ha="center", va="center", color="black", fontsize=12)
+        text = ax.text(j, i, confmat_vals[i, j], ha="center", va="center", color="black", fontsize=12)
 
 ax.set_title("Confusion Matrix on Test [Patient level]")
 fig.savefig(os.path.join(model_dir, "patient_level_with_clinical_variables_conf_mat.png"))
