@@ -6,7 +6,7 @@ from torchvision.models import resnet50, ResNet50_Weights # import the ResNet50 
 
 class MultimodalClassifier(nn.Module):
     '''
-    Class: Creates the Multi-modal Classifier model by wrapping nn.Module
+    This class creates the Multi-modal Classifier model by wrapping nn.Module
     '''
     def __init__(self, num_patient_features: int) -> None:
         '''
@@ -28,7 +28,6 @@ class MultimodalClassifier(nn.Module):
             nn.Dropout(0.5),
             nn.Linear(512, 2),
         )
-
 
     def forward(self, image, patient_info):
         '''

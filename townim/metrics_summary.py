@@ -1,21 +1,27 @@
+'''
+This script is used to print the mean and standard deviations of the metrics for each data type and level.
+'''
+
+# import libraries
 import pandas as pd 
 import os
 
+# define the data types, metrics, levels, and the experiment directory
 data_types = ["neutrophil", "monocyte", "neutrophil_clinical", "monocyte_clinical"]
 metrics = ["accuracy", "precision", "recall", "f1", "auroc"]
 levels = ["image", "image_tta", "patient"]
 exp_dir = "./experiments"
 
-for data_type in data_types:
-    path1 = exp_dir + f"/{data_type}"
-    if os.path.exists(path1):
-        print(f"Data Type: {data_type}")
-        for level in levels:
-            path2 = path1 + f"/metrics_{level}.csv"
-            if os.path.exists(path2):
-                print(f"Level: {level}")
-                df = pd.read_csv(path2)
-                columns = list(df.columns)
-                for metric in metrics:
-                    if metric in columns:
-                        print(f"{metric}: {round(df[metric].mean()*100, 2)} +- {round(df[metric].std()*100, 2)}")
+for data_type in data_types: # iterate over the data types
+    path1 = exp_dir + f"/{data_type}" # define the path to the data type
+    if os.path.exists(path1): # check if the path exists
+        print(f"Data Type: {data_type}") # print the data type
+        for level in levels: # iterate over the levels
+            path2 = path1 + f"/metrics_{level}.csv" # define the path to the metrics file
+            if os.path.exists(path2): # check if the path exists
+                print(f"Level: {level}") # print the level
+                df = pd.read_csv(path2) # read the metrics file
+                columns = list(df.columns) # get the columns of the dataframe
+                for metric in metrics: # iterate over the metrics
+                    if metric in columns: # check if the metric is in the columns
+                        print(f"{metric}: {round(df[metric].mean()*100, 2)} +- {round(df[metric].std()*100, 2)}") 

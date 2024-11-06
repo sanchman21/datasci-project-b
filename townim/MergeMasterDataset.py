@@ -1,3 +1,8 @@
+'''
+This script create a dataset class for the MultiModel model.
+'''
+
+# import libraries
 import pandas as pd # import the pandas library
 from torch.utils.data import Dataset # import the PyTorch Dataset class
 from PIL import Image # import the PIL library for image manipulation
@@ -6,9 +11,9 @@ import os
 
 class MergeMasterDataset(Dataset):
     '''
-    Class: Creates a dataset using the PyTorch Dataset class for PyTorch DataLoader
+    This class creates a dataset using the PyTorch Dataset class for PyTorch DataLoader
     '''
-    DATA_DIR = "../../data"
+    DATA_DIR = "../../data" # directory where the data is stored (relative path)
     def __init__(self, csv_file: str, fold: int, train: bool=True, use_patient_data: bool=False, transform=None) -> None:
         """
         Parameters:
@@ -20,10 +25,10 @@ class MergeMasterDataset(Dataset):
             transform (callable, optional): Optional transform to be applied on a sample.
         """
         self.frame = pd.read_csv(csv_file) # read the csv file into a pandas dataframe
-        self.frame = self.frame.loc[self.frame["patient_id"] != 2209801848]
-        rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
-        self.frame["morphology"] = 1-self.frame["morphology"]
-        self.frame.loc[self.frame["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0
+        self.frame = self.frame.loc[self.frame["patient_id"] != 2209801848] # remove this patient since their label is ambiguous
+        rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # patient ids that were rechecked
+        self.frame["morphology"] = 1-self.frame["morphology"] # flip the morphology labels (in the dataset, 0 is CMML and 1 is not CMML)
+        self.frame.loc[self.frame["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0 # set the morphology label to 0 for the rechecked patients
         self.fold = fold # fold number to use for training or testing
         self.train = train # whether to use the dataset for training or testing
         self.use_patient_data = use_patient_data # whether to include patient metadata

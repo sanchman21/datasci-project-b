@@ -1,3 +1,7 @@
+'''
+This script consists of some utility functions that are used in the training and evaluation scripts.
+'''
+
 import yaml
 import matplotlib.pyplot as plt
 from sklearn.metrics import confusion_matrix

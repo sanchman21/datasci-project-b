@@ -1,3 +1,7 @@
+'''
+This script consists of some utility functions that are used in the training and evaluation scripts.
+'''
+
 import torch, numpy as np, random, os
 
 # set seed

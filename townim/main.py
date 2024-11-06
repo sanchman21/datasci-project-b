@@ -1,3 +1,8 @@
+'''
+This script just trains the CNN for the given data type (no clinical/numerical features). It doesn't calculate the test metrics.
+'''
+
+# import libraries
 import numpy as np
 import pandas as pd
 import os, random, sys, argparse, torchvision, shutil
@@ -33,13 +38,13 @@ else: # otherwise
     device = "cpu" # set the device to cpu
 print(f"Using device: {device}") # print the device being used
 
+# argument parser, with argument for fold
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=4, help='fold_id')
+parser.add_argument('--fold', type=int, default=0, help='fold_id')
 args = parser.parse_args()
 
 set_id = int(args.fold)
 
-# Training loop
 data_type = 'monocyte' # neutrophil, monocyte
 is_tta = True
 num_epochs = 50 if data_type == 'neutrophil' else 100
@@ -54,6 +59,7 @@ CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PA
 
 
 # output_dir = f'./models/{data_type}_fold_{args.fold}'
+# create output directories for the model and figures (relative paths)
 os.makedirs(f"./experiments/{data_type}")
 output_dir = f'./experiments/{data_type}/{data_type}_fold_{args.fold}'
 output_dir += '_with_TTA' if is_tta else '_without_TTA'
@@ -68,14 +74,12 @@ os.makedirs(figure_dir, exist_ok=True)
 shutil.copyfile('./main.py', os.path.join(output_dir, 'main.py')) # copying code file used to train the model
 utils.set_random_seed(123)
 
-# Create data loaders
-batch_size = 32
-IMAGE_SIZE = 352
-IMAGENET_MEAN = [0.485, 0.456, 0.406]         # Mean of ImageNet dataset (used for normalization)
-IMAGENET_STD = [0.229, 0.224, 0.225]          # Std of ImageNet dataset (used for normalization)
-# IMAGENET_MEAN = [0.5, 0.5, 0.5]
-# IMAGENET_STD = [0.5, 0.5, 0.5]
+batch_size = 32 # batch size
+IMAGE_SIZE = 352 # image size
+IMAGENET_MEAN = [0.485, 0.456, 0.406] # Mean of ImageNet dataset (used for normalization)
+IMAGENET_STD = [0.229, 0.224, 0.225] # Std of ImageNet dataset (used for normalization)
 
+# transformations for training and testing
 train_transform = T.Compose([
     # T.RandomResizedCrop(IMAGE_SIZE, scale=(0.8, 1.0), ratio=(1.0, 1.0)),
     T.RandomHorizontalFlip(),
@@ -93,13 +97,28 @@ test_transform = T.Compose([
 ])
 
 class FixedRotation:
+    '''
+    This class is used to create a fixed rotation transformation
+    '''
     def __init__(self, angle):
-        self.angle = angle
+        '''
+        function: initializes the FixedRotation class
+        parameters:
+            angle: int, angle of rotation
+        returns: None
+        '''
+        self.angle = angle # set the angle of rotation
 
     def __call__(self, x):
-        return T.functional.rotate(x, self.angle)
+        '''
+        function: applies the rotation transformation
+        parameters:
+            x: image
+        returns: image
+        '''
+        return T.functional.rotate(x, self.angle) # apply and return the rotated image
 
-
+# Test time augmentation
 TTAs = [
     test_transform, 
     T.Compose([T.RandomHorizontalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]), 
@@ -111,13 +130,14 @@ TTAs = [
     T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)])
 ]
 
+# create the test dataset and dataloaders
 test_dataset = CustomDataset('test', CSV_PATH, set_id, transform=test_transform)
 test_loaders =[
     DataLoader(CustomDataset('test', CSV_PATH, set_id, transform=transform), batch_size=8, shuffle=False, pin_memory=True, num_workers=4)
     for transform in TTAs
 ]
 
-# dataset
+# create the train and validation datasets and dataloaders
 train_dataset = CustomDataset('train', CSV_PATH, set_id, transform=train_transform)
 print("Training dataset stats [Normal, CMML]:", train_dataset.disease_count)
 val_dataset = CustomDataset('test', CSV_PATH, set_id, transform=test_transform)
@@ -144,17 +164,18 @@ model.fc = nn.Sequential(
     nn.Linear(hidden_layer_size, num_classes)
 )
 
-model = model.to(device)
+model = model.to(device) # move the model to the device
 
-# Define loss function and optimizer
+# get class weights
 count = torch.bincount(torch.tensor(train_dataset.labels)).to(device)
 class_weight = len(train_dataset.labels) / count
 
 print('Loss class weight:', class_weight)
 class_weight = None
+# define the optimizer
 optimizer = optim.SGD(model.parameters(), lr=5e-5, weight_decay=1e-4, momentum=0.9)
 
-# CSV file to store metrics
+# list to store metrics data
 metrics_data = []
 
 # Early stopping variables
@@ -165,33 +186,34 @@ best_epoch = 0
 epochs_no_improve = 0
 early_stop = False
 
-for epoch in range(num_epochs):
-    if early_stop:
+for epoch in range(num_epochs): # for each epoch
+    if early_stop: # if early stopping is true, break the loop
         break
 
     # Training loop
     t = tqdm(enumerate(train_loader, 0), total=len(train_loader),
             smoothing=0.9, position=0, leave=True,
-            desc="Train: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
-    model.train()
-    running_loss = 0.0
-    all_preds, all_labels = [], []
+            desc="Train: Epoch: " + str(epoch + 1) + "/" + str(num_epochs)) # tqdm progress bar for training
+    model.train() # set the model to training mode
+    running_loss = 0.0 # initialize running loss
+    all_preds, all_labels = [], [] # initialize lists to store predictions and labels
 
-    for i, (inputs, labels) in t:
-        inputs = inputs.to(device).float()
-        labels = labels.to(device).long()
-        optimizer.zero_grad()
-        outputs = model(inputs)
-        loss = F.cross_entropy(outputs, labels)
-        loss.backward()
-        optimizer.step()
+    for i, (inputs, labels) in t: # for each batch
+        inputs = inputs.to(device).float() # move inputs to device
+        labels = labels.to(device).long() # move labels to device
+        optimizer.zero_grad() # zero the gradients
+        outputs = model(inputs) # get the model outputs
+        loss = F.cross_entropy(outputs, labels) # calculate the loss
+        loss.backward() # backpropagate the loss
+        optimizer.step() # update the weights
 
-        running_loss += loss.item()
-        outputs = F.softmax(outputs, dim=-1)
-        preds = outputs.argmax(dim=1).cpu().numpy()
-        all_preds.extend(preds)
-        all_labels.extend(labels.cpu().numpy())
+        running_loss += loss.item() # update the running loss
+        outputs = F.softmax(outputs, dim=-1) # get the probabilities
+        preds = outputs.argmax(dim=1).cpu().numpy() # get the predictions
+        all_preds.extend(preds) # add the predictions to the list
+        all_labels.extend(labels.cpu().numpy()) # add the labels to the list
 
+    # Calculate train metrics
     train_loss = running_loss / len(train_loader)
     train_accuracy = accuracy_score(all_labels, all_preds)
     train_precision = precision_score(all_labels, all_preds, average='binary')
@@ -200,26 +222,27 @@ for epoch in range(num_epochs):
     train_auroc = roc_auc_score(all_labels, all_preds)
 
     # Validation loop
-    model.eval()
-    val_loss = 0.0
-    val_preds, val_labels, val_probs = [], [], []
+    model.eval() # set the model to evaluation mode
+    val_loss = 0.0 # initialize validation loss
+    val_preds, val_labels, val_probs = [], [], [] # initialize lists to store predictions, labels and probabilities
 
-    with torch.no_grad():
+    with torch.no_grad(): # don't calculate gradients
         t = tqdm(enumerate(val_loader, 0), total=len(val_loader),
                 smoothing=0.9, position=0, leave=True,
-                desc="Val: Epoch: " + str(epoch + 1) + "/" + str(num_epochs))
-        for i, (inputs, labels) in t:
-            inputs, labels = inputs.to(device).float(), labels.to(device).long()
-            outputs = model(inputs)
-            loss = F.cross_entropy(outputs, labels)
-            val_loss += loss.item()
-            outputs = F.softmax(outputs, dim=-1)
-            preds = outputs.argmax(dim=1).cpu().numpy()
+                desc="Val: Epoch: " + str(epoch + 1) + "/" + str(num_epochs)) # tqdm progress bar for validation
+        for i, (inputs, labels) in t: # for each batch
+            inputs, labels = inputs.to(device).float(), labels.to(device).long() # move inputs and labels to device
+            outputs = model(inputs) # get the model outputs
+            loss = F.cross_entropy(outputs, labels) # calculate the loss
+            val_loss += loss.item() # update the validation loss
+            outputs = F.softmax(outputs, dim=-1) # get the probabilities
+            preds = outputs.argmax(dim=1).cpu().numpy() # get the predictions
             probs = outputs[:, 1].cpu().numpy()  # Probabilities for class 1
-            val_preds.extend(preds)
-            val_labels.extend(labels.cpu().numpy())
-            val_probs.extend(probs)
+            val_preds.extend(preds) # add the predictions to the list
+            val_labels.extend(labels.cpu().numpy()) # add the labels to the list
+            val_probs.extend(probs) # add the probabilities to the list
 
+    # Calculate validation metrics
     val_loss = val_loss / len(val_loader)
     val_accuracy = accuracy_score(val_labels, val_preds)
     val_precision = precision_score(val_labels, val_preds, average='binary')
@@ -228,6 +251,7 @@ for epoch in range(num_epochs):
     val_auroc = roc_auc_score(val_labels, val_preds)
 
     print(f"Epoch: {epoch+1}, Training Loss: {train_loss}, Validation Loss: {val_loss}, Training Accuracy: {train_accuracy}, Validation Accuracy: {val_accuracy}")
+    
     # Store metrics in a CSV file
     metrics_data.append([epoch+1, train_loss, train_accuracy, train_precision, train_recall, train_f1, train_auroc,
                         val_loss, val_accuracy, val_precision, val_recall, val_f1, val_auroc])
@@ -269,6 +293,7 @@ for epoch in range(num_epochs):
         fig.savefig(os.path.join(figure_dir, "conf_mat_best.png"))
         plt.close()
 
+# save the last model
 torch.save(model.state_dict(), os.path.join(model_dir, 'last.pth')) # save the last model
 
 # Plot ROC curve after training
