@@ -1,0 +1,400 @@
+image_path,dataset,patient_id,morphology,Age,Gender,Haemoglobin,MCV,White cell count,Neutrophil count,Monocyte count,Platelet count,Blast percentage (PB),LDH,set0,set1,set2,set3,set4,Accession number
+Normals/Normals/2422803384/SNE_99964658.jpg,Normals,2422803384,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803384
+Normals/Normals/2422809820/SNE_96084.jpg,Normals,2422809820,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809820
+Normals/Normals/2422605119/SNE_99316636.jpg,Normals,2422605119,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605119
+Normals/Normals/2422702420/SNE_99655077.jpg,Normals,2422702420,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702420
+Normals/Normals/2422704378/SNE_99758037.jpg,Normals,2422704378,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704378
+Normals/Normals/2422607649/SNE_99624473.jpg,Normals,2422607649,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607649
+Normals/Normals/2422800366/SNE_99875184.jpg,Normals,2422800366,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800366
+Normals/Normals/2422704940/SNE_99711345.jpg,Normals,2422704940,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704940
+Normals/Normals/2422704978/SNE_99641374.jpg,Normals,2422704978,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704978
+Normals/Normals/2422803722/SNE_72114.jpg,Normals,2422803722,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803722
+Normals/Normals/2422604452/SNE_99298557.jpg,Normals,2422604452,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604452
+Normals/Normals/2422807947/SNE_102132.jpg,Normals,2422807947,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807947
+Normals/Normals/2422805011/SNE_99992327.jpg,Normals,2422805011,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805011
+Normals/Normals/2422606507/MO_99489194.jpg,Normals,2422606507,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606507
+Normals/Normals/2422702445/MO_99686194.jpg,Normals,2422702445,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702445
+Normals/Normals/2422502144/SNE_98929854.jpg,Normals,2422502144,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422502144
+Normals/Normals/2422710517/SNE_99955678.jpg,Normals,2422710517,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422710517
+Normals/Normals/2422612935/SNE_99490378.jpg,Normals,2422612935,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422612935
+Normals/Normals/2422809621/SNE_52039.jpg,Normals,2422809621,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809621
+Normals/Normals/2422612793/SNE_99483884.jpg,Normals,2422612793,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422612793
+Normals/Normals/2422815087/SNE_651043.jpg,Normals,2422815087,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422815087
+Normals/Normals/2422705000/SNE_99821463.jpg,Normals,2422705000,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705000
+Normals/Normals/2422603043/SNE_99320435.jpg,Normals,2422603043,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603043
+Normals/Normals/2422809226/SNE_65454.jpg,Normals,2422809226,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809226
+Normals/Normals/2422502572/SNE_98948716.jpg,Normals,2422502572,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422502572
+Normals/Normals/2422613241/SNE_99511855.jpg,Normals,2422613241,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613241
+Normals/Normals/2422613073/SNE_99512810.jpg,Normals,2422613073,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613073
+Normals/Normals/2422802259/SNE_46266.jpg,Normals,2422802259,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802259
+Normals/Normals/2422501564/SNE_98934150.jpg,Normals,2422501564,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501564
+Normals/Normals/2422604039/SNE_99317299.jpg,Normals,2422604039,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604039
+Normals/Normals/2422704187/SNE_99741566.jpg,Normals,2422704187,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704187
+Normals/Normals/2422800356/SNE_99935371.jpg,Normals,2422800356,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800356
+Normals/Normals/2422603815/MO_99281977.jpg,Normals,2422603815,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603815
+Normals/Normals/2422710914/SNE_99807894.jpg,Normals,2422710914,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422710914
+Normals/Normals/2422607825/SNE_99411882.jpg,Normals,2422607825,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607825
+Normals/Normals/2422710940/SNE_99795079.jpg,Normals,2422710940,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422710940
+Normals/Normals/2422702640/MO_99672361.jpg,Normals,2422702640,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702640
+Normals/Normals/2422205171/SNE_98435348.jpg,Normals,2422205171,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422205171
+Normals/Normals/2422813712/SNE_179580.jpg,Normals,2422813712,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422813712
+Normals/Normals/2422705006/SNE_99758989.jpg,Normals,2422705006,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705006
+Normals/Normals/2422600096/SNE_99215317.jpg,Normals,2422600096,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422600096
+Normals/Normals/2422813949/MO_257687.jpg,Normals,2422813949,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422813949
+Normals/Normals/2422610497/SNE_99431617.jpg,Normals,2422610497,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422610497
+Normals/Normals/2422806979/SNE_41045.jpg,Normals,2422806979,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422806979
+Normals/Normals/2422706961/SNE_99778132.jpg,Normals,2422706961,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706961
+Normals/Normals/2422709911/SNE_99803600.jpg,Normals,2422709911,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709911
+Normals/Normals/2422607131/SNE_99355096.jpg,Normals,2422607131,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607131
+Normals/Normals/2422713685/SNE_99866488.jpg,Normals,2422713685,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422713685
+Normals/Normals/2422503118/SNE_98990619.jpg,Normals,2422503118,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422503118
+Normals/Normals/2422211058/MO_98547088.jpg,Normals,2422211058,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422211058
+Normals/Normals/2422710204/SNE_99753176.jpg,Normals,2422710204,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422710204
+Normals/Normals/2422603369/SNE_99286966.jpg,Normals,2422603369,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603369
+Normals/Normals/2422804214/SNE_99959095.jpg,Normals,2422804214,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804214
+Normals/Normals/2422708855/SNE_99768862.jpg,Normals,2422708855,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708855
+Normals/Normals/2422902096/SNE_392567.jpg,Normals,2422902096,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422902096
+Normals/Normals/2422808078/SNE_80341.jpg,Normals,2422808078,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808078
+Normals/Normals/2422707487/SNE_99706177.jpg,Normals,2422707487,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707487
+Normals/Normals/2422713087/SNE_242009.jpg,Normals,2422713087,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422713087
+Normals/Normals/2422613562/SNE_99540165.jpg,Normals,2422613562,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613562
+Normals/Normals/2422902261/SNE_286513.jpg,Normals,2422902261,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422902261
+Normals/Normals/2422802783/SNE_22910.jpg,Normals,2422802783,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802783
+Normals/Normals/2422609639/SNE_99407206.jpg,Normals,2422609639,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609639
+Normals/Normals/2422801966/SNE_24193.jpg,Normals,2422801966,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801966
+Normals/Normals/2422710008/SNE_99786788.jpg,Normals,2422710008,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422710008
+Normals/Normals/2422709919/SNE_99777942.jpg,Normals,2422709919,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709919
+Normals/Normals/2422804877/MO_31304.jpg,Normals,2422804877,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804877
+Normals/Normals/2422705143/SNE_99693385.jpg,Normals,2422705143,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705143
+Normals/Normals/2422608711/SNE_99408451.jpg,Normals,2422608711,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422608711
+Normals/Normals/2422614188/SNE_99580427.jpg,Normals,2422614188,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422614188
+Normals/Normals/2422804277/SNE_35303.jpg,Normals,2422804277,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804277
+Normals/Normals/2422601496/SNE_99323882.jpg,Normals,2422601496,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601496
+Normals/Normals/2422712751/SNE_99836687.jpg,Normals,2422712751,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422712751
+Normals/Normals/2422606846/SNE_99366689.jpg,Normals,2422606846,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606846
+Normals/Normals/2422812379/SNE_137823.jpg,Normals,2422812379,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812379
+Normals/Normals/2422803496/SNE_99992290.jpg,Normals,2422803496,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803496
+Normals/Normals/2422901411/SNE_264233.jpg,Normals,2422901411,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901411
+Normals/Normals/2422709375/SNE_99751749.jpg,Normals,2422709375,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709375
+Normals/Normals/2422601258/SNE_99280867.jpg,Normals,2422601258,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601258
+Normals/Normals/2422608773/SNE_99665956.jpg,Normals,2422608773,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422608773
+Normals/Normals/2422606279/SNE_99346968.jpg,Normals,2422606279,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606279
+Normals/Normals/2422603539/SNE_99306814.jpg,Normals,2422603539,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603539
+Normals/Normals/2422807007/SNE_56920.jpg,Normals,2422807007,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807007
+Normals/Normals/2422708606/SNE_99765413.jpg,Normals,2422708606,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708606
+Normals/Normals/2422805768/SNE_5163.jpg,Normals,2422805768,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805768
+Normals/Normals/2422601893/SNE_99292293.jpg,Normals,2422601893,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601893
+Normals/Normals/2422703451/SNE_99771328.jpg,Normals,2422703451,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703451
+Normals/Normals/2422705103/SNE_99834912.jpg,Normals,2422705103,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705103
+Normals/Normals/2422602059/SNE_99275756.jpg,Normals,2422602059,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602059
+Normals/Normals/2422809346/SNE_53119.jpg,Normals,2422809346,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809346
+Normals/Normals/2422605886/SNE_99393199.jpg,Normals,2422605886,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605886
+Normals/Normals/2422808867/SNE_165397.jpg,Normals,2422808867,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808867
+Normals/Normals/2422704013/SNE_99725962.jpg,Normals,2422704013,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704013
+Normals/Normals/2422801546/SNE_99994018.jpg,Normals,2422801546,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801546
+Normals/Normals/2422601245/SNE_99330140.jpg,Normals,2422601245,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601245
+Normals/Normals/2422706911/SNE_99711796.jpg,Normals,2422706911,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706911
+Normals/Normals/2422709165/SNE_99781232.jpg,Normals,2422709165,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709165
+Normals/Normals/2422604132/SNE_99457431.jpg,Normals,2422604132,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604132
+Normals/Normals/2422704616/SNE_99818397.jpg,Normals,2422704616,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704616
+Normals/Normals/2422803880/SNE_99975740.jpg,Normals,2422803880,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803880
+Normals/Normals/2422214500/MO_99162329.jpg,Normals,2422214500,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422214500
+Normals/Normals/2422606696/SNE_99349440.jpg,Normals,2422606696,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606696
+Normals/Normals/2422604551/SNE_99417773.jpg,Normals,2422604551,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604551
+Normals/Normals/2422802964/SNE_99986583.jpg,Normals,2422802964,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802964
+Normals/Normals/2422610167/SNE_99422737.jpg,Normals,2422610167,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422610167
+Normals/Normals/2422603321/SNE_99282241.jpg,Normals,2422603321,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603321
+Normals/Normals/2422602663/SNE_99346411.jpg,Normals,2422602663,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602663
+Normals/Normals/2422402339/SNE_99039321.jpg,Normals,2422402339,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422402339
+Normals/Normals/2422606059/SNE_99364263.jpg,Normals,2422606059,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606059
+Normals/Normals/2422501059/SNE_98915161.jpg,Normals,2422501059,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501059
+Normals/Normals/2422613123/SNE_99506865.jpg,Normals,2422613123,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613123
+Normals/Normals/2422807672/SNE_238438.jpg,Normals,2422807672,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807672
+Normals/Normals/2422704440/SNE_99687131.jpg,Normals,2422704440,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704440
+Normals/Normals/2422901255/SNE_248054.jpg,Normals,2422901255,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901255
+Normals/Normals/2422609682/SNE_99492235.jpg,Normals,2422609682,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609682
+Normals/Normals/2422701569/SNE_99643832.jpg,Normals,2422701569,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422701569
+Normals/Normals/2422605245/SNE_99436150.jpg,Normals,2422605245,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605245
+Normals/Normals/2422706774/SNE_99683633.jpg,Normals,2422706774,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706774
+Normals/Normals/2422502626/SNE_99105631.jpg,Normals,2422502626,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422502626
+Normals/Normals/2422808292/MO_86814.jpg,Normals,2422808292,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808292
+Normals/Normals/2422901201/MO_277184.jpg,Normals,2422901201,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901201
+Normals/Normals/2422806963/SNE_146360.jpg,Normals,2422806963,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422806963
+Normals/Normals/2422609045/SNE_99448288.jpg,Normals,2422609045,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609045
+Normals/Normals/2422602654/SNE_99376288.jpg,Normals,2422602654,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602654
+Normals/Normals/2422610687/SNE_99592037.jpg,Normals,2422610687,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422610687
+Normals/Normals/2422711618/SNE_99848173.jpg,Normals,2422711618,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422711618
+Normals/Normals/2422701826/SNE_99679947.jpg,Normals,2422701826,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422701826
+Normals/Normals/2422604610/SNE_99330626.jpg,Normals,2422604610,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604610
+Normals/Normals/2422607862/SNE_99375193.jpg,Normals,2422607862,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607862
+Normals/Normals/2422803556/SNE_21202.jpg,Normals,2422803556,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803556
+Normals/Normals/2422812424/SNE_151754.jpg,Normals,2422812424,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812424
+Normals/Normals/2422603060/MO_99365549.jpg,Normals,2422603060,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603060
+Normals/Normals/2422805236/SNE_6697.jpg,Normals,2422805236,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805236
+Normals/Normals/2422516132/SNE_92745.jpg,Normals,2422516132,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422516132
+Normals/Normals/2422804182/SNE_64010.jpg,Normals,2422804182,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804182
+Normals/Normals/2422501546/SNE_98992973.jpg,Normals,2422501546,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501546
+Normals/Normals/2422612989/SNE_99521216.jpg,Normals,2422612989,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422612989
+Normals/Normals/2422808746/MO_115154.jpg,Normals,2422808746,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808746
+Normals/Normals/2422804716/SNE_58925.jpg,Normals,2422804716,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804716
+Normals/Normals/2422803391/SNE_68428.jpg,Normals,2422803391,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803391
+Normals/Normals/2422805254/SNE_119260.jpg,Normals,2422805254,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805254
+Normals/Normals/2422611550/MO_99446915.jpg,Normals,2422611550,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422611550
+Normals/Normals/2422604244/SNE_99339616.jpg,Normals,2422604244,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604244
+Normals/Normals/2422612113/SNE_99477050.jpg,Normals,2422612113,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422612113
+Normals/Normals/2422901944/SNE_390601.jpg,Normals,2422901944,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901944
+Normals/Normals/2422502701/SNE_98949636.jpg,Normals,2422502701,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422502701
+Normals/Normals/2422601167/SNE_99282080.jpg,Normals,2422601167,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601167
+Normals/Normals/2422712092/SNE_99817311.jpg,Normals,2422712092,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422712092
+Normals/Normals/2422614217/SNE_99639807.jpg,Normals,2422614217,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422614217
+Normals/Normals/2422608648/SNE_99586081.jpg,Normals,2422608648,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422608648
+Normals/Normals/2422800326/SNE_99964923.jpg,Normals,2422800326,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800326
+Normals/Normals/2422812628/SNE_155917.jpg,Normals,2422812628,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812628
+Normals/Normals/2422303543/SNE_98663149.jpg,Normals,2422303543,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422303543
+Normals/Normals/2422602343/SNE_99310904.jpg,Normals,2422602343,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602343
+Normals/Normals/2422813156/SNE_169963.jpg,Normals,2422813156,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422813156
+Normals/Normals/2422612919/SNE_99510587.jpg,Normals,2422612919,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422612919
+Normals/Normals/2422605991/SNE_99345736.jpg,Normals,2422605991,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605991
+Normals/Normals/2422602926/SNE_99444459.jpg,Normals,2422602926,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602926
+Normals/Normals/2421908390/SNE_97512370.jpg,Normals,2421908390,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2421908390
+Normals/Normals/2422606576/SNE_99355914.jpg,Normals,2422606576,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606576
+Normals/Normals/2422603004/MO_99292710.jpg,Normals,2422603004,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603004
+Normals/Normals/2422606744/SNE_99515979.jpg,Normals,2422606744,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606744
+Normals/Normals/2422900652/SNE_207031.jpg,Normals,2422900652,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900652
+Normals/Normals/2422802628/SNE_99963490.jpg,Normals,2422802628,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802628
+Normals/Normals/2422805290/SNE_141235.jpg,Normals,2422805290,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805290
+Normals/Normals/2422809491/SNE_54110.jpg,Normals,2422809491,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809491
+Normals/Normals/2422613298/SNE_99500964.jpg,Normals,2422613298,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613298
+Normals/Normals/2422703711/SNE_99779760.jpg,Normals,2422703711,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703711
+Normals/Normals/2422607653/SNE_99377035.jpg,Normals,2422607653,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607653
+Normals/Normals/2422804339/MO_74857.jpg,Normals,2422804339,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804339
+Normals/Normals/2422600263/SNE_99213996.jpg,Normals,2422600263,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422600263
+Normals/Normals/2422205519/SNE_98367655.jpg,Normals,2422205519,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422205519
+Normals/Normals/2422812051/SNE_122590.jpg,Normals,2422812051,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812051
+Normals/Normals/2422711051/SNE_99792272.jpg,Normals,2422711051,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422711051
+Normals/Normals/2422609777/SNE_99442941.jpg,Normals,2422609777,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609777
+Normals/Normals/2422607289/SNE_99365169.jpg,Normals,2422607289,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607289
+Normals/Normals/2422702484/SNE_99609536.jpg,Normals,2422702484,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702484
+Normals/Normals/2422501738/SNE_98948266.jpg,Normals,2422501738,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501738
+Normals/Normals/2422809279/MO_123753.jpg,Normals,2422809279,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809279
+Normals/Normals/2422901398/SNE_334410.jpg,Normals,2422901398,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901398
+Normals/Normals/2422901708/MO_306027.jpg,Normals,2422901708,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901708
+Normals/Normals/2422402458/SNE_98844306.jpg,Normals,2422402458,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422402458
+Normals/Normals/2422812662/SNE_158566.jpg,Normals,2422812662,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812662
+Normals/Normals/2422607681/SNE_99457343.jpg,Normals,2422607681,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607681
+Normals/Normals/2422605546/SNE_99339602.jpg,Normals,2422605546,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605546
+Normals/Normals/2422605774/MO_99395080.jpg,Normals,2422605774,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605774
+Normals/Normals/2422706874/SNE_99746547.jpg,Normals,2422706874,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706874
+Normals/Normals/2422807515/SNE_70717.jpg,Normals,2422807515,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807515
+Normals/Normals/2422804156/SNE_136240.jpg,Normals,2422804156,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804156
+Normals/Normals/2422812665/MO_169464.jpg,Normals,2422812665,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812665
+Normals/Normals/2422404737/SNE_98964001.jpg,Normals,2422404737,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422404737
+Normals/Normals/2422812495/SNE_151973.jpg,Normals,2422812495,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812495
+Normals/Normals/2422701435/SNE_99583338.jpg,Normals,2422701435,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422701435
+Normals/Normals/2422606557/MO_99513928.jpg,Normals,2422606557,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606557
+Normals/Normals/2422901331/SNE_319555.jpg,Normals,2422901331,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901331
+Normals/Normals/2422812459/SNE_169977.jpg,Normals,2422812459,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812459
+Normals/Normals/2422709603/SNE_99774481.jpg,Normals,2422709603,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709603
+Normals/Normals/2422501533/SNE_99000826.jpg,Normals,2422501533,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501533
+Normals/Normals/2422607881/SNE_99389658.jpg,Normals,2422607881,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607881
+Normals/Normals/2422703762/MO_99694815.jpg,Normals,2422703762,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703762
+Normals/Normals/2422706022/SNE_99716774.jpg,Normals,2422706022,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706022
+Normals/Normals/2422808359/SNE_164937.jpg,Normals,2422808359,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808359
+Normals/Normals/2422605170/SNE_99603796.jpg,Normals,2422605170,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605170
+Normals/Normals/2422807124/SNE_19010.jpg,Normals,2422807124,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807124
+Normals/Normals/2422811041/SNE_181561.jpg,Normals,2422811041,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422811041
+Normals/Normals/2422801478/SNE_99950066.jpg,Normals,2422801478,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801478
+Normals/Normals/2422604404/SNE_99321703.jpg,Normals,2422604404,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604404
+Normals/Normals/2422607047/SNE_99410034.jpg,Normals,2422607047,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607047
+Normals/Normals/2422613023/SNE_99506332.jpg,Normals,2422613023,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613023
+Normals/Normals/2422805642/MO_9412.jpg,Normals,2422805642,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805642
+Normals/Normals/2422810532/SNE_257389.jpg,Normals,2422810532,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422810532
+Normals/Normals/2422604631/SNE_99385738.jpg,Normals,2422604631,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604631
+Normals/Normals/2422809249/SNE_262656.jpg,Normals,2422809249,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809249
+Normals/Normals/2422206994/SNE_98358664.jpg,Normals,2422206994,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422206994
+Normals/Normals/2422703364/SNE_99624895.jpg,Normals,2422703364,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703364
+Normals/Normals/2422602592/SNE_99305448.jpg,Normals,2422602592,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602592
+Normals/Normals/2422601774/SNE_99318394.jpg,Normals,2422601774,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601774
+Normals/Normals/2422802898/SNE_99970349.jpg,Normals,2422802898,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802898
+Normals/Normals/2422500817/SNE_98889348.jpg,Normals,2422500817,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422500817
+Normals/Normals/2422605112/SNE_99452830.jpg,Normals,2422605112,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605112
+Normals/Normals/2422801874/SNE_72882.jpg,Normals,2422801874,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801874
+Normals/Normals/2422703738/SNE_99660594.jpg,Normals,2422703738,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703738
+Normals/Normals/2422803716/SNE_99996627.jpg,Normals,2422803716,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803716
+Normals/Normals/2422708749/SNE_99830792.jpg,Normals,2422708749,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708749
+Normals/Normals/2422607217/SNE_99498526.jpg,Normals,2422607217,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607217
+Normals/Normals/2422707168/SNE_99749112.jpg,Normals,2422707168,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707168
+Normals/Normals/2422713796/MO_99862190.jpg,Normals,2422713796,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422713796
+Normals/Normals/2422602762/SNE_99301821.jpg,Normals,2422602762,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602762
+Normals/Normals/2422500673/SNE_98892026.jpg,Normals,2422500673,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422500673
+Normals/Normals/2422304656/SNE_98787556.jpg,Normals,2422304656,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422304656
+Normals/Normals/2422606049/SNE_99392907.jpg,Normals,2422606049,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606049
+Normals/Normals/2422811963/SNE_244875.jpg,Normals,2422811963,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422811963
+Normals/Normals/2422704005/SNE_99722770.jpg,Normals,2422704005,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704005
+Normals/Normals/2422607362/SNE_99431950.jpg,Normals,2422607362,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607362
+Normals/Normals/2422808075/SNE_38747.jpg,Normals,2422808075,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808075
+Normals/Normals/2422606872/MO_99361129.jpg,Normals,2422606872,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606872
+Normals/Normals/2422705786/SNE_99761488.jpg,Normals,2422705786,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705786
+Normals/Normals/2422501049/SNE_98902637.jpg,Normals,2422501049,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501049
+Normals/Normals/2422606627/SNE_99488537.jpg,Normals,2422606627,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606627
+Normals/Normals/2422500730/SNE_98886735.jpg,Normals,2422500730,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422500730
+Normals/Normals/2422702906/SNE_99635556.jpg,Normals,2422702906,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702906
+Normals/Normals/2422709521/MO_99771867.jpg,Normals,2422709521,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709521
+Normals/Normals/2422705743/SNE_99654631.jpg,Normals,2422705743,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705743
+Normals/Normals/2422601003/SNE_99262612.jpg,Normals,2422601003,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601003
+Normals/Normals/2422501221/SNE_98909560.jpg,Normals,2422501221,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501221
+Normals/Normals/2422901229/MO_311215.jpg,Normals,2422901229,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901229
+Normals/Normals/2422600546/SNE_99215459.jpg,Normals,2422600546,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422600546
+Normals/Normals/2422703880/SNE_99670591.jpg,Normals,2422703880,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703880
+Normals/Normals/2422301341/SNE_98652169.jpg,Normals,2422301341,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422301341
+Normals/Normals/2422902032/SNE_491750.jpg,Normals,2422902032,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422902032
+Normals/Normals/2422701386/SNE_99751371.jpg,Normals,2422701386,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422701386
+Normals/Normals/2422702503/SNE_99840077.jpg,Normals,2422702503,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702503
+Normals/Normals/2422810643/SNE_144359.jpg,Normals,2422810643,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422810643
+Normals/Normals/2422809335/SNE_63421.jpg,Normals,2422809335,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809335
+Normals/Normals/2422703610/SNE_99736936.jpg,Normals,2422703610,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703610
+Normals/Normals/2422613997/SNE_99632205.jpg,Normals,2422613997,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613997
+Normals/Normals/2422601290/SNE_99269035.jpg,Normals,2422601290,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601290
+Normals/Normals/2422501845/SNE_98999167.jpg,Normals,2422501845,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501845
+Normals/Normals/2422706937/SNE_99817891.jpg,Normals,2422706937,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706937
+Normals/Normals/2422810881/SNE_112297.jpg,Normals,2422810881,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422810881
+Normals/Normals/2422607504/SNE_99485577.jpg,Normals,2422607504,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607504
+Normals/Normals/2422805306/SNE_99973126.jpg,Normals,2422805306,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805306
+Normals/Normals/2422606289/SNE_99362174.jpg,Normals,2422606289,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606289
+Normals/Normals/2422808279/SNE_35897.jpg,Normals,2422808279,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808279
+Normals/Normals/2422706754/SNE_99724936.jpg,Normals,2422706754,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706754
+Normals/Normals/2422714296/SNE_99928888.jpg,Normals,2422714296,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422714296
+Normals/Normals/2422704494/SNE_99647659.jpg,Normals,2422704494,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704494
+Normals/Normals/2422810047/SNE_136903.jpg,Normals,2422810047,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422810047
+Normals/Normals/2422611696/SNE_99707282.jpg,Normals,2422611696,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422611696
+Normals/Normals/2422805707/SNE_145872.jpg,Normals,2422805707,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805707
+Normals/Normals/2422607595/SNE_99371336.jpg,Normals,2422607595,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607595
+Normals/Normals/2422811338/SNE_101407.jpg,Normals,2422811338,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422811338
+Normals/Normals/2422707414/SNE_99828888.jpg,Normals,2422707414,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707414
+Normals/Normals/2422707619/SNE_300560.jpg,Normals,2422707619,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707619
+Normals/Normals/2422709545/SNE_99786005.jpg,Normals,2422709545,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709545
+Normals/Normals/2422502652/SNE_98942978.jpg,Normals,2422502652,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422502652
+Normals/Normals/2422804610/MO_176593.jpg,Normals,2422804610,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804610
+Normals/Normals/2422812775/SNE_163916.jpg,Normals,2422812775,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812775
+Normals/Normals/2422708658/SNE_99797530.jpg,Normals,2422708658,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708658
+Normals/Normals/2422900594/SNE_253689.jpg,Normals,2422900594,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900594
+Normals/Normals/2422703412/SNE_99652283.jpg,Normals,2422703412,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703412
+Normals/Normals/2422704896/SNE_99708614.jpg,Normals,2422704896,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704896
+Normals/Normals/2422604928/SNE_99292536.jpg,Normals,2422604928,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604928
+Normals/Normals/2422206646/SNE_98406225.jpg,Normals,2422206646,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422206646
+Normals/Normals/2422706158/SNE_99711392.jpg,Normals,2422706158,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706158
+Normals/Normals/2422708219/SNE_99736063.jpg,Normals,2422708219,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708219
+Normals/Normals/2422707063/MO_99729826.jpg,Normals,2422707063,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707063
+Normals/Normals/2422705162/SNE_99701989.jpg,Normals,2422705162,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705162
+Normals/Normals/2422607915/SNE_99599189.jpg,Normals,2422607915,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607915
+Normals/Normals/2422705198/SNE_99790868.jpg,Normals,2422705198,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705198
+Normals/Normals/2422713832/SNE_99863862.jpg,Normals,2422713832,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422713832
+Normals/Normals/2422609875/MO_99525054.jpg,Normals,2422609875,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609875
+Normals/Normals/2422706187/SNE_99829980.jpg,Normals,2422706187,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706187
+Normals/Normals/2422613574/SNE_99518468.jpg,Normals,2422613574,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613574
+Normals/Normals/2422702314/SNE_99589601.jpg,Normals,2422702314,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702314
+Normals/Normals/2422700685/SNE_99553858.jpg,Normals,2422700685,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422700685
+Normals/Normals/2422611443/MO_99481053.jpg,Normals,2422611443,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422611443
+Normals/Normals/2422604191/SNE_99363097.jpg,Normals,2422604191,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422604191
+Normals/Normals/2422812394/SNE_162163.jpg,Normals,2422812394,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812394
+Normals/Normals/2422804037/SNE_125002.jpg,Normals,2422804037,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804037
+Normals/Normals/2422803043/SNE_99957319.jpg,Normals,2422803043,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803043
+Normals/Normals/2422405946/SNE_99411302.jpg,Normals,2422405946,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422405946
+Normals/Normals/2422703856/SNE_99653374.jpg,Normals,2422703856,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422703856
+Normals/Normals/2422603924/SNE_99421982.jpg,Normals,2422603924,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422603924
+Normals/Normals/2422601445/SNE_99358954.jpg,Normals,2422601445,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601445
+Normals/Normals/2422707204/SNE_99719282.jpg,Normals,2422707204,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422707204
+Normals/Normals/2422601411/SNE_99344170.jpg,Normals,2422601411,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601411
+Normals/Normals/2422714283/SNE_99908184.jpg,Normals,2422714283,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422714283
+Normals/Normals/2422802138/SNE_99932741.jpg,Normals,2422802138,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802138
+Normals/Normals/2422704640/SNE_99655249.jpg,Normals,2422704640,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704640
+Normals/Normals/2422613771/SNE_99544129.jpg,Normals,2422613771,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422613771
+Normals/Normals/2422501439/SNE_98977294.jpg,Normals,2422501439,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422501439
+Normals/Normals/2422708046/SNE_99796014.jpg,Normals,2422708046,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708046
+Normals/Normals/2422609476/SNE_99498297.jpg,Normals,2422609476,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609476
+Normals/Normals/2422608901/SNE_99468819.jpg,Normals,2422608901,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422608901
+Normals/Normals/2422709156/SNE_64789.jpg,Normals,2422709156,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709156
+Normals/Normals/2422605279/SNE_99463233.jpg,Normals,2422605279,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422605279
+Normals/Normals/2422711539/SNE_99778907.jpg,Normals,2422711539,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422711539
+Normals/Normals/2422900142/SNE_198554.jpg,Normals,2422900142,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900142
+Normals/Normals/2422702129/SNE_99673098.jpg,Normals,2422702129,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422702129
+Normals/Normals/2422601088/SNE_99232541.jpg,Normals,2422601088,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601088
+Normals/Normals/2422609707/SNE_99627185.jpg,Normals,2422609707,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609707
+Normals/Normals/2422405858/SNE_99045759.jpg,Normals,2422405858,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422405858
+Normals/Normals/2422901778/SNE_342141.jpg,Normals,2422901778,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901778
+Normals/Normals/2422601552/SNE_99302657.jpg,Normals,2422601552,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601552
+Normals/Normals/2422609504/SNE_99391956.jpg,Normals,2422609504,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609504
+Normals/Normals/2422706062/SNE_99720211.jpg,Normals,2422706062,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422706062
+Normals/Normals/2422807553/SNE_132032.jpg,Normals,2422807553,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807553
+Normals/Normals/2422806647/SNE_124650.jpg,Normals,2422806647,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422806647
+Normals/Normals/2422803100/SNE_99933072.jpg,Normals,2422803100,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803100
+Normals/Normals/2422610442/SNE_99438237.jpg,Normals,2422610442,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422610442
+Normals/Normals/2422608811/SNE_99380654.jpg,Normals,2422608811,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422608811
+Normals/Normals/2422712860/SNE_99847268.jpg,Normals,2422712860,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422712860
+Normals/Normals/2422611793/SNE_99454851.jpg,Normals,2422611793,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422611793
+Normals/Normals/2422001459/SNE_97806411.jpg,Normals,2422001459,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422001459
+Normals/Normals/2422500659/SNE_98898251.jpg,Normals,2422500659,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422500659
+Normals/Normals/2422811235/SNE_351934.jpg,Normals,2422811235,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422811235
+Normals/Normals/2422602119/SNE_99257681.jpg,Normals,2422602119,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422602119
+Normals/Normals/2422815030/MO_626510.jpg,Normals,2422815030,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422815030
+Normals/Normals/2422610073/SNE_99437460.jpg,Normals,2422610073,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422610073
+Normals/Normals/2422709673/SNE_99764916.jpg,Normals,2422709673,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422709673
+Normals/Normals/2422609396/SNE_99443108.jpg,Normals,2422609396,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422609396
+Normals/Normals/2422806416/SNE_115880.jpg,Normals,2422806416,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422806416
+Normals/Normals/2422902302/SNE_436840.jpg,Normals,2422902302,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422902302
+Normals/Normals/2422901385/SNE_311860.jpg,Normals,2422901385,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422901385
+Normals/Normals/2422712633/SNE_99998636.jpg,Normals,2422712633,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422712633
+Normals/Normals/2422713376/SNE_99857047.jpg,Normals,2422713376,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422713376
+Normals/Normals/2422611333/SNE_99451493.jpg,Normals,2422611333,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422611333
+Normals/Normals/2422607090/SNE_99398608.jpg,Normals,2422607090,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422607090
+Normals/Normals/2422206711/SNE_98391074.jpg,Normals,2422206711,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422206711
+Normals/Normals/2422606383/SNE_99367781.jpg,Normals,2422606383,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422606383
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802438/SNE_99966503.jpg","Test Cases (high monocyte count, but not CMML)",2422802438,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802438
+"Normals/Test Cases (high monocyte count, but not CMML)/2422704143/SNE_99649476.jpg","Test Cases (high monocyte count, but not CMML)",2422704143,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422704143
+"Normals/Test Cases (high monocyte count, but not CMML)/2422700984/SNE_99967812.jpg","Test Cases (high monocyte count, but not CMML)",2422700984,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422700984
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802851/MO_49297.jpg","Test Cases (high monocyte count, but not CMML)",2422802851,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802851
+"Normals/Test Cases (high monocyte count, but not CMML)/2422900429/SNE_188545.jpg","Test Cases (high monocyte count, but not CMML)",2422900429,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900429
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801026/SNE_99911238.jpg","Test Cases (high monocyte count, but not CMML)",2422801026,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801026
+"Normals/Test Cases (high monocyte count, but not CMML)/2422809289/SNE_428114.jpg","Test Cases (high monocyte count, but not CMML)",2422809289,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809289
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801089/SNE_99903358.jpg","Test Cases (high monocyte count, but not CMML)",2422801089,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801089
+"Normals/Test Cases (high monocyte count, but not CMML)/2422812062/SNE_148417.jpg","Test Cases (high monocyte count, but not CMML)",2422812062,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812062
+"Normals/Test Cases (high monocyte count, but not CMML)/2422900507/SNE_240187.jpg","Test Cases (high monocyte count, but not CMML)",2422900507,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900507
+"Normals/Test Cases (high monocyte count, but not CMML)/2422809353/SNE_74565.jpg","Test Cases (high monocyte count, but not CMML)",2422809353,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809353
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802142/SNE_18497.jpg","Test Cases (high monocyte count, but not CMML)",2422802142,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802142
+"Normals/Test Cases (high monocyte count, but not CMML)/2422805750/MO_38678.jpg","Test Cases (high monocyte count, but not CMML)",2422805750,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805750
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801758/SNE_99967153.jpg","Test Cases (high monocyte count, but not CMML)",2422801758,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801758
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801326/SNE_99923922.jpg","Test Cases (high monocyte count, but not CMML)",2422801326,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801326
+"Normals/Test Cases (high monocyte count, but not CMML)/2422900372/SNE_185061.jpg","Test Cases (high monocyte count, but not CMML)",2422900372,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422900372
+"Normals/Test Cases (high monocyte count, but not CMML)/2422803077/SNE_137610.jpg","Test Cases (high monocyte count, but not CMML)",2422803077,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803077
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801123/SNE_99902244.jpg","Test Cases (high monocyte count, but not CMML)",2422801123,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801123
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808259/SNE_80989.jpg","Test Cases (high monocyte count, but not CMML)",2422808259,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808259
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801987/SNE_30441.jpg","Test Cases (high monocyte count, but not CMML)",2422801987,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801987
+"Normals/Test Cases (high monocyte count, but not CMML)/2422804344/SNE_11470.jpg","Test Cases (high monocyte count, but not CMML)",2422804344,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422804344
+"Normals/Test Cases (high monocyte count, but not CMML)/2422801035/SNE_99905098.jpg","Test Cases (high monocyte count, but not CMML)",2422801035,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422801035
+"Normals/Test Cases (high monocyte count, but not CMML)/2422805201/SNE_99974846.jpg","Test Cases (high monocyte count, but not CMML)",2422805201,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422805201
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808586/SNE_91066.jpg","Test Cases (high monocyte count, but not CMML)",2422808586,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808586
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808536/MO_42922.jpg","Test Cases (high monocyte count, but not CMML)",2422808536,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808536
+"Normals/Test Cases (high monocyte count, but not CMML)/2422812201/SNE_125943.jpg","Test Cases (high monocyte count, but not CMML)",2422812201,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812201
+"Normals/Test Cases (high monocyte count, but not CMML)/2422813918/SNE_178846.jpg","Test Cases (high monocyte count, but not CMML)",2422813918,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422813918
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808361/SNE_132218.jpg","Test Cases (high monocyte count, but not CMML)",2422808361,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808361
+"Normals/Test Cases (high monocyte count, but not CMML)/2422800592/SNE_99893777.jpg","Test Cases (high monocyte count, but not CMML)",2422800592,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800592
+"Normals/Test Cases (high monocyte count, but not CMML)/2422711458/SNE_99999500.jpg","Test Cases (high monocyte count, but not CMML)",2422711458,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422711458
+"Normals/Test Cases (high monocyte count, but not CMML)/2422803035/SNE_99931301.jpg","Test Cases (high monocyte count, but not CMML)",2422803035,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422803035
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802171/SNE_99939946.jpg","Test Cases (high monocyte count, but not CMML)",2422802171,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802171
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808214/MO_94747.jpg","Test Cases (high monocyte count, but not CMML)",2422808214,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808214
+"Normals/Test Cases (high monocyte count, but not CMML)/2422601823/SNE_99264288.jpg","Test Cases (high monocyte count, but not CMML)",2422601823,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422601823
+"Normals/Test Cases (high monocyte count, but not CMML)/2422814037/SNE_221009.jpg","Test Cases (high monocyte count, but not CMML)",2422814037,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422814037
+"Normals/Test Cases (high monocyte count, but not CMML)/2422807285/SNE_131671.jpg","Test Cases (high monocyte count, but not CMML)",2422807285,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422807285
+"Normals/Test Cases (high monocyte count, but not CMML)/2422806590/SNE_99992694.jpg","Test Cases (high monocyte count, but not CMML)",2422806590,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422806590
+"Normals/Test Cases (high monocyte count, but not CMML)/2422812735/SNE_163094.jpg","Test Cases (high monocyte count, but not CMML)",2422812735,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422812735
+"Normals/Test Cases (high monocyte count, but not CMML)/2422714224/SNE_99902734.jpg","Test Cases (high monocyte count, but not CMML)",2422714224,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422714224
+"Normals/Test Cases (high monocyte count, but not CMML)/2422809570/SNE_113375.jpg","Test Cases (high monocyte count, but not CMML)",2422809570,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422809570
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808061/SNE_34141.jpg","Test Cases (high monocyte count, but not CMML)",2422808061,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808061
+"Normals/Test Cases (high monocyte count, but not CMML)/2422708939/SNE_99801942.jpg","Test Cases (high monocyte count, but not CMML)",2422708939,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422708939
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808317/MO_61269.jpg","Test Cases (high monocyte count, but not CMML)",2422808317,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808317
+"Normals/Test Cases (high monocyte count, but not CMML)/2422705421/SNE_99696000.jpg","Test Cases (high monocyte count, but not CMML)",2422705421,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422705421
+"Normals/Test Cases (high monocyte count, but not CMML)/2422808729/SNE_82595.jpg","Test Cases (high monocyte count, but not CMML)",2422808729,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422808729
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802417/SNE_99968248.jpg","Test Cases (high monocyte count, but not CMML)",2422802417,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802417
+"Normals/Test Cases (high monocyte count, but not CMML)/2422800724/MO_99953775.jpg","Test Cases (high monocyte count, but not CMML)",2422800724,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800724
+"Normals/Test Cases (high monocyte count, but not CMML)/2422800746/SNE_99896633.jpg","Test Cases (high monocyte count, but not CMML)",2422800746,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422800746
+"Normals/Test Cases (high monocyte count, but not CMML)/2422802812/SNE_99980535.jpg","Test Cases (high monocyte count, but not CMML)",2422802812,1,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,N/A,train,train,train,train,test,2422802812
