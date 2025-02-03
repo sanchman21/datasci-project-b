@@ -22,7 +22,7 @@ from tqdm import tqdm
 # sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 sys.path.append('./towmin')
 import utils
-from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
+from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOCYTE_NEW_NORMALS_CSV_PATH
 
 # creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
 cache_dir = "../cache"
@@ -147,7 +147,14 @@ is_tta = args.tta
 
 # set the data type and csv path
 data_type = args.data_type # neutrophil, monocyte
-CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PATH
+if data_type == "neutrophil":
+    CSV_PATH = NEUTROPHIL_CSV_PATH
+elif data_type == "monocyte":
+    CSV_PATH = MONOCYTE_CSV_PATH
+elif data_type == "monocyte_new_normals":
+    CSV_PATH = MONOCYTE_NEW_NORMALS_CSV_PATH
+else:
+    raise ValueError("Invalid data type")
 batch_size = 32 # batch size 
 IMAGE_SIZE = 352 # image size
 IMAGENET_MEAN = [0.485, 0.456, 0.406] # Mean of ImageNet dataset (used for normalization)
