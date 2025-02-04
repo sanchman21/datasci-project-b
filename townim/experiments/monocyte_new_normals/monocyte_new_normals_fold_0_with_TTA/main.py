@@ -46,7 +46,6 @@ args = parser.parse_args()
 
 set_id = int(args.fold)
 data_type = str(args.data_type)
-print(f"Fold: {set_id}, Data type: {data_type}")
 
 # Training loop
 num_epochs = 50 if data_type == "neutrophil" else 100

@@ -14,7 +14,7 @@ import utils
 # set relative paths for useful files
 NEUTROPHIL_CSV_PATH = '../datasets/neutrophil.csv'
 MONOCYTE_CSV_PATH = '../datasets/monocyte_reassigned.csv'
-NONOCYTE_NEW_NORMALS_CSV_PATH = '../datasets/monocyte_new_normals.csv'
+MONOCYTE_NEW_NORMALS_CSV_PATH = '../datasets/monocyte_new_normals.csv'
 CHECKED_LABELS_XLSX_PATH = '../datasets/checked_labels.xlsx'
 
 # patient ids that were rechecked by the pathologist

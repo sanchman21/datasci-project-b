@@ -7,7 +7,7 @@ import pandas as pd
 import os
 
 # define the data types, metrics, levels, and the experiment directory
-data_types = ["neutrophil", "monocyte", "neutrophil_clinical", "monocyte_clinical"]
+data_types = ["neutrophil", "monocyte", "neutrophil_clinical", "monocyte_clinical", "monocyte_new_normals"]
 metrics = ["accuracy", "precision", "recall", "f1", "auroc"]
 levels = ["image", "image_tta", "patient"]
 exp_dir = "./experiments"
