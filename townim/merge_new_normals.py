@@ -21,6 +21,7 @@ for subfolder in subfolders:
     for patient_id in os.listdir(folder_path):
         patient_path = os.path.join(folder_path, patient_id)
         if os.path.isdir(patient_path):  # ensure it's a directory
+            image_counter = 0
             for img in os.listdir(patient_path):
                 image_path = f"Normals/{subfolder}/{patient_id}/{img}"
                 accession_id = patient_id  # patient id as accession number
@@ -39,7 +40,7 @@ columns = existing_df.columns  # ensure the same column structure
 new_cases_df = pd.DataFrame(new_cases, columns=columns) # convert to dataframe
 
 # remove duplicates based on Accession number
-new_cases_df.drop_duplicates(subset=["Accession number"], keep="first", inplace=True)
+new_cases_df.drop_duplicates(subset=["image_path"], keep="first", inplace=True)
 
 # kfold Split (k=5)
 patients = new_cases_df["Accession number"].unique()
@@ -54,7 +55,7 @@ for i in range(k):
 
 # merge with existing dataset
 merged_df = pd.concat([existing_df, new_cases_df], ignore_index=True)
-merged_df.drop_duplicates(subset=["Accession number"], keep="first", inplace=True)
+merged_df.drop_duplicates(subset=["image_path"], keep="first", inplace=True)
 
 # save datasets
 new_cases_df.to_csv(new_cases_output_path, index=False)
