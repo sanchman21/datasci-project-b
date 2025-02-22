@@ -1,0 +1,7 @@
+Fold,Patients,CMML (patients),Normal (patients),Images,CMML (images),Normal (images)
+Fold 0,175,5,23,728,295,433
+Fold 1,175,5,23,755,274,481
+Fold 2,175,6,22,648,286,362
+Fold 3,175,4,24,540,198,342
+Fold 4,175,4,23,489,127,362
+Total,875,24,115,3160,1180,1980

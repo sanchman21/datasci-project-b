@@ -4,7 +4,7 @@ Note: Keep the data directory in the same folder as the github repository.
 '''
 
 # import libraries
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import Dataset
 import pandas as pd, os, torch
 from PIL import Image
 import utils
@@ -30,7 +30,7 @@ class CustomDataset(Dataset):
         '''
         function: initializes the custom dataset
         parameters:
-            partition: str, partition of the dataset (train, test)
+            partition: str, partition of the dataset (train, val, test)
             csv_path: str, path to the csv file containing the dataset
             set_id: int, set id of the dataset
             transform: torchvision.transforms, transformation to be applied to the images

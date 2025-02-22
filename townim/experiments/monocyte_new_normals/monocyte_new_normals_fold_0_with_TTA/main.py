@@ -46,6 +46,7 @@ args = parser.parse_args()
 
 set_id = int(args.fold)
 data_type = str(args.data_type)
+print(f"Fold: {set_id}, Data type: {data_type}")
 
 # Training loop
 num_epochs = 50 if data_type == "neutrophil" else 100
@@ -190,7 +191,7 @@ scheduler = torch.optim.lr_scheduler.LinearLR(optimizer, start_factor=1, end_fac
 metrics_data = []
 
 # Early stopping variables
-patience = 100  # Number of epochs to wait for improvement (100 for no early stopping)
+patience = 10  # Number of epochs to wait for improvement (100 for no early stopping)
 best_val_loss = float('inf')
 best_test_acc = 0.0
 best_epoch = 0
