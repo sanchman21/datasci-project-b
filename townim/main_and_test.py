@@ -1,7 +1,6 @@
 '''
 This script is used to train CNNs on image data (no clinical/numerical variables), including evaluation to get test metrics.
 '''
-
 # import libraries
 import numpy as np
 import pandas as pd
@@ -21,6 +20,7 @@ from tqdm import tqdm
 # sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 sys.path.append('../townim') # running python main.py from the directory the file is located in
 import utils
+from utils import FixedRotation
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOCYTE_NEW_NORMALS_CSV_PATH
 
 # creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
@@ -105,28 +105,6 @@ for set_id in range(5):
         T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
     ])
 
-    class FixedRotation:
-        '''
-        This class is used to create a fixed rotation transformation
-        '''
-        def __init__(self, angle):
-            '''
-            function: initializes the FixedRotation class
-            parameters:
-                angle: int, angle of rotation
-            returns: None
-            '''
-            self.angle = angle # set the angle of rotation
-
-        def __call__(self, x):
-            '''
-            function: applies the rotation transformation
-            parameters:
-                x: image
-            returns: image
-            '''
-            return T.functional.rotate(x, self.angle) # apply and return the rotated image
-
     # Define the transformations for test time augmentation
     TTAs = [
         test_transform, 
@@ -160,11 +138,9 @@ for set_id in range(5):
                             sampler=weighted_sampler,
                             num_workers=8, worker_init_fn=utils.worker_init_fn)
     val_loader = DataLoader(val_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
-    print("Dataset loaded")
 
     # Define the model architecture (ResNet-50 as an example)
     num_classes = len(set(train_dataset.labels)) # number of classes (2)
-    print("Model: Resnet50")
     model = models.resnet50(weights='IMAGENET1K_V1')
     hidden_layer_size = 512
     num_ftrs = model.fc.in_features

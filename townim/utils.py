@@ -53,3 +53,25 @@ def denormalize(image, mean, std):
     mean = torch.tensor(mean).view(1, 3, 1, 1).to(image.device)
     std = torch.tensor(std).view(1, 3, 1, 1).to(image.device)
     return image * std + mean
+
+class FixedRotation:
+        '''
+        This class is used to create a fixed rotation transformation
+        '''
+        def __init__(self, angle):
+            '''
+            function: initializes the FixedRotation class
+            parameters:
+                angle: int, angle of rotation
+            returns: None
+            '''
+            self.angle = angle # set the angle of rotation
+
+        def __call__(self, x):
+            '''
+            function: applies the rotation transformation
+            parameters:
+                x: image
+            returns: image
+            '''
+            return T.functional.rotate(x, self.angle) # apply and return the rotated image
