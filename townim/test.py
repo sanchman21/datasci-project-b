@@ -22,6 +22,7 @@ from tqdm import tqdm
 # sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 sys.path.append('./towmin')
 import utils
+from utils import FixedRotation, plot_confusion_matrix, plot_save_roc_curve, save_metrics_csv
 from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOCYTE_NEW_NORMALS_CSV_PATH
 
 # creating a cache directory since running docker using specific user doesn't allow to use the home cache directory
@@ -31,106 +32,6 @@ os.environ['TORCH_HOME'] = cache_dir # set cache directory
 
 rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # patient ids that were rechecked
 
-# Function to save or update metrics CSV
-def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path):
-    '''
-    function: save or update metrics csv
-    parameters:
-        fold: int, fold id
-        accuracy: float, accuracy value
-        precision: float, precision value
-        recall: float, recall value
-        f1: float, f1 score value
-        auroc: float, auroc value
-        metrics_path: str, path to save the metric
-    return: None
-    '''
-    new_metrics = pd.DataFrame([[fold, round(accuracy, 3), round(precision, 3), round(recall, 3), round(f1, 3), round(auroc, 3)]], 
-                                columns=["fold", "accuracy", "precision", "recall", "f1", "auroc"]) # create new metrics dataframe
-
-    if os.path.exists(metrics_path): # if the metrics file exists
-        df = pd.read_csv(metrics_path) # read the metrics file
-        if fold in df['fold'].values: # if the fold is already in the metrics file
-            df.loc[df['fold'] == fold, 'accuracy'] = round(accuracy, 4) # update the accuracy value
-            df.loc[df['fold'] == fold, 'precision'] = round(precision, 4) # update the precision value
-            df.loc[df['fold'] == fold, 'recall'] = round(recall, 4) # update the recall value
-            df.loc[df['fold'] == fold, 'f1'] = round(f1, 4) # update the f1 score value
-            df.loc[df['fold'] == fold, 'auroc'] = round(auroc, 4) # update the auroc value
-        else:
-            df = pd.concat([df, new_metrics], ignore_index=True) # concatenate the new metrics dataframe with the existing metrics dataframe
-    else:
-        df = new_metrics # if the metrics file doesn't exist, set the new metrics dataframe as the metrics dataframe
-    
-    df.to_csv(metrics_path, index=False) # save the metrics dataframe to the metrics file
-
-def plot_save_roc_curve(labels, logits, figure_path):
-    '''
-    function: plot and save the ROC curve
-    parameters:
-        labels: numpy array, true labels
-        logits: numpy array, predicted logits
-        figure_path: str, path to save the figure
-    return: None
-    '''
-    # Compute ROC curve and ROC area
-    if labels.ndim > 1: # if the labels have more than 1 dimension
-        labels = labels[:, 1] # set the labels to the second column
-        
-    if logits.ndim > 1: # if the logits have more than 1 dimension
-        logits = logits[:, 1] # set the logits to the second column
-        
-    fpr, tpr, _ = roc_curve(labels, logits) # get fpr, tpr
-    roc_auc = roc_auc_score(labels, logits) # get roc auc score
-
-    # Plot ROC curve
-    plt.figure()
-    plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
-
-    # Plot the diagonal line (no discrimination)
-    plt.plot([0, 1], [0, 1], 'k--')
-
-    # Set plot limits and labels
-    plt.xlim([0.0, 1.0])
-    plt.ylim([0.0, 1.0])
-    plt.xlabel('False Positive Rate')
-    plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve')
-    plt.legend(loc="lower right")
-    
-    # Set x and y ticks
-    plt.xticks(np.arange(0.0, 1.1, step=0.1))
-    plt.yticks(np.arange(0.0, 1.1, step=0.1))
-
-    # Save figure to path
-    plt.savefig(figure_path)
-    plt.close()
-
-# Confusion matrix plot function
-def plot_confusion_matrix(confmat_vals, num_classes, figure_path, title):
-    '''
-    function: plot and save the confusion matrix
-    parameters:
-        confmat_vals: numpy array, confusion matrix values
-        num_classes: int, number of classes
-        figure_path: str, path to save the figure
-        title: str, title of the figure
-    return: None
-    '''
-    fig, ax = plt.subplots()
-    im = ax.imshow(confmat_vals)
-    ax.set_xticks(np.arange(num_classes))
-    ax.set_yticks(np.arange(num_classes))
-    ax.set_xlabel('Predicted class')
-    ax.set_ylabel('True class')
-
-    for i in range(num_classes):
-        for j in range(num_classes):
-            ax.text(j, i, confmat_vals[i, j], ha="center", va="center", color="black", fontsize=12)
-
-    ax.set_title(title)
-    plt.savefig(figure_path)
-    plt.close()
-
 torch.cuda.empty_cache() # clear the cache
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set the device
@@ -139,11 +40,9 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set the 
 parser = argparse.ArgumentParser()
 parser.add_argument('--fold', type=int, default=1, help='fold_id')
 parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil'), help='data type')
-parser.add_argument('--tta', type=bool, default=True, choices=(False, True), help="Test Time Augmentations")
 args = parser.parse_args()
 
 set_id = int(args.fold)
-is_tta = args.tta
 
 # set the data type and csv path
 data_type = args.data_type # neutrophil, monocyte
@@ -166,27 +65,6 @@ test_transform = T.Compose([
     T.ToTensor(),
     T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
 ])
-class FixedRotation:
-    '''
-    This class is used to create a fixed rotation transformation
-    '''
-    def __init__(self, angle):
-        '''
-        function: initializes the FixedRotation class
-        parameters:
-            angle: int, angle of rotation
-        returns: None
-        '''
-        self.angle = angle # set the angle of rotation
-
-    def __call__(self, x):
-        '''
-        function: applies the rotation transformation
-        parameters:
-            x: image
-        returns: image
-        '''
-        return T.functional.rotate(x, self.angle) # apply and return the rotated image
 
 # create multiple test time augmentations
 TTAs = [
@@ -225,14 +103,13 @@ model.fc = nn.Sequential(
 
 model = model.to(device) # set the model to the device
 # create experiment directories and load the model (relative path)
-exp_dir = f'./experiments/{data_type}'
-exp_subdir = exp_dir + f'/{data_type}_fold_{args.fold}_'
-exp_subdir += "with_TTA" if is_tta else "without_TTA"
-model_dir = exp_subdir + "/model"
-figure_dir = exp_subdir + "/figures/test"
+root = f'./experiments/{data_type}'
+exp_subdir = root + f'/test'
+model_dir = root + "/model"
+figure_dir = exp_subdir + "/figures"
 
 os.makedirs(figure_dir, exist_ok=True) 
-model.load_state_dict(torch.load(os.path.join(model_dir, f'last.pth')))
+model.load_state_dict(torch.load(os.path.join(model_dir, f'model.pth')))
 model.eval() # set the model to evaluation mode
 print(model_dir)
 
@@ -264,7 +141,7 @@ with torch.no_grad(): # turn off gradients
     auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_image.csv"))
 
     # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
@@ -304,7 +181,7 @@ with torch.no_grad(): # turn off gradients
     auc = roc_auc_score(labels, logits[:, 1])
 
     # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
+    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_image_tta.csv"))
 
     # Confusion matrix
     confmat_vals = confusion_matrix(labels, preds)
@@ -357,7 +234,7 @@ f1 = f1_score(labels, preds, average="binary")
 auc = roc_auc_score(labels, logits[:, 1])
 
 # Save patient-level metrics to CSV
-save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
+save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_patient.csv"))
 
 # Confusion matrix for patient-level
 confmat_vals = confusion_matrix(labels, preds)
