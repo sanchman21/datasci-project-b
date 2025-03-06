@@ -27,6 +27,7 @@ from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOC
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
 os.environ['TORCH_HOME'] = cache_dir  # set cache directory
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 
 if torch.cuda.is_available():  # if cuda is available
     torch.cuda.empty_cache()  # empty the cache

@@ -30,6 +30,7 @@ from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
 os.environ['TORCH_HOME'] = cache_dir  # Set cache directory
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 
 torch.cuda.empty_cache()  # Empty cache
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # Set the device
@@ -219,7 +220,7 @@ with mlflow.start_run(run_name="train-val") as parent_run: # parent run
             mlflow.log_metric("patient_level_f1", f1 * 100)
             mlflow.log_metric("patient_level_auc", auc * 100)
 
-            metrics_path = os.path.join(new_dir_with_fold, "metrics_patient.csv") # metrics path
+            metrics_path = os.path.join(new_dir_train, "metrics_patient.csv") # metrics path
             save_metrics_csv(fold_id, accuracy, precision, recall, f1, auc, metrics_path, train=True)
             mlflow.log_artifact(metrics_path)
 
@@ -350,7 +351,7 @@ with mlflow.start_run(run_name="test"):
     mlflow.log_metric("final_patient_level_f1", f1 * 100)
     mlflow.log_metric("final_patient_level_auc", auc * 100)
 
-    metrics_path = os.path.join(new_dir_test, "metrics_patient.csv") # save metrics
+    metrics_path = os.path.join(new_dir_test, "metrics.csv") # save metrics
     save_metrics_csv("Patient", accuracy, precision, recall, f1, auc, metrics_path, train=False) # save metrics
     mlflow.log_artifact(metrics_path) # log metrics
 

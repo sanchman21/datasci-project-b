@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/996645640737830433/8df2e9d7dd5f4793b3d6d1fd0aea16ee/artifacts
+end_time: 1741262473025
+entry_point_name: ''
+experiment_id: '996645640737830433'
+lifecycle_stage: active
+run_id: 8df2e9d7dd5f4793b3d6d1fd0aea16ee
+run_name: test-metrics
+run_uuid: 8df2e9d7dd5f4793b3d6d1fd0aea16ee
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741262472968
+status: 3
+tags: []
+user_id: unknown

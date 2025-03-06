@@ -31,6 +31,7 @@ from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOC
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
 os.environ['TORCH_HOME'] = cache_dir # set cache directory
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 
 rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # patient ids that were rechecked
 
