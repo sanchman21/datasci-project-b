@@ -1,4 +1,4 @@
-Fold,Patients,CMML (patients),Normal (patients),Images,CMML (images),Normal (images)
+Fold,Total Patients,CMML (patients),Normal (patients),Images,CMML (images),Normal (images)
 Fold 0,175,19,92,2432,885,1547
 Fold 1,175,19,92,2405,906,1499
 Fold 2,175,18,93,2512,894,1618

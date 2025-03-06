@@ -1,0 +1,2 @@
+fold,accuracy,precision,recall,f1,auroc
+2,0.9643,1.0,0.8,0.8889,0.9913

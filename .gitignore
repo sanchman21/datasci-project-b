@@ -9,8 +9,6 @@ venv/
 myenv/
 master.csv
 townim/old_models
-townim/old_models
-townim/old_models
 townim/experiments/*/*/model
 cache/
 townim/experiments/monocyte_clinical/fold_0
@@ -23,3 +21,11 @@ townim/experiments/neutrophil_clinical/fold_1
 townim/experiments/neutrophil_clinical/fold_2
 townim/experiments/neutrophil_clinical/fold_3
 townim/experiments/neutrophil_clinical/fold_4
+townim/experiments/*/train/model
+townim/experiments/*/train/*/model
+/townim/experiments/monocyte_clinical/test/*.npz
+/townim/experiments/neutrophil_clinical/test/*.npz
+/townim/experiments/monocyte_clinical/train/*/*.npz
+/townim/experiments/neutrophil_clinical/train/*/*.npz
+/townim/mlruns/*/*/artifacts/*.pth
+/townim/mlruns/models

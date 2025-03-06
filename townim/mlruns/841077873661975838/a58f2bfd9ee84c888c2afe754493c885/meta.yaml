@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/841077873661975838/a58f2bfd9ee84c888c2afe754493c885/artifacts
+end_time: 1741106775719
+entry_point_name: ''
+experiment_id: '841077873661975838'
+lifecycle_stage: active
+run_id: a58f2bfd9ee84c888c2afe754493c885
+run_name: fold_2
+run_uuid: a58f2bfd9ee84c888c2afe754493c885
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741102897640
+status: 3
+tags: []
+user_id: unknown

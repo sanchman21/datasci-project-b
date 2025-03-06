@@ -36,7 +36,7 @@ for patient_id in rechecked_patient_ids:
 
 # ----------------- Summary for Training Set -----------------
 # create a new dataframe to store the summary for train set
-df2 = pd.DataFrame(columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+df2 = pd.DataFrame(columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 
 # define variables to store the total values
 patients_total = cmml_total = normal_total = image_total = cmml_image_total = normal_image_total = 0
@@ -57,11 +57,11 @@ for set_id in range(5):  # iterate for each fold
     normal_image_total += normal_images
     
     new_df = pd.DataFrame([[num_patients, cmml_patients, normal_patients, num_images, cmml_images, normal_images]], 
-                           columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                           columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
     df2 = pd.concat([df2, new_df], ignore_index=True)
 
 new_df = pd.DataFrame([[patients_total, cmml_total, normal_total, image_total, cmml_image_total, normal_image_total]], 
-                       columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                       columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 df2 = pd.concat([df2, new_df], ignore_index=True)
 index = [f"Fold {i}" for i in range(0, 5)] + ["Total"]
 df2.index = index
@@ -70,7 +70,7 @@ df2.to_csv(f"../datasets/summary_train_{data_type}.csv", index=True)
 
 # ----------------- Summary for Validation Set -----------------
 # create a new dataframe to store the summary for validation set
-df_val = pd.DataFrame(columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+df_val = pd.DataFrame(columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 
 patients_total = cmml_total = normal_total = image_total = cmml_image_total = normal_image_total = 0
 for set_id in range(5):
@@ -89,11 +89,11 @@ for set_id in range(5):
     normal_image_total += normal_images
     
     new_df = pd.DataFrame([[num_patients, cmml_patients, normal_patients, num_images, cmml_images, normal_images]], 
-                           columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                           columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
     df_val = pd.concat([df_val, new_df], ignore_index=True)
 
 new_df = pd.DataFrame([[patients_total, cmml_total, normal_total, image_total, cmml_image_total, normal_image_total]], 
-                       columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                       columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 df_val = pd.concat([df_val, new_df], ignore_index=True)
 df_val.index = index
 df_val.rename_axis("Fold", inplace=True)
@@ -101,7 +101,7 @@ df_val.to_csv(f"../datasets/summary_val_{data_type}.csv", index=True)
 
 # ----------------- Summary for Test Set -----------------
 # create a new dataframe to store the summary for test set, using the same column format as train and val
-df_test = pd.DataFrame(columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+df_test = pd.DataFrame(columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 
 patients_total = cmml_total = normal_total = image_total = cmml_image_total = normal_image_total = 0
 for set_id in range(5):
@@ -120,11 +120,11 @@ for set_id in range(5):
     normal_image_total += normal_images
     
     new_df = pd.DataFrame([[num_patients, cmml_patients, normal_patients, num_images, cmml_images, normal_images]], 
-                           columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                           columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
     df_test = pd.concat([df_test, new_df], ignore_index=True)
 
 new_df = pd.DataFrame([[patients_total, cmml_total, normal_total, image_total, cmml_image_total, normal_image_total]], 
-                       columns=["Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
+                       columns=["Total Patients", "CMML (patients)", "Normal (patients)", "Images", "CMML (images)", "Normal (images)"])
 df_test = pd.concat([df_test, new_df], ignore_index=True)
 df_test.index = index
 df_test.rename_axis("Fold", inplace=True)

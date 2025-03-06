@@ -18,6 +18,8 @@ from tqdm import tqdm
 from PIL import Image
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+import mlflow
+import subprocess
 
 # sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 sys.path.append('./towmin')
@@ -38,11 +40,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu") # set the 
 
 # create an argument parser, with arguments for fold, data type, and tta
 parser = argparse.ArgumentParser()
-parser.add_argument('--fold', type=int, default=1, help='fold_id')
 parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil'), help='data type')
 args = parser.parse_args()
-
-set_id = int(args.fold)
 
 # set the data type and csv path
 data_type = args.data_type # neutrophil, monocyte
@@ -78,166 +77,184 @@ TTAs = [
     T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)])
 ]
 
-# load the test dataset and create the test loaders
-test_dataset = CustomDataset('test', CSV_PATH, set_id, transform=test_transform)
-test_loaders = [
-    DataLoader(CustomDataset('test', CSV_PATH, set_id, transform=transform), batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
-    for transform in TTAs
-]
+# check if experiment exists, create if not
+existing_experiment = mlflow.get_experiment_by_name(data_type)
+if existing_experiment is None:
+    mlflow.create_experiment(data_type)  # Create new experiment with name
+    mlflow.set_experiment(experiment_name=data_type)
+    print(f"Created new experiment for {data_type} (Experiment won't include train-val metrics).")
+else:
+    experiment_id = existing_experiment.experiment_id  # Reuse existing ID
+    overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {data_type} EXPERIMENT? [Y/N]")
+    if overwrite_exp.lower() == "y":
+        runs = mlflow.search_runs(experiment_ids = [experiment_id], filter_string="run_name='test'")
+        if runs:
+            run_id = runs["run_id"]
+            mlflow.delete_run(run_id)
+            subprocess.run(["mlflow", "gc", "--run-ids", run_id], check=True)
+        mlflow.set_experiment(experiment_id=experiment_id)
+    else:
+        print("Cannot run if existing experiment test run is not allowed to be overwritten! Please modify code to change behaviour.")
+        exit()
+    print(f"Using existing experiment for {data_type}")
 
-# load the model and set the model architecture
-num_classes = len(set(test_dataset.labels)) # number of classes (2)
+# clear test directory
+test_dir = f"./experiments/{data_type}/test"
+if os.path.exists(test_dir):
+    shutil.rmtree(test_dir)
+    print(f"Cleared test directory: {test_dir}")
 
-# define the model architecture
-print("Model: Resnet50")
-model = models.resnet50(weights='IMAGENET1K_V1')
-hidden_layer_size = 512
-num_ftrs = model.fc.in_features
-model.fc = nn.Sequential(
-    nn.Linear(num_ftrs, hidden_layer_size),
-    nn.ReLU(),
-    # nn.BatchNorm1d(hidden_layer_size),
-    # nn.Dropout(0.2),
-    nn.Linear(hidden_layer_size, num_classes)
-)
+with mlflow.start_run("test"):
+    root = f"./experiments/{data_type}"
+    test_root = root + "/test"
+    os.makedirs(test_root, exist_ok=True)
+    test_figure_dir = os.path.join(test_root, "figures")
+    os.makedirs(test_figure_dir, exist_ok=True)
 
-model = model.to(device) # set the model to the device
-# create experiment directories and load the model (relative path)
-root = f'./experiments/{data_type}'
-exp_subdir = root + f'/test'
-model_dir = root + "/model"
-figure_dir = exp_subdir + "/figures"
-
-os.makedirs(figure_dir, exist_ok=True) 
-model.load_state_dict(torch.load(os.path.join(model_dir, f'model.pth')))
-model.eval() # set the model to evaluation mode
-print(model_dir)
-
-with torch.no_grad(): # turn off gradients
-    correct = 0 # number of correct predictions
-    preds = [] # predicted labels
-    labels = [] # true labels
-    logits = [] # predicted logits
+    # Define test dataset and loaders
+    test_dataset = CustomDataset('test', CSV_PATH, 0, transform=test_transform)
+    test_loaders = [
+        DataLoader(CustomDataset('test', CSV_PATH, 0, transform=transform), batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
+        for transform in TTAs
+    ]
+    print("Test dataset stats [Normal, CMML]:", test_dataset.disease_count)
     
-    for i, (inputs, targets) in enumerate(test_loaders[0]): # iterate through the test loaders
-        inputs, targets = inputs.to(device).float(), targets.to(device).long() # set the inputs and targets to the device
-        outputs = model(inputs) # get the model outputs
-        outputs = F.softmax(outputs, dim=-1) # get the probabilities
-        _, predicted = torch.max(outputs, 1) # get the predicted labels
-        correct += (predicted == targets).sum().item() # update the number of correct predictions
-        preds.append(predicted.detach().cpu().numpy()) # append the predicted labels
-        labels.append(targets.detach().cpu().numpy()) # append the true labels
-        logits.append(outputs.detach().cpu().numpy().astype(np.float32)) # append the predicted logits
-
-    preds = np.concatenate(preds, axis=0) # concatenate the predicted labels
-    labels = np.concatenate(labels, axis=0) # concatenate the true labels
-    logits = np.concatenate(logits, axis=0) # concatenate the predicted logits
-
-    # Calculate metrics at image level
-    accuracy = accuracy_score(labels, preds)
-    precision = precision_score(labels, preds, average="binary")
-    recall = recall_score(labels, preds, average="binary")
-    f1 = f1_score(labels, preds, average="binary")
-    auc = roc_auc_score(labels, logits[:, 1])
-
-    # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_image.csv"))
-
-    # Confusion matrix
-    confmat_vals = confusion_matrix(labels, preds)
-    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
-
-    # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"))
-    
-    print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
-    
-    preds = [] # predicted labels
-    logits = [] # predicted logits
-    labels = [] # true labels
-    correct = 0 # number of correct predictions
-    
-    for i, data in enumerate(zip(*test_loaders)): # iterate through the test loaders
-        inputs, targets = torch.cat([img for img,_ in data], dim=0).to(device).float(), data[0][1].to(device).long() # set the inputs and targets to the device
-        outputs = model(inputs) # get the model outputs
-        outputs = F.softmax(outputs, dim=-1) # get the probabilities
-        outputs = outputs.reshape(len(data), int(inputs.shape[0]/len(data)), -1).mean(dim=0) # average the probabilities
-
-        _, predicted = torch.max(outputs, 1) # get the predicted labels
-        correct += (predicted == targets).sum().item() # update the number of correct predictions
-        preds.append(predicted.detach().cpu().numpy()) # append the predicted labels
-        labels.append(targets.detach().cpu().numpy()) # append the true labels
-        logits.append(outputs.detach().cpu().numpy().astype(np.float32)) # append the predicted logits
-
-    preds = np.concatenate(preds, axis=0) # concatenate the predicted labels
-    labels = np.concatenate(labels, axis=0) # concatenate the true labels
-    logits = np.concatenate(logits, axis=0) #   concatenate the predicted logits
-
-    # Calculate metrics with TTA
-    accuracy = accuracy_score(labels, preds)
-    precision = precision_score(labels, preds, average="binary")
-    recall = recall_score(labels, preds, average="binary")
-    f1 = f1_score(labels, preds, average="binary")
-    auc = roc_auc_score(labels, logits[:, 1])
-
-    # Save metrics to CSV
-    save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_image_tta.csv"))
-
-    # Confusion matrix
-    confmat_vals = confusion_matrix(labels, preds)
-    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
-
-    # ROC curve
-    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
-    print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
-    
-    # Save results to npz
-    np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
-            labels=labels, 
-            preds=preds,
-            logits=logits,
+    final_model_dir = os.path.join(root, "model")
+    final_model = models.resnet50(weights='IMAGENET1K_V1')  # define final model
+    num_ftrs = final_model.fc.in_features
+    hidden_layer_size = 512
+    num_classes = len(set(test_dataset.labels))
+    final_model.fc = nn.Sequential(
+        nn.Linear(num_ftrs, hidden_layer_size),
+        nn.ReLU(),
+        nn.Linear(hidden_layer_size, num_classes)
     )
+    final_model = final_model.to(device)
+    try:
+        final_model.load_state_dict(torch.load(os.path.join(final_model_dir, f'final.pth')))
+    except FileNotFoundError as e:
+        err_message = "Model file not found. Please train the model first or check if the directory exists."
+        e.add_note(err_message)
+        raise
+    final_model.eval()
 
-# patient level
-id_patients = [] # patient ids
-id_patient_logits = [] # patient logits
-id_patient_preds = [] # patient predictions
-id_patient_labels = [] # patient labels
-patient_ids = test_dataset.df['patient_id'].to_numpy() # patient ids
-correct = 0 # number of correct predictions
-incorrect_ids = [] # incorrect patient ids
+    # No-TTA Evaluation on Test Set
+    with torch.no_grad():
+        preds, labels, logits = [], [], []
+        for i, (inputs, targets) in enumerate(test_loaders[0]):  # Use first loader (no TTA)
+            inputs, targets = inputs.to(device).float(), targets.to(device).long()
+            outputs = final_model(inputs)
+            outputs = F.softmax(outputs, dim=-1)
+            _, predicted = torch.max(outputs, 1)
+            preds.append(predicted.detach().cpu().numpy())
+            labels.append(targets.detach().cpu().numpy())
+            logits.append(outputs.detach().cpu().numpy().astype(np.float32))
 
-for id in np.unique(patient_ids): # iterate through the unique patient ids
-    indices = np.where(patient_ids==id)[0] # get the indices of the patient ids
-    id_patient_logits.append(np.mean(logits[indices,:], axis=0)) # get the average logits
-    id_patient_labels.append(np.mean(labels[indices], axis=0)) # get the average labels
-    id_patient_preds.append(id_patient_logits[-1].argmax()) # get the predicted label
-    if id in rechecked_patient_ids: # if the patient id is in the rechecked patient ids, print info
-        print(f"Patient Id: {id}, Ground Truth: {id_patient_labels[-1]}, Predicted: {id_patient_preds[-1]}")
-    if id_patient_labels[-1] != id_patient_preds[-1]: # if the predicted label is incorrect, append the incorrect patient ids
-        incorrect_ids.append((id, id_patient_labels[-1], id_patient_preds[-1])) # append the incorrect patient ids
-    correct += int(id_patient_preds[-1]==id_patient_labels[-1]) # update the number of correct predictions
-    id_patients.append(id) # append the patient id
-    
-for id_data in incorrect_ids: # iterate through the incorrect patient ids
-    print(f"Patient Id: {id_data[0]}, Ground Truth: {id_data[1]}, Predicted: {id_data[2]}") # print info
+        preds = np.concatenate(preds, axis=0)
+        labels = np.concatenate(labels, axis=0)
+        logits = np.concatenate(logits, axis=0)
 
-preds = np.array(id_patient_preds) # predicted labels
-labels = np.array(id_patient_labels) # true labels
-logits = np.array(id_patient_logits) # predicted logits
+        # Calculate metrics
+        accuracy = accuracy_score(labels, preds)
+        precision = precision_score(labels, preds, average="binary")
+        recall = recall_score(labels, preds, average="binary")
+        f1 = f1_score(labels, preds, average="binary")
+        auc = roc_auc_score(labels, logits[:, 1])
 
-# Calculate patient-level metrics
-accuracy = accuracy_score(labels, preds)
-precision = precision_score(labels, preds, average="binary") 
-recall = recall_score(labels, preds, average="binary")
-f1 = f1_score(labels, preds, average="binary")
-auc = roc_auc_score(labels, logits[:, 1])
+        # Save metrics
+        save_metrics_csv("Image W/O TTA", accuracy, precision, recall, f1, auc, os.path.join(test_root, "metrics.csv"), train=False)
 
-# Save patient-level metrics to CSV
-save_metrics_csv(args.fold, accuracy, precision, recall, f1, auc, os.path.join(exp_subdir, "metrics_patient.csv"))
+        # Confusion matrix
+        confmat_vals = confusion_matrix(labels, preds)
+        plot_confusion_matrix(confmat_vals, num_classes, os.path.join(test_figure_dir, "image_level_conf_mat_test.png"), "Confusion Matrix on Test [Image level] Final Model")
+        mlflow.log_artifact(os.path.join(test_figure_dir, "image_level_conf_mat_test.png"))
 
-# Confusion matrix for patient-level
-confmat_vals = confusion_matrix(labels, preds)
-plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
+        # ROC curve
+        plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(test_figure_dir, "image_level_roc_curve_test.png"))
+        mlflow.log_artifact(os.path.join(test_figure_dir, "image_level_roc_curve_test.png"))
+        print(f'[W/O TTA] Final Model Image-level Test Accuracy: {accuracy} AUC: {auc}')
 
-print(f'[TTA] Patient level Accuracy: {accuracy} AUC: {auc}')
+    # TTA Evaluation on Test Set
+    with torch.no_grad():
+        preds, labels, logits = [], [], []
+        for i, data in enumerate(zip(*test_loaders)):
+            inputs, targets = torch.cat([img for img, _ in data], dim=0).to(device).float(), data[0][1].to(device).long()
+            outputs = final_model(inputs)
+            outputs = F.softmax(outputs, dim=-1)
+            outputs = outputs.reshape(len(data), int(inputs.shape[0]/len(data)), -1).mean(dim=0)
+            _, predicted = torch.max(outputs, 1)
+            preds.append(predicted.detach().cpu().numpy())
+            labels.append(targets.detach().cpu().numpy())
+            logits.append(outputs.detach().cpu().numpy().astype(np.float32))
+
+        preds = np.concatenate(preds, axis=0)
+        labels = np.concatenate(labels, axis=0)
+        logits = np.concatenate(logits, axis=0)
+
+        # Calculate metrics
+        accuracy = accuracy_score(labels, preds)
+        precision = precision_score(labels, preds, average="binary")
+        recall = recall_score(labels, preds, average="binary")
+        f1 = f1_score(labels, preds, average="binary")
+        auc = roc_auc_score(labels, logits[:, 1])
+
+        # Save metrics
+        save_metrics_csv("Image TTA", accuracy, precision, recall, f1, auc, os.path.join(test_root, "metrics.csv"), train=False)
+
+        # Confusion matrix
+        confmat_vals = confusion_matrix(labels, preds)
+        plot_confusion_matrix(confmat_vals, num_classes, os.path.join(test_figure_dir, "tta_image_level_conf_mat_test.png"), "Confusion Matrix on Test [Image level with TTA] Final Model")
+        mlflow.log_artifact(os.path.join(test_figure_dir, "tta_image_level_conf_mat_test.png"))
+
+        # ROC curve
+        plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(test_figure_dir, "tta_image_level_roc_curve_test.png"))
+        mlflow.log_artifact(os.path.join(test_figure_dir, "tta_image_level_roc_curve_test.png"))
+        print(f'[TTA] Final Model Image-level Test Accuracy: {accuracy} AUC: {auc}')
+
+    # Patient-Level Evaluation on Test Set
+    id_patients, id_patient_logits, id_patient_preds, id_patient_labels = [], [], [], []
+    patient_ids = test_dataset.df['patient_id'].to_numpy()
+    incorrect_ids = []
+
+    for id in np.unique(patient_ids):
+        indices = np.where(patient_ids == id)[0]
+        id_patient_logits.append(np.mean(logits[indices, :], axis=0))
+        id_patient_labels.append(np.mean(labels[indices], axis=0))
+        id_patient_preds.append(id_patient_logits[-1].argmax())
+        if id in rechecked_patient_ids:
+            print(f"Patient Id (Rechecked): {id}, Ground Truth: {id_patient_labels[-1]}, Predicted: {id_patient_preds[-1]}")
+        if id_patient_labels[-1] != id_patient_preds[-1]:
+            incorrect_ids.append((id, id_patient_labels[-1], id_patient_preds[-1]))
+        id_patients.append(id)
+
+    for id_data in incorrect_ids:
+        print(f"Patient Id: {id_data[0]}, Ground Truth: {id_data[1]}, Predicted: {id_data[2]}")
+
+    preds = np.array(id_patient_preds)
+    labels = np.array(id_patient_labels)
+    logits = np.array(id_patient_logits)
+
+    # Calculate patient-level metrics
+    accuracy = accuracy_score(labels, preds)
+    precision = precision_score(labels, preds, average="binary")
+    recall = recall_score(labels, preds, average="binary")
+    f1 = f1_score(labels, preds, average="binary")
+    auc = roc_auc_score(labels, logits[:, 1])
+
+    # Save metrics
+    save_metrics_csv("Patient", accuracy, precision, recall, f1, auc, os.path.join(test_root, "metrics.csv"), train=False)
+
+    # Confusion matrix
+    confmat_vals = confusion_matrix(labels, preds)
+    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(test_figure_dir, "patient_level_conf_mat_test.png"), "Confusion Matrix on Test [Patient level] Final Model")
+    mlflow.log_artifact(os.path.join(test_figure_dir, "patient_level_conf_mat_test.png"))
+
+    # ROC curve
+    plot_save_roc_curve(np.eye(num_classes)[np.round(labels).astype(int)], logits, os.path.join(test_figure_dir, "patient_level_roc_curve_test.png"))
+    mlflow.log_artifact(os.path.join(test_figure_dir, "patient_level_roc_curve_test.png"))
+    print(f'[TTA] Final Model Patient-level Test Accuracy: {accuracy} AUC: {auc}')
+
+    # Log all test artifacts to MLflow
+    mlflow.log_artifact(os.path.join(test_root, "metrics.csv"))
+
+print("Training and testing complete!")

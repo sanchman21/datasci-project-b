@@ -16,6 +16,8 @@ for data_type in data_types: # iterate over the data types
     path1 = exp_dir + f"/{data_type}" # define the path to the data type
     if os.path.exists(path1): # check if the path exists
         print(f"Data Type: {data_type}") # print the data type
+        if data_type in ["neutrophil", "monocyte", "monocyte_new_normals"]:
+            path1 += "/train"
         for level in levels: # iterate over the levels
             path2 = path1 + f"/metrics_{level}.csv" # define the path to the metrics file
             if os.path.exists(path2): # check if the path exists

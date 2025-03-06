@@ -84,11 +84,11 @@ class FixedRotation:
             return T.functional.rotate(x, self.angle) # apply and return the rotated image
         
 # Function to save or update metrics CSV
-def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path):
+def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path, train=True):
     '''
     function: save or update metrics csv
     parameters:
-        fold: int, fold id
+        fold: Union[int, str], fold id (or test type for test metrics)
         accuracy: float, accuracy value
         precision: float, precision value
         recall: float, recall value
@@ -97,17 +97,28 @@ def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path)
         metrics_path: str, path to save the metric
     return: None
     '''
+    columns = []
+    if train:
+        columns = ["fold", "accuracy", "precision", "recall", "f1", "auroc"]
+    else:
+        columns = ["test type", "accuracy", "precision", "recall", "f1", "auroc"]
     new_metrics = pd.DataFrame([[fold, round(accuracy, 3), round(precision, 3), round(recall, 3), round(f1, 3), round(auroc, 3)]], 
-                                columns=["fold", "accuracy", "precision", "recall", "f1", "auroc"]) # create new metrics dataframe
+                                columns=columns) # create new metrics dataframe
 
     if os.path.exists(metrics_path): # if the metrics file exists
         df = pd.read_csv(metrics_path) # read the metrics file
-        if fold in df['fold'].values: # if the fold is already in the metrics file
+        if train and fold in df['fold'].values: # if the fold is already in the metrics file
             df.loc[df['fold'] == fold, 'accuracy'] = round(accuracy, 4) # update the accuracy value
             df.loc[df['fold'] == fold, 'precision'] = round(precision, 4) # update the precision value
             df.loc[df['fold'] == fold, 'recall'] = round(recall, 4) # update the recall value
             df.loc[df['fold'] == fold, 'f1'] = round(f1, 4) # update the f1 score value
             df.loc[df['fold'] == fold, 'auroc'] = round(auroc, 4) # update the auroc value
+        elif not train and fold in df["test type"].values:
+            df.loc[df['test type'] == fold, 'accuracy'] = round(accuracy, 4) # update the accuracy value
+            df.loc[df['test type'] == fold, 'precision'] = round(precision, 4) # update the precision value
+            df.loc[df['test type'] == fold, 'recall'] = round(recall, 4) # update the recall value
+            df.loc[df['test type'] == fold, 'f1'] = round(f1, 4) # update the f1 score value
+            df.loc[df['test type'] == fold, 'auroc'] = round(auroc, 4) # update the auroc value
         else:
             df = pd.concat([df, new_metrics], ignore_index=True) # concatenate the new metrics dataframe with the existing metrics dataframe
     else:
@@ -119,8 +130,8 @@ def plot_save_roc_curve(labels, logits, figure_path):
     '''
     function: plot and save the ROC curve
     parameters:
-        labels: numpy array, true labels
-        logits: numpy array, predicted logits
+        labels: int: numpy array, true labels
+        logits: float: numpy array, predicted logits
         figure_path: str, path to save the figure
     return: None
     '''
@@ -146,7 +157,6 @@ def plot_save_roc_curve(labels, logits, figure_path):
     plt.ylim([0.0, 1.0])
     plt.xlabel('False Positive Rate')
     plt.ylabel('True Positive Rate')
-    plt.title('ROC Curve')
     plt.legend(loc="lower right")
     
     # Set x and y ticks
@@ -182,3 +192,31 @@ def plot_confusion_matrix(confmat_vals, num_classes, figure_path, title):
     ax.set_title(title)
     plt.savefig(figure_path)
     plt.close()
+    
+def assign_patient_folds_splits(data_type_path, patient_folds_path="../datasets/patients_fold.csv"):
+    '''
+    fn: Assigns clincial features splits based on splits made in the image dataset of the particular data type
+    '''
+    # initialise paths
+    monocyte_path = data_type_path
+    patient_folds_path = patient_folds_path
+
+    # read csv files
+    monocyte_reassigned = pd.read_csv(monocyte_path)
+    patient_folds = pd.read_csv(patient_folds_path)
+
+    # set columns
+    set_columns = ['set0', 'set1', 'set2', 'set3', 'set4']
+    monocyte_reassigned.drop_duplicates(subset=["patient_id"], inplace=True)
+
+    unique_patients_csv1 = list(patient_folds["patient_id"].unique())
+    unique_patients_csv2 = list(monocyte_reassigned["patient_id"].unique())
+
+    for patient_id in unique_patients_csv1:
+        if patient_id in unique_patients_csv2:
+            for col in set_columns:
+                patient_folds.loc[patient_folds['patient_id'] == patient_id, col] = monocyte_reassigned.loc[monocyte_reassigned["patient_id"] == patient_id, col].values[0]
+
+    # Save the updated patient_folds.csv
+    patient_folds.to_csv(patient_folds_path, index=False)
+    print("Updated patient_folds.csv")
