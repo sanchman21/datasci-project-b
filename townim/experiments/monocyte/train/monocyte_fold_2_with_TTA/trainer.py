@@ -27,6 +27,7 @@ from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOC
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
 os.environ['TORCH_HOME'] = cache_dir  # set cache directory
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 
 if torch.cuda.is_available():  # if cuda is available
     torch.cuda.empty_cache()  # empty the cache
@@ -64,8 +65,8 @@ if existing_experiment is not None:
     experiment_id = existing_experiment.experiment_id  # Reuse existing ID
     overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {data_type} EXPERIMENT? [Y/N]")
     if overwrite_exp.lower() == "y":
+        mlflow.delete_experiment(experiment_id)
         subprocess.run(["mlflow", "gc", "--experiment-ids", experiment_id], check=True)
-        mlflow.set_experiment(experiment_id=experiment_id)
     else:
         print("To run the code further, you need to overwrite existing experiment. Please modify code otherwise.")
         exit()

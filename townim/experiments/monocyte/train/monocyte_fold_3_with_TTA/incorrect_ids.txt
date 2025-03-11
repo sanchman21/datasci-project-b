@@ -1,0 +1,12 @@
+Patient Id (Rechecked): 2209801259, Ground Truth: 0.0, Predicted: 1
+Patient Id (Rechecked): 2209801421, Ground Truth: 0.0, Predicted: 0
+Patient Id: 2131307812, Ground Truth: 1.0, Predicted: 0
+Patient Id: 2204000695, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2209720867, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2209720931, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2209801259, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2209801382, Ground Truth: 1.0, Predicted: 0
+Patient Id: 2224906928, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2224910176, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2225101243, Ground Truth: 0.0, Predicted: 1
+Patient Id: 2225101692, Ground Truth: 0.0, Predicted: 1

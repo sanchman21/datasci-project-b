@@ -15,6 +15,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 import mlflow
 import yaml
+import subprocess
 
 # sys.path.append('/home/tchowdhury/data/code/CMML-v2/townim')
 sys.path.append('../townim')  # running python main.py from the directory the file is located in
@@ -26,6 +27,7 @@ from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOC
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
 os.environ['TORCH_HOME'] = cache_dir  # set cache directory
+os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
 
 if torch.cuda.is_available():  # if cuda is available
     torch.cuda.empty_cache()  # empty the cache
@@ -59,18 +61,19 @@ with open(yaml_dir, 'r') as file:
 
 # check if experiment exists, create if not
 existing_experiment = mlflow.get_experiment_by_name(data_type)
-if existing_experiment is None:
-    mlflow.create_experiment(data_type)  # Create new experiment with name
-    mlflow.set_experiment(experiment_name=data_type)
-    print(f"Created new experiment for {data_type}")
-else:
+if existing_experiment is not None:
     experiment_id = existing_experiment.experiment_id  # Reuse existing ID
     overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {data_type} EXPERIMENT? [Y/N]")
     if overwrite_exp.lower() == "y":
-        mlflow.set_experiment(experiment_id=experiment_id)
+        mlflow.delete_experiment(experiment_id)
+        subprocess.run(["mlflow", "gc", "--experiment-ids", experiment_id], check=True)
     else:
+        print("To run the code further, you need to overwrite existing experiment. Please modify code otherwise.")
         exit()
-    print(f"Using existing experiment for {data_type}")
+    
+mlflow.create_experiment(data_type)  # Create new experiment with name
+mlflow.set_experiment(experiment_name=data_type)
+print(f"Created new experiment for {data_type}")
 
 root = f"./experiments/{data_type}/train"
 os.makedirs(root, exist_ok=True)  # output directory (main level)
