@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/928632543758017942/51acfc2dbff5426aa833930965d95898/artifacts
+end_time: 1741756652534
+entry_point_name: ''
+experiment_id: '928632543758017942'
+lifecycle_stage: active
+run_id: 51acfc2dbff5426aa833930965d95898
+run_name: val-metrics
+run_uuid: 51acfc2dbff5426aa833930965d95898
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1741756652469
+status: 3
+tags: []
+user_id: unknown
