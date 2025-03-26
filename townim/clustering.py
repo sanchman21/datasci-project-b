@@ -160,8 +160,9 @@ df['is_val'] = (df['set'] == 'val')
 # Create traces for the plot
 traces = []
 
-# Train points trace
+# Train points trace with fixed colors
 train_df = df[df['set'] == 'train']
+train_colors = np.where(train_df['cluster'] == 0, 'blue', 'green')  # Cluster 0: Blue, Cluster 1: Green
 traces.append(go.Scatter(
     x=train_df['x'],
     y=train_df['y'],
@@ -170,8 +171,7 @@ traces.append(go.Scatter(
         size=12,
         opacity=0.5,
         symbol='circle',
-        color=train_df['cluster'],
-        colorscale='Viridis'
+        color=train_colors
     ),
     name='Train',
     customdata=train_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
@@ -199,10 +199,11 @@ for pid in val_patients:
             opacity=1.0,
             symbol='star',
             color=patient_df['cluster'],
-            colorscale='Viridis'
+            colorscale='Viridis',
+            showscale=False
         ),
-        name='Val' if pid == val_patients[0] else '',  # Only show "Val" in legend for the first trace
-        showlegend=bool(pid == val_patients[0]),  # Avoid cluttering legend
+        name='Val' if pid == val_patients[0] else '',
+        showlegend=bool(pid == val_patients[0]),
         customdata=patient_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
         hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
                       '<b>Label</b>: %{customdata[1]}<br>' +
@@ -229,7 +230,7 @@ for pid in misclassified_patients:
                 symbol='circle'
             ),
             name='Patient Misclassified' if pid == misclassified_patients[0] else '',
-            showlegend=bool(pid == misclassified_patients[0]),  # Avoid cluttering legend
+            showlegend=bool(pid == misclassified_patients[0]),
             customdata=patient_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
             hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
                           '<b>Label</b>: %{customdata[1]}<br>' +
@@ -241,6 +242,20 @@ for pid in misclassified_patients:
         )
         traces.append(misclassified_traces[pid])
 
+# Add dummy traces for cluster colors in the legend (for train clusters)
+cluster_colors = ['blue', 'green']  # Cluster 0: Blue, Cluster 1: Green
+for cluster in range(2):
+    traces.append(go.Scatter(
+        x=[None], y=[None],  # No actual points
+        mode='markers',
+        marker=dict(
+            size=10,
+            color=cluster_colors[cluster]
+        ),
+        name=f'Cluster {cluster}',
+        visible='legendonly'  # Only show in legend
+    ))
+
 # Create dropdown menu
 buttons = []
 
@@ -251,13 +266,16 @@ buttons.append(dict(
     args=[{
         "visible": [True] * len(traces),  # Show all traces
         "marker": [
-            dict(size=12, opacity=0.5, symbol='circle', colorscale='Viridis')  # Train
+            dict(size=12, opacity=0.5, symbol='circle', color=train_colors)  # Train with fixed colors
         ] + [
-            dict(size=14, opacity=1.0, symbol='star', colorscale='Viridis')  # Val traces
-            for _ in val_patients
+            dict(size=14, opacity=1.0, symbol='star', color=val_df[val_df['patient_id'] == pid]['cluster'], colorscale='Viridis')  # Val traces
+            for pid in val_patients
         ] + [
             dict(color='red', size=14, symbol='circle')  # Misclassified traces
             for _ in misclassified_patients
+        ] + [
+            dict(size=10, color=cluster_colors[i])  # Dummy traces for legend
+            for i in range(2)
         ]
     }]
 ))
@@ -268,14 +286,14 @@ for selected_pid in misclassified_patients:
     marker_styles = []
     
     # Train trace
-    visibility.append(True)  # Show train points (faded)
-    marker_styles.append(dict(size=12, opacity=0.1, symbol='circle', color='lightgray'))
+    visibility.append(True)  # Show train points with fixed colors
+    marker_styles.append(dict(size=12, opacity=0.5, symbol='circle', color=train_colors))
     
     # Val traces
     for pid in val_patients:
         if pid == selected_pid:
             visibility.append(True)  # Show selected patient's val points
-            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color='green'))
+            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color='limegreen'))  # Lighter green to distinguish from Cluster 1
         else:
             visibility.append(True)  # Show other val points (faded)
             marker_styles.append(dict(size=14, opacity=0.1, symbol='star', color='lightgray'))
@@ -287,6 +305,13 @@ for selected_pid in misclassified_patients:
             marker_styles.append(dict(color='red', size=14, symbol='circle'))
         else:
             visibility.append(False)  # Hide other patients' misclassified points
+    
+    # Dummy traces for legend
+    visibility.extend([True, True])  # Keep legend entries visible
+    marker_styles.extend([
+        dict(size=10, color=cluster_colors[0]),
+        dict(size=10, color=cluster_colors[1])
+    ])
     
     buttons.append(dict(
         label=f"Patient {selected_pid}",
@@ -315,14 +340,14 @@ fig.update_layout(
     ],
     title=f'Clustering for {data_type} Fold {set_id}',
     legend=dict(
-        title="Set",
+        title="Legend",
         x=0.8,  # Bottom-right
         y=0.1,
         traceorder="normal"
     ),
     coloraxis_colorbar=dict(
         x=1.1,  # Move color bar to the right
-        title="Cluster"
+        title="Cluster (Val)"
     ),
     margin=dict(b=150),  # Add bottom margin for the text annotation
     showlegend=True
