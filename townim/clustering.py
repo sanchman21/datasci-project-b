@@ -155,10 +155,14 @@ df['label1_cluster0'] = (df['label'] == 1) & (df['cluster'] == 0)
 # Mark images from misclassified patients
 df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients)
 
+# Add boolean columns for train and val
+df['is_train'] = (df['set'] == 'train')
+df['is_val'] = (df['set'] == 'val')
+
 # Interactive plot
 fig = px.scatter(
     df, x='x', y='y', color='cluster', symbol='set',
-    hover_data=['patient_id', 'label', 'patient_misclassified', 'label1_cluster0'],
+    hover_data=['patient_id', 'label', 'patient_misclassified', 'label1_cluster0', 'is_train', 'is_val'],
     color_continuous_scale='Viridis',
     opacity=0.7,
     title=f'Clustering for {data_type} Fold {set_id}',
@@ -171,11 +175,11 @@ fig.update_traces(
     selector=dict(symbol='circle')
 )
 fig.update_traces(
-    marker=dict(size=12, opacity=0.9),  # Val points
-    selector=dict(symbol='diamond')
+    marker=dict(size=14, opacity=1.0),  # Val points
+    selector=dict(symbol='star')
 )
 
-# Add points from misclassified patients (red circles with black outline)
+# Add points from misclassified patients (red circles)
 misclassified_df = df[df['patient_misclassified']]
 fig.add_scatter(
     x=misclassified_df['x'],
@@ -183,15 +187,17 @@ fig.add_scatter(
     mode='markers',
     marker=dict(
         color='red',
-        size=12,
+        size=14,
         symbol='circle',
-        line=dict(color='black', width=1)
     ),
     name='Patient Misclassified',
-    customdata=misclassified_df[['patient_id', 'label', 'patient_misclassified', 'label1_cluster0']],
+    customdata=misclassified_df[['patient_id', 'label', 'patient_misclassified', 'label1_cluster0', 'is_train', 'is_val']],
     hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
                   '<b>Label</b>: %{customdata[1]}<br>' +
                   '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                  '<b>Label=1, Cluster=0</b>: %{customdata[3]}<br>' +
+                  '<b>Is Train</b>: %{customdata[4]}<br>' +
+                  '<b>Is Val</b>: %{customdata[5]}<br>' +
                   '<b>x</b>: %{x}<br>' +
                   '<b>y</b>: %{y}<extra></extra>'
 )
