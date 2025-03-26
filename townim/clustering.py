@@ -289,37 +289,86 @@ if len(val_misclassified_df) > 0:
                       '<b>y</b>: %{y}<extra></extra>'
     ))
 
-# Create a trace for each patient for patient-specific views
+# Create two traces for each patient for patient-specific views: one for correct points, one for incorrect points
 val_patients = np.unique(val_df['patient_id'])
-patient_traces = {}
+patient_correct_traces = {}
+patient_incorrect_traces = {}
 for pid in val_patients:
     patient_df = val_df[val_df['patient_id'] == pid]
-    colors = np.where(patient_df['point_misclassified'], 'red', '#9467BD')  # Red for misclassified, purple for correct
-    patient_traces[pid] = go.Scatter(
-        x=patient_df['x'],
-        y=patient_df['y'],
-        mode='markers',
-        marker=dict(
-            size=14,
-            opacity=1.0,
-            symbol='star',
-            color=colors
-        ),
-        name=f'Patient {pid}',
-        customdata=patient_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
-        hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
-                      '<b>Ground-Truth</b>: %{customdata[1]}<br>' +
-                      '<b>Prediction</b>: %{customdata[7]}<br>' +
-                      '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
-                      '<b>Point Misclassified</b>: %{customdata[3]}<br>' +
-                      '<b>Is Train</b>: %{customdata[4]}<br>' +
-                      '<b>Is Val</b>: %{customdata[5]}<br>' +
-                      '<b>Image Path</b>: %{customdata[6]}<br>' +
-                      '<b>x</b>: %{x}<br>' +
-                      '<b>y</b>: %{y}<extra></extra>',
-        visible=False  # Hidden by default, shown only in patient-specific view
-    )
-    traces.append(patient_traces[pid])
+    
+    # Correct points (purple stars)
+    correct_df = patient_df[~patient_df['point_misclassified']]
+    if len(correct_df) > 0:
+        patient_correct_traces[pid] = go.Scatter(
+            x=correct_df['x'],
+            y=correct_df['y'],
+            mode='markers',
+            marker=dict(
+                size=14,
+                opacity=1.0,
+                symbol='star',
+                color='#9467BD'
+            ),
+            name='Val (Correct)',
+            customdata=correct_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
+            hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
+                          '<b>Ground-Truth</b>: %{customdata[1]}<br>' +
+                          '<b>Prediction</b>: %{customdata[7]}<br>' +
+                          '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                          '<b>Point Misclassified</b>: %{customdata[3]}<br>' +
+                          '<b>Is Train</b>: %{customdata[4]}<br>' +
+                          '<b>Is Val</b>: %{customdata[5]}<br>' +
+                          '<b>Image Path</b>: %{customdata[6]}<br>' +
+                          '<b>x</b>: %{x}<br>' +
+                          '<b>y</b>: %{y}<extra></extra>',
+            visible=False  # Hidden by default
+        )
+    else:
+        patient_correct_traces[pid] = go.Scatter(
+            x=[None], y=[None],  # Dummy trace to maintain index alignment
+            mode='markers',
+            marker=dict(size=14, symbol='star', color='#9467BD'),
+            name='Val (Correct)',
+            visible=False
+        )
+    traces.append(patient_correct_traces[pid])
+    
+    # Incorrect points (red stars)
+    incorrect_df = patient_df[patient_df['point_misclassified']]
+    if len(incorrect_df) > 0:
+        patient_incorrect_traces[pid] = go.Scatter(
+            x=incorrect_df['x'],
+            y=incorrect_df['y'],
+            mode='markers',
+            marker=dict(
+                size=14,
+                opacity=1.0,
+                symbol='star',
+                color='red'
+            ),
+            name='Val (Incorrect)',
+            customdata=incorrect_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
+            hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
+                          '<b>Ground-Truth</b>: %{customdata[1]}<br>' +
+                          '<b>Prediction</b>: %{customdata[7]}<br>' +
+                          '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                          '<b>Point Misclassified</b>: %{customdata[3]}<br>' +
+                          '<b>Is Train</b>: %{customdata[4]}<br>' +
+                          '<b>Is Val</b>: %{customdata[5]}<br>' +
+                          '<b>Image Path</b>: %{customdata[6]}<br>' +
+                          '<b>x</b>: %{x}<br>' +
+                          '<b>y</b>: %{y}<extra></extra>',
+            visible=False  # Hidden by default
+        )
+    else:
+        patient_incorrect_traces[pid] = go.Scatter(
+            x=[None], y=[None],  # Dummy trace to maintain index alignment
+            mode='markers',
+            marker=dict(size=14, symbol='star', color='red'),
+            name='Val (Incorrect)',
+            visible=False
+        )
+    traces.append(patient_incorrect_traces[pid])
 
 # Add dummy traces for cluster colors in the legend
 cluster_colors = ['blue', 'green']
@@ -346,21 +395,21 @@ buttons.append(dict(
     label="All",
     method="update",
     args=[{
-        "visible": [True, True, True] + [False] * len(val_patients) + [True, True],  # Train, Val (Correct), Val (Misclassified), Patient traces (hidden), Cluster 0, Cluster 1
+        "visible": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],  # Train, Val (Correct), Val (Misclassified), Patient traces (hidden), Cluster 0, Cluster 1
         "marker": [
-            dict(size=12, opacity=0.5, symbol='circle', color=train_colors),  # Train (unchanged)
+            dict(size=12, opacity=0.5, symbol='circle', color=train_colors),  # Train
             dict(size=14, opacity=1.0, symbol='star', color='#9467BD'),  # Val (Correct)
             dict(size=14, opacity=1.0, symbol='star', color='red'),  # Val (Misclassified)
-        ] + [dict()] * len(val_patients) + [  # Placeholder for patient traces
+        ] + [dict()] * (2 * len(val_patients)) + [  # Placeholder for patient traces
             dict(size=10, color=cluster_colors[0]),  # Cluster 0
             dict(size=10, color=cluster_colors[1])   # Cluster 1
         ],
-        "showlegend": [True, True, True] + [False] * len(val_patients) + [True, True]
+        "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True]
     }]
 ))
 
 # One option per patient (all patients)
-for selected_pid in val_patients:
+for idx, selected_pid in enumerate(val_patients):
     visibility = []
     marker_styles = []
     showlegend = []
@@ -378,18 +427,22 @@ for selected_pid in val_patients:
     ])
     showlegend.extend([False, False])
     
-    # Show only the selected patient's trace
+    # Show only the selected patient's traces (correct and incorrect points)
     for pid in val_patients:
         if pid == selected_pid:
-            visibility.append(True)
-            patient_df = val_df[val_df['patient_id'] == pid]
-            colors = np.where(patient_df['point_misclassified'], 'red', '#9467BD')
-            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color=colors))
-            showlegend.append(True)
+            # Show both correct and incorrect traces for the selected patient
+            visibility.extend([True, True])
+            patient_correct_df = val_df[(val_df['patient_id'] == pid) & (~val_df['point_misclassified'])]
+            patient_incorrect_df = val_df[(val_df['patient_id'] == pid) & (val_df['point_misclassified'])]
+            marker_styles.extend([
+                dict(size=14, opacity=1.0, symbol='star', color='#9467BD') if len(patient_correct_df) > 0 else dict(),
+                dict(size=14, opacity=1.0, symbol='star', color='red') if len(patient_incorrect_df) > 0 else dict()
+            ])
+            showlegend.extend([len(patient_correct_df) > 0, len(patient_incorrect_df) > 0])  # Show legend only if trace has points
         else:
-            visibility.append(False)
-            marker_styles.append(dict())
-            showlegend.append(False)
+            visibility.extend([False, False])
+            marker_styles.extend([dict(), dict()])
+            showlegend.extend([False, False])
     
     # Dummy traces for clusters
     visibility.extend([True, True])
