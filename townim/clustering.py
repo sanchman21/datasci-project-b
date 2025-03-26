@@ -107,6 +107,9 @@ for pid in patient_ids_unique:
     if patient_pred != patient_true:
         misclassified_patients.append(pid)
 
+# Debug: Print the misclassified patients based on logits
+print(f"Misclassified patients (based on logits): {misclassified_patients}")
+
 # Now set fc to Identity to extract embeddings
 model.fc = Identity()
 model = model.to(device)
@@ -150,12 +153,22 @@ df = pd.DataFrame({
     'patient_id': np.concatenate([train_patient_ids, val_patient_ids])
 })
 
+# Add boolean columns for train and val (before creating train_df and val_df)
+df['is_train'] = (df['set'] == 'train')
+df['is_val'] = (df['set'] == 'val')
+
+# Ensure patient_id is the same type in df and misclassified_patients
+df['patient_id'] = df['patient_id'].astype(str)
+misclassified_patients = [str(pid) for pid in misclassified_patients]
+
 # Mark images from misclassified patients
 df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients)
 
-# Add boolean columns for train and val
-df['is_train'] = (df['set'] == 'train')
-df['is_val'] = (df['set'] == 'val')
+# Debug: Check which patients in misclassified_patients have points in val_df
+val_df = df[df['set'] == 'val']
+for pid in misclassified_patients:
+    patient_points = val_df[val_df['patient_id'] == pid]
+    print(f"Patient {pid}: {len(patient_points)} points in val_df, {len(patient_points[patient_points['patient_misclassified']])} marked as misclassified")
 
 # Create traces for the plot
 traces = []
@@ -218,7 +231,9 @@ for pid in val_patients:
 # Misclassified points traces (one per misclassified patient)
 misclassified_traces = {}
 for pid in misclassified_patients:
-    patient_df = val_df[(val_df['patient_id'] == pid) & (val_df['patient_misclassified'])]
+    patient_df = val_df[val_df['patient_id'] == pid]  # Remove the patient_misclassified filter to ensure we get all points
+    patient_df = patient_df[patient_df['patient_misclassified']]  # Filter for misclassified points
+    print(f"Creating misclassified trace for patient {pid}: {len(patient_df)} points")
     if len(patient_df) > 0:  # Only add trace if there are misclassified points
         misclassified_traces[pid] = go.Scatter(
             x=patient_df['x'],
@@ -259,6 +274,9 @@ for cluster in range(2):
 # Create dropdown menu
 buttons = []
 
+# Debug: Print the patients in the dropdown
+print(f"Patients in dropdown: {misclassified_patients}")
+
 # "All" option (default view)
 buttons.append(dict(
     label="All",
@@ -272,7 +290,7 @@ buttons.append(dict(
             for pid in val_patients
         ] + [
             dict(color='red', size=14, symbol='circle')  # Misclassified traces
-            for _ in misclassified_patients
+            for _ in misclassified_patients if _ in misclassified_traces
         ] + [
             dict(size=10, color=cluster_colors[i])  # Dummy traces for legend
             for i in range(2)
@@ -293,14 +311,14 @@ for selected_pid in misclassified_patients:
     for pid in val_patients:
         if pid == selected_pid:
             visibility.append(True)  # Show selected patient's val points
-            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color='limegreen'))  # Lighter green to distinguish from Cluster 1
+            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color='limegreen'))
         else:
             visibility.append(True)  # Show other val points (faded)
             marker_styles.append(dict(size=14, opacity=0.1, symbol='star', color='lightgray'))
     
     # Misclassified traces
     for pid in misclassified_patients:
-        if pid == selected_pid:
+        if pid == selected_pid and pid in misclassified_traces:
             visibility.append(True)  # Show selected patient's misclassified points
             marker_styles.append(dict(color='red', size=14, symbol='circle'))
         else:
@@ -368,6 +386,9 @@ for id in np.unique(val_patient_ids):
         text = f"Patient {id}: True={patient_true}, Pred={patient_pred}, % Images Misclustered={percent_misclustered:.2f}%"
         print(text)
         text_output.append(text)
+
+# Debug: Print the misclassified patients based on clustering
+print(f"Misclassified patients (based on clustering): {[pid for pid, _, _ in incorrect_patients]}")
 
 # Add text output as an annotation below the plot
 text_annotation = "<br>".join(text_output)
