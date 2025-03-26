@@ -167,7 +167,7 @@ fig = px.scatter(
 
 # Update marker sizes and opacity to make val points more evident
 fig.update_traces(
-    marker=dict(size=8, opacity=0.5),  # Train points
+    marker=dict(size=12, opacity=0.5),  # Train points
     selector=dict(symbol='circle')
 )
 fig.update_traces(
@@ -183,7 +183,7 @@ fig.add_scatter(
     mode='markers',
     marker=dict(
         color='red',
-        size=14,
+        size=12,
         symbol='circle',
         line=dict(color='black', width=1)
     ),
@@ -192,7 +192,6 @@ fig.add_scatter(
     hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
                   '<b>Label</b>: %{customdata[1]}<br>' +
                   '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
-                  '<b>Label=1, Cluster=0</b>: %{customdata[3]}<br>' +
                   '<b>x</b>: %{x}<br>' +
                   '<b>y</b>: %{y}<extra></extra>'
 )
