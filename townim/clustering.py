@@ -10,6 +10,7 @@ import torchvision.transforms as T
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
 import plotly.express as px
+import plotly.graph_objects as go
 from dataset import CustomDataset, MONOCYTE_CSV_PATH
 
 # Device setup
@@ -149,9 +150,6 @@ df = pd.DataFrame({
     'patient_id': np.concatenate([train_patient_ids, val_patient_ids])
 })
 
-# Identify points with label=1 and cluster=0 (for hover info only)
-df['label1_cluster0'] = (df['label'] == 1) & (df['cluster'] == 0)
-
 # Mark images from misclassified patients
 df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients)
 
@@ -159,47 +157,175 @@ df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients)
 df['is_train'] = (df['set'] == 'train')
 df['is_val'] = (df['set'] == 'val')
 
-# Interactive plot
-fig = px.scatter(
-    df, x='x', y='y', color='cluster', symbol='set',
-    hover_data=['patient_id', 'label', 'patient_misclassified', 'label1_cluster0', 'is_train', 'is_val'],
-    color_continuous_scale='Viridis',
-    opacity=0.7,
-    title=f'Clustering for {data_type} Fold {set_id}',
-    labels={'set': 'Set', 'cluster': 'Cluster'},
-)
+# Create traces for the plot
+traces = []
 
-# Update marker sizes and opacity to make val points more evident
-fig.update_traces(
-    marker=dict(size=12, opacity=0.5),  # Train points
-    selector=dict(symbol='circle')
-)
-fig.update_traces(
-    marker=dict(size=14, opacity=1.0),  # Val points
-    selector=dict(symbol='star')
-)
-
-# Add points from misclassified patients (red circles)
-misclassified_df = df[df['patient_misclassified']]
-fig.add_scatter(
-    x=misclassified_df['x'],
-    y=misclassified_df['y'],
+# Train points trace
+train_df = df[df['set'] == 'train']
+traces.append(go.Scatter(
+    x=train_df['x'],
+    y=train_df['y'],
     mode='markers',
     marker=dict(
-        color='red',
-        size=14,
+        size=12,
+        opacity=0.5,
         symbol='circle',
+        color=train_df['cluster'],
+        colorscale='Viridis'
     ),
-    name='Patient Misclassified',
-    customdata=misclassified_df[['patient_id', 'label', 'patient_misclassified', 'label1_cluster0', 'is_train', 'is_val']],
+    name='Train',
+    customdata=train_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
     hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
                   '<b>Label</b>: %{customdata[1]}<br>' +
                   '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
-                  '<b>Label=1, Cluster=0</b>: %{customdata[3]}<br>' +
-                  '<b>Is Train</b>: %{customdata[4]}<br>' +
-                  '<b>Is Val</b>: %{customdata[5]}<br>' +
+                  '<b>Is Train</b>: %{customdata[3]}<br>' +
+                  '<b>Is Val</b>: %{customdata[4]}<br>' +
                   '<b>x</b>: %{x}<br>' +
                   '<b>y</b>: %{y}<extra></extra>'
+))
+
+# Val points traces (one per patient)
+val_df = df[df['set'] == 'val']
+val_patients = np.unique(val_df['patient_id'])
+val_traces = {}
+for pid in val_patients:
+    patient_df = val_df[val_df['patient_id'] == pid]
+    val_traces[pid] = go.Scatter(
+        x=patient_df['x'],
+        y=patient_df['y'],
+        mode='markers',
+        marker=dict(
+            size=14,
+            opacity=1.0,
+            symbol='star',
+            color=patient_df['cluster'],
+            colorscale='Viridis'
+        ),
+        name='Val' if pid == val_patients[0] else '',  # Only show "Val" in legend for the first trace
+        showlegend=bool(pid == val_patients[0]),  # Avoid cluttering legend
+        customdata=patient_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
+        hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
+                      '<b>Label</b>: %{customdata[1]}<br>' +
+                      '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                      '<b>Is Train</b>: %{customdata[3]}<br>' +
+                      '<b>Is Val</b>: %{customdata[4]}<br>' +
+                      '<b>x</b>: %{x}<br>' +
+                      '<b>y</b>: %{y}<extra></extra>'
+    )
+    traces.append(val_traces[pid])
+
+# Misclassified points traces (one per misclassified patient)
+misclassified_traces = {}
+for pid in misclassified_patients:
+    patient_df = val_df[(val_df['patient_id'] == pid) & (val_df['patient_misclassified'])]
+    if len(patient_df) > 0:  # Only add trace if there are misclassified points
+        misclassified_traces[pid] = go.Scatter(
+            x=patient_df['x'],
+            y=patient_df['y'],
+            mode='markers',
+            marker=dict(
+                color='red',
+                size=14,
+                symbol='circle'
+            ),
+            name='Patient Misclassified' if pid == misclassified_patients[0] else '',
+            showlegend=bool(pid == misclassified_patients[0]),  # Avoid cluttering legend
+            customdata=patient_df[['patient_id', 'label', 'patient_misclassified', 'is_train', 'is_val']],
+            hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
+                          '<b>Label</b>: %{customdata[1]}<br>' +
+                          '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                          '<b>Is Train</b>: %{customdata[3]}<br>' +
+                          '<b>Is Val</b>: %{customdata[4]}<br>' +
+                          '<b>x</b>: %{x}<br>' +
+                          '<b>y</b>: %{y}<extra></extra>'
+        )
+        traces.append(misclassified_traces[pid])
+
+# Create dropdown menu
+buttons = []
+
+# "All" option (default view)
+buttons.append(dict(
+    label="All",
+    method="update",
+    args=[{
+        "visible": [True] * len(traces),  # Show all traces
+        "marker": [
+            dict(size=12, opacity=0.5, symbol='circle', colorscale='Viridis')  # Train
+        ] + [
+            dict(size=14, opacity=1.0, symbol='star', colorscale='Viridis')  # Val traces
+            for _ in val_patients
+        ] + [
+            dict(color='red', size=14, symbol='circle')  # Misclassified traces
+            for _ in misclassified_patients
+        ]
+    }]
+))
+
+# One option per misclassified patient
+for selected_pid in misclassified_patients:
+    visibility = []
+    marker_styles = []
+    
+    # Train trace
+    visibility.append(True)  # Show train points (faded)
+    marker_styles.append(dict(size=12, opacity=0.1, symbol='circle', color='lightgray'))
+    
+    # Val traces
+    for pid in val_patients:
+        if pid == selected_pid:
+            visibility.append(True)  # Show selected patient's val points
+            marker_styles.append(dict(size=14, opacity=1.0, symbol='star', color='green'))
+        else:
+            visibility.append(True)  # Show other val points (faded)
+            marker_styles.append(dict(size=14, opacity=0.1, symbol='star', color='lightgray'))
+    
+    # Misclassified traces
+    for pid in misclassified_patients:
+        if pid == selected_pid:
+            visibility.append(True)  # Show selected patient's misclassified points
+            marker_styles.append(dict(color='red', size=14, symbol='circle'))
+        else:
+            visibility.append(False)  # Hide other patients' misclassified points
+    
+    buttons.append(dict(
+        label=f"Patient {selected_pid}",
+        method="update",
+        args=[{
+            "visible": visibility,
+            "marker": marker_styles
+        }]
+    ))
+
+# Create the figure
+fig = go.Figure(data=traces)
+
+# Add dropdown menu
+fig.update_layout(
+    updatemenus=[
+        dict(
+            buttons=buttons,
+            direction="down",
+            showactive=True,
+            x=0.5,
+            xanchor="center",
+            y=1.15,
+            yanchor="top"
+        )
+    ],
+    title=f'Clustering for {data_type} Fold {set_id}',
+    legend=dict(
+        title="Set",
+        x=0.8,  # Bottom-right
+        y=0.1,
+        traceorder="normal"
+    ),
+    coloraxis_colorbar=dict(
+        x=1.1,  # Move color bar to the right
+        title="Cluster"
+    ),
+    margin=dict(b=150),  # Add bottom margin for the text annotation
+    showlegend=True
 )
 
 # Patient-level analysis for fold 3 (based on clustering, for text output)
@@ -227,22 +353,6 @@ fig.add_annotation(
     showarrow=False,
     font=dict(size=12),
     align="left"
-)
-
-# Adjust layout to fix legend position and ensure visibility
-fig.update_layout(
-    legend=dict(
-        title="Set",
-        x=0.8,  # Bottom-right
-        y=0.1,
-        traceorder="normal"
-    ),
-    coloraxis_colorbar=dict(
-        x=1.1,  # Move color bar to the right
-        title="Cluster"
-    ),
-    margin=dict(b=150),  # Add bottom margin for the text annotation
-    showlegend=True
 )
 
 # Save the plot
