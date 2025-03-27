@@ -488,15 +488,15 @@ fig.update_layout(
     title=f'Clustering for {data_type} Fold {set_id}',
     legend=dict(
         title="Legend",
-        x=0.95,  # Move legend inside the plot (top-left corner)
-        y=0.05,
+        x=0.65,  # Move legend inside the plot (top-left corner)
+        y=0.25,
         xanchor="left",
         yanchor="top",
         traceorder="normal"
     ),
     margin=dict(l=50, r=400, t=100, b=100),  # Increased right margin for text, added bottom margin for patient annotation
-    width=1500,  # Increased width by 25% (from 1200 to 1500)
-    height=750,  # Increased height by 25% (from 600 to 750)
+    width=1500,
+    height=750,
     showlegend=True,
     xaxis=dict(
         domain=[0, 0.75]  # Plot takes up 75% of the width (0 to 0.75)
@@ -508,9 +508,9 @@ text_annotation = "<br>".join(text_output + text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
-    x=1.02,  # Adjusted to bring text closer to the plot
+    x=0.8,  # Adjusted to bring text closer to the plot
     y=0.5,  # Vertically centered
-    xanchor="left",  # Text starts at x=1.05 and extends to the right
+    xanchor="left",  # Text starts at x and extends to the right
     yanchor="middle",  # Vertically centered
     showarrow=False,
     font=dict(size=12),
