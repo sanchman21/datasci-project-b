@@ -438,7 +438,7 @@ buttons.append(dict(
             dict(  # Annotation 1: Patient-specific text below the graph (hidden in "All" view)
                 text="",
                 xref="paper", yref="paper",
-                x=0.5, y=-0.1,
+                x=0.4, y=0.1,  # Adjusted y position
                 showarrow=False,
                 font=dict(size=12),
                 align="center"
@@ -498,6 +498,9 @@ for idx, selected_pid in enumerate(val_patients):
     else:
         patient_text = f"Patient {selected_pid}: Data not available"
     
+    # Debug: Print the patient_text to confirm it's being set correctly
+    print(f"Setting patient_text for {selected_pid}: {patient_text}")
+    
     buttons.append(dict(
         label=f"Patient {selected_pid}",
         method="update",
@@ -518,7 +521,7 @@ for idx, selected_pid in enumerate(val_patients):
                 dict(  # Annotation 1: Patient-specific text below the graph
                     text=patient_text,
                     xref="paper", yref="paper",
-                    x=0.5, y=-0.1,
+                    x=0.5, y=-0.05,  # Adjusted y position
                     showarrow=False,
                     font=dict(size=12),
                     align="center"
@@ -552,7 +555,7 @@ fig.update_layout(
         yanchor="top",
         traceorder="normal"
     ),
-    margin=dict(l=50, r=400, t=100, b=100),  # Increased right margin for text, added bottom margin for patient annotation
+    margin=dict(l=50, r=400, t=100, b=150),  # Increased bottom margin
     width=1500,
     height=750,
     showlegend=True,
@@ -575,11 +578,12 @@ fig.add_annotation(
     align="left"
 )
 
-# Add a placeholder annotation for the patient-specific text below the graph (hidden by default)
+# Add a placeholder annotation for the patient-specific text below the graph
+# Set a static text to test visibility
 fig.add_annotation(
-    text="",
+    text="Test Annotation",  # Static text to test visibility
     xref="paper", yref="paper",
-    x=0.5, y=-0.1,
+    x=0.5, y=-0.05,  # Adjusted y position
     showarrow=False,
     font=dict(size=12),
     align="center"
