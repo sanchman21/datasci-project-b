@@ -203,6 +203,23 @@ for pid in misclassified_patients:
     patient_points = val_df[val_df['patient_id'] == pid]
     print(f"Patient {pid}: {len(patient_points)} points in val_df, {len(patient_points[patient_points['point_misclassified']])} points misclassified")
 
+# Patient-level analysis for misclassified patients (based on logits)
+text_output_misclassified = []
+for pid in misclassified_patients:
+    indices = np.where(val_patient_ids == pid)[0]
+    if len(indices) == 0:
+        print(f"Warning: Patient {pid} has no validation points for text annotation.")
+        continue
+    patient_labels = val_labels[indices]
+    patient_logits = val_logits[indices]
+    point_preds = np.argmax(patient_logits, axis=1)
+    patient_true = patient_labels[0].astype(int)
+    patient_pred = np.bincount(point_preds).argmax()
+    percent_misclassified = 100 * np.mean(point_preds != patient_true)
+    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%"
+    print(text)
+    text_output_misclassified.append(text)
+
 # Create traces for the plot
 traces = []
 
@@ -332,6 +349,43 @@ for pid in val_patients:
             visible=False
         )
     traces.append(patient_correct_traces[pid])
+    
+    # Incorrect points (red stars)
+    incorrect_df = patient_df[patient_df['point_misclassified']]
+    if len(incorrect_df) > 0:
+        patient_incorrect_traces[pid] = go.Scatter(
+            x=incorrect_df['x'],
+            y=incorrect_df['y'],
+            mode='markers',
+            marker=dict(
+                size=14,
+                opacity=1.0,
+                symbol='star',
+                color='red'
+            ),
+            name='Val (Incorrect)',
+            customdata=incorrect_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
+            hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
+                          '<b>Ground-Truth</b>: %{customdata[1]}<br>' +
+                          '<b>Prediction</b>: %{customdata[7]}<br>' +
+                          '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
+                          '<b>Point Misclassified</b>: %{customdata[3]}<br>' +
+                          '<b>Is Train</b>: %{customdata[4]}<br>' +
+                          '<b>Is Val</b>: %{customdata[5]}<br>' +
+                          '<b>Image Path</b>: %{customdata[6]}<br>' +
+                          '<b>x</b>: %{x}<br>' +
+                          '<b>y</b>: %{y}<extra></extra>',
+            visible=False  # Hidden by default
+        )
+    else:
+        patient_incorrect_traces[pid] = go.Scatter(
+            x=[None], y=[None],  # Dummy trace to maintain index alignment
+            mode='markers',
+            marker=dict(size=14, symbol='star', color='red'),
+            name='Val (Incorrect)',
+            visible=False
+        )
+    traces.append(patient_incorrect_traces[pid])
 
 # Add dummy traces for cluster colors in the legend
 cluster_colors = ['#00CED1', 'green']  # Cluster 0: Dark Turquoise, Cluster 1: Green
@@ -353,6 +407,9 @@ buttons = []
 # Debug: Print the patients in the dropdown
 print(f"Patients in dropdown: {val_patients.tolist()}")
 
+# Debug: Print patient predictions to verify data
+print("Patient predictions:", patient_predictions)
+
 # "All" option (default view)
 buttons.append(dict(
     label="All",
@@ -368,8 +425,17 @@ buttons.append(dict(
             dict(size=10, color=cluster_colors[1])   # Cluster 1
         ],
         "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],
-        "annotations": [  # Hide the patient-specific annotation in "All" view
-            dict(
+        "annotations": [  # Update both annotations
+            dict(  # Annotation 0: Text on the right (unchanged)
+                text="<br>".join(text_output + text_output_misclassified),
+                xref="paper", yref="paper",
+                x=0.8, y=0.5,
+                xanchor="left", yanchor="middle",
+                showarrow=False,
+                font=dict(size=12),
+                align="left"
+            ),
+            dict(  # Annotation 1: Patient-specific text below the graph (hidden in "All" view)
                 text="",
                 xref="paper", yref="paper",
                 x=0.5, y=-0.1,
@@ -439,8 +505,17 @@ for idx, selected_pid in enumerate(val_patients):
             "visible": visibility,
             "marker": marker_styles,
             "showlegend": showlegend,
-            "annotations": [  # Show the patient-specific annotation below the graph
-                dict(
+            "annotations": [  # Update both annotations
+                dict(  # Annotation 0: Text on the right (unchanged)
+                    text="<br>".join(text_output + text_output_misclassified),
+                    xref="paper", yref="paper",
+                    x=0.8, y=0.5,
+                    xanchor="left", yanchor="middle",
+                    showarrow=False,
+                    font=dict(size=12),
+                    align="left"
+                ),
+                dict(  # Annotation 1: Patient-specific text below the graph
                     text=patient_text,
                     xref="paper", yref="paper",
                     x=0.5, y=-0.1,
@@ -451,23 +526,6 @@ for idx, selected_pid in enumerate(val_patients):
             ]
         }]
     ))
-
-# Patient-level analysis for misclassified patients (based on logits)
-text_output_misclassified = []
-for pid in misclassified_patients:
-    indices = np.where(val_patient_ids == pid)[0]
-    if len(indices) == 0:
-        print(f"Warning: Patient {pid} has no validation points for text annotation.")
-        continue
-    patient_labels = val_labels[indices]
-    patient_logits = val_logits[indices]
-    point_preds = np.argmax(patient_logits, axis=1)
-    patient_true = patient_labels[0].astype(int)
-    patient_pred = np.bincount(point_preds).argmax()
-    percent_misclassified = 100 * np.mean(point_preds != patient_true)
-    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%"
-    print(text)
-    text_output_misclassified.append(text)
 
 # Create the figure
 fig = go.Figure(data=traces)
@@ -488,8 +546,8 @@ fig.update_layout(
     title=f'Clustering for {data_type} Fold {set_id}',
     legend=dict(
         title="Legend",
-        x=0.65,  # Move legend inside the plot (top-left corner)
-        y=0.25,
+        x=0.55,  # Move legend inside the plot (top-left corner)
+        y=0.2,
         xanchor="left",
         yanchor="top",
         traceorder="normal"
