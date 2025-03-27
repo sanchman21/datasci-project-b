@@ -208,7 +208,7 @@ traces = []
 
 # Train points trace with fixed colors
 train_df = df[df['set'] == 'train']
-train_colors = np.where(train_df['cluster'] == 0, 'blue', 'green')
+train_colors = np.where(train_df['cluster'] == 0, '#00CED1', 'green')  # Cluster 0: Dark Turquoise, Cluster 1: Green
 traces.append(go.Scatter(
     x=train_df['x'],
     y=train_df['y'],
@@ -247,7 +247,7 @@ if len(val_correct_df) > 0:
             size=14,
             opacity=1.0,
             symbol='star',
-            color='#9467BD'  # Purple (not red, green, or blue)
+            color='#9467BD'  # Purple
         ),
         name='Val (Correct)',
         customdata=val_correct_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
@@ -371,7 +371,7 @@ for pid in val_patients:
     traces.append(patient_incorrect_traces[pid])
 
 # Add dummy traces for cluster colors in the legend
-cluster_colors = ['blue', 'green']
+cluster_colors = ['#00CED1', 'green']  # Cluster 0: Dark Turquoise, Cluster 1: Green
 for cluster in range(2):
     traces.append(go.Scatter(
         x=[None], y=[None],
@@ -462,6 +462,27 @@ for idx, selected_pid in enumerate(val_patients):
         }]
     ))
 
+# Patient-level analysis for misclassified patients (based on logits)
+text_output_misclassified = []
+for pid in misclassified_patients:
+    indices = np.where(val_patient_ids == pid)[0]
+    if len(indices) == 0:
+        print(f"Warning: Patient {pid} has no validation points for text annotation.")
+        continue
+    patient_labels = val_labels[indices]
+    patient_logits = val_logits[indices]
+    point_preds = np.argmax(patient_logits, axis=1)
+    patient_true = patient_labels[0].astype(int)
+    patient_pred = np.bincount(point_preds).argmax()
+    percent_misclassified = 100 * np.mean(point_preds != patient_true)
+    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%"
+    print(text)
+    text_output_misclassified.append(text)
+
+# Calculate the required bottom margin based on the number of lines in the text annotation
+num_lines = len(text_output) + len(text_output_misclassified)
+bottom_margin = max(150, 50 + num_lines * 20)  # Base margin + 20 pixels per line
+
 # Create the figure
 fig = go.Figure(data=traces)
 
@@ -485,33 +506,16 @@ fig.update_layout(
         y=0.1,
         traceorder="normal"
     ),
-    margin=dict(b=150),
+    margin=dict(b=bottom_margin),  # Dynamically adjusted bottom margin
     showlegend=True
 )
-
-# Patient-level analysis for misclassified patients (based on logits)
-text_output_misclassified = []
-for pid in misclassified_patients:
-    indices = np.where(val_patient_ids == pid)[0]
-    if len(indices) == 0:
-        print(f"Warning: Patient {pid} has no validation points for text annotation.")
-        continue
-    patient_labels = val_labels[indices]
-    patient_logits = val_logits[indices]
-    point_preds = np.argmax(patient_logits, axis=1)
-    patient_true = patient_labels[0].astype(int)
-    patient_pred = np.bincount(point_preds).argmax()
-    percent_misclassified = 100 * np.mean(point_preds != patient_true)
-    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%"
-    print(text)
-    text_output_misclassified.append(text)
 
 # Add text output as an annotation below the plot
 text_annotation = "<br>".join(text_output + text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
-    x=0.5, y=-0.3,
+    x=0.5, y=-0.1,  # Adjusted to place text just below the x-axis
     showarrow=False,
     font=dict(size=12),
     align="left"
