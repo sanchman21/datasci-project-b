@@ -49,7 +49,7 @@ def extract_embeddings(model, loader, dataset, device):
     return embeddings, labels, patient_ids, image_paths
 
 # Function to get logits for patient-level predictions
-def get_logits(model, loader, dataset, device):
+def extract_logits(model, loader, dataset, device):
     model.eval()
     logits = []
     labels = []
@@ -96,7 +96,7 @@ model.load_state_dict(torch.load(model_path))
 model = model.to(device)
 
 # Get logits for val set
-val_logits, val_labels, val_patient_ids = get_logits(model, val_loader, val_dataset, device)
+val_logits, val_labels, val_patient_ids = extract_logits(model, val_loader, val_dataset, device)
 
 # Compute point-level predictions for validation points
 val_predictions = np.argmax(val_logits, axis=1)
@@ -332,43 +332,6 @@ for pid in val_patients:
             visible=False
         )
     traces.append(patient_correct_traces[pid])
-    
-    # Incorrect points (red stars)
-    incorrect_df = patient_df[patient_df['point_misclassified']]
-    if len(incorrect_df) > 0:
-        patient_incorrect_traces[pid] = go.Scatter(
-            x=incorrect_df['x'],
-            y=incorrect_df['y'],
-            mode='markers',
-            marker=dict(
-                size=14,
-                opacity=1.0,
-                symbol='star',
-                color='red'
-            ),
-            name='Val (Incorrect)',
-            customdata=incorrect_df[['patient_id', 'label', 'patient_misclassified', 'point_misclassified', 'is_train', 'is_val', 'image_path', 'prediction']],
-            hovertemplate='<b>Patient ID</b>: %{customdata[0]}<br>' +
-                          '<b>Ground-Truth</b>: %{customdata[1]}<br>' +
-                          '<b>Prediction</b>: %{customdata[7]}<br>' +
-                          '<b>Patient Misclassified</b>: %{customdata[2]}<br>' +
-                          '<b>Point Misclassified</b>: %{customdata[3]}<br>' +
-                          '<b>Is Train</b>: %{customdata[4]}<br>' +
-                          '<b>Is Val</b>: %{customdata[5]}<br>' +
-                          '<b>Image Path</b>: %{customdata[6]}<br>' +
-                          '<b>x</b>: %{x}<br>' +
-                          '<b>y</b>: %{y}<extra></extra>',
-            visible=False  # Hidden by default
-        )
-    else:
-        patient_incorrect_traces[pid] = go.Scatter(
-            x=[None], y=[None],  # Dummy trace to maintain index alignment
-            mode='markers',
-            marker=dict(size=14, symbol='star', color='red'),
-            name='Val (Incorrect)',
-            visible=False
-        )
-    traces.append(patient_incorrect_traces[pid])
 
 # Add dummy traces for cluster colors in the legend
 cluster_colors = ['#00CED1', 'green']  # Cluster 0: Dark Turquoise, Cluster 1: Green
@@ -404,7 +367,17 @@ buttons.append(dict(
             dict(size=10, color=cluster_colors[0]),  # Cluster 0
             dict(size=10, color=cluster_colors[1])   # Cluster 1
         ],
-        "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True]
+        "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],
+        "annotations": [  # Hide the patient-specific annotation in "All" view
+            dict(
+                text="",
+                xref="paper", yref="paper",
+                x=0.5, y=-0.1,
+                showarrow=False,
+                font=dict(size=12),
+                align="center"
+            )
+        ]
     }]
 ))
 
@@ -452,13 +425,30 @@ for idx, selected_pid in enumerate(val_patients):
     ])
     showlegend.extend([True, True])
     
+    # Get the patient's ground-truth and prediction for the annotation
+    patient_true, patient_pred = patient_predictions.get(selected_pid, (None, None))
+    if patient_true is not None and patient_pred is not None:
+        patient_text = f"Patient {selected_pid}: True={patient_true}, Pred={patient_pred}"
+    else:
+        patient_text = f"Patient {selected_pid}: Data not available"
+    
     buttons.append(dict(
         label=f"Patient {selected_pid}",
         method="update",
         args=[{
             "visible": visibility,
             "marker": marker_styles,
-            "showlegend": showlegend
+            "showlegend": showlegend,
+            "annotations": [  # Show the patient-specific annotation below the graph
+                dict(
+                    text=patient_text,
+                    xref="paper", yref="paper",
+                    x=0.5, y=-0.1,
+                    showarrow=False,
+                    font=dict(size=12),
+                    align="center"
+                )
+            ]
         }]
     ))
 
@@ -498,15 +488,16 @@ fig.update_layout(
     title=f'Clustering for {data_type} Fold {set_id}',
     legend=dict(
         title="Legend",
-        x=0.8,
-        y=0.1,
+        x=0.05,  # Move legend inside the plot (top-left corner)
+        y=0.95,
+        xanchor="left",
+        yanchor="top",
         traceorder="normal"
     ),
-    margin=dict(l=50, r=300, t=100, b=50),  # Reduced bottom margin, increased right margin for text
-    width=1200,  # Total width of the figure
-    height=600,  # Total height of the figure
+    margin=dict(l=50, r=400, t=100, b=100),  # Increased right margin for text, added bottom margin for patient annotation
+    width=1500,  # Increased width by 25% (from 1200 to 1500)
+    height=750,  # Increased height by 25% (from 600 to 750)
     showlegend=True,
-    # Set the plot area to 75% of the width
     xaxis=dict(
         domain=[0, 0.75]  # Plot takes up 75% of the width (0 to 0.75)
     )
@@ -517,13 +508,23 @@ text_annotation = "<br>".join(text_output + text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
-    x=1.1,  # Position to the right of the plot
+    x=1.05,  # Adjusted to bring text closer to the plot
     y=0.5,  # Vertically centered
-    xanchor="left",  # Text starts at x=1.1 and extends to the right
+    xanchor="left",  # Text starts at x=1.05 and extends to the right
     yanchor="middle",  # Vertically centered
     showarrow=False,
     font=dict(size=12),
     align="left"
+)
+
+# Add a placeholder annotation for the patient-specific text below the graph (hidden by default)
+fig.add_annotation(
+    text="",
+    xref="paper", yref="paper",
+    x=0.5, y=-0.1,
+    showarrow=False,
+    font=dict(size=12),
+    align="center"
 )
 
 # Save the plot
