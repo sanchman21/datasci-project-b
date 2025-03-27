@@ -481,7 +481,7 @@ for pid in misclassified_patients:
 
 # Calculate the required bottom margin based on the number of lines in the text annotation
 num_lines = len(text_output) + len(text_output_misclassified)
-bottom_margin = max(150, 50 + num_lines * 20)  # Base margin + 20 pixels per line
+bottom_margin = max(200, 100 + num_lines * 30)  # Increased base margin and per-line margin
 
 # Create the figure
 fig = go.Figure(data=traces)
@@ -507,6 +507,7 @@ fig.update_layout(
         traceorder="normal"
     ),
     margin=dict(b=bottom_margin),  # Dynamically adjusted bottom margin
+    height=600,  # Set a fixed height to maintain plot size
     showlegend=True
 )
 
@@ -515,7 +516,8 @@ text_annotation = "<br>".join(text_output + text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
-    x=0.5, y=-0.1,  # Adjusted to place text just below the x-axis
+    x=0.5, y=-0.5,  # Push the text further down
+    yanchor="top",  # Anchor the text to the top of the annotation box
     showarrow=False,
     font=dict(size=12),
     align="left"
