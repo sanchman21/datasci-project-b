@@ -488,8 +488,8 @@ fig.update_layout(
     title=f'Clustering for {data_type} Fold {set_id}',
     legend=dict(
         title="Legend",
-        x=0.05,  # Move legend inside the plot (top-left corner)
-        y=0.95,
+        x=0.95,  # Move legend inside the plot (top-left corner)
+        y=0.05,
         xanchor="left",
         yanchor="top",
         traceorder="normal"
@@ -508,7 +508,7 @@ text_annotation = "<br>".join(text_output + text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
-    x=1.05,  # Adjusted to bring text closer to the plot
+    x=1.02,  # Adjusted to bring text closer to the plot
     y=0.5,  # Vertically centered
     xanchor="left",  # Text starts at x=1.05 and extends to the right
     yanchor="middle",  # Vertically centered
