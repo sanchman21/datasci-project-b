@@ -1,3 +1,9 @@
+'''
+This script performs clustering by extracting embeddings on different models trained on different types of data
+for all folds and visualizes the embeddings using t-SNE.
+'''
+
+# import libraries
 import os
 import numpy as np
 import pandas as pd
@@ -12,12 +18,13 @@ from sklearn.manifold import TSNE
 import plotly.express as px
 import plotly.graph_objects as go
 from dataset import CustomDataset, MONOCYTE_CSV_PATH
+from utils import Identity, extract_embeddings, extract_logits
 
-# Device setup
+# set device
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using device: {device}")
 
-# Constants
+# set constant variables (same as in trainer.py)
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 test_transform = T.Compose([
@@ -26,46 +33,6 @@ test_transform = T.Compose([
     T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
 ])
 
-# Identity layer to extract embeddings
-class Identity(nn.Module):
-    def forward(self, x):
-        return x
-
-# Function to extract embeddings
-def extract_embeddings(model, loader, dataset, device):
-    model.eval()
-    embeddings = []
-    labels = []
-    with torch.no_grad():
-        for inputs, lbls in loader:
-            inputs = inputs.to(device).float()
-            feats = model(inputs)
-            embeddings.append(feats.cpu().numpy())
-            labels.extend(lbls.numpy())
-    embeddings = np.concatenate(embeddings)
-    labels = np.array(labels)
-    patient_ids = dataset.df['patient_id'].to_numpy()
-    image_paths = dataset.df['image_path'].to_numpy()
-    return embeddings, labels, patient_ids, image_paths
-
-# Function to get logits for patient-level predictions
-def extract_logits(model, loader, dataset, device):
-    model.eval()
-    logits = []
-    labels = []
-    with torch.no_grad():
-        for inputs, lbls in loader:
-            inputs = inputs.to(device).float()
-            outputs = model(inputs)
-            outputs = F.softmax(outputs, dim=-1)
-            logits.append(outputs.cpu().numpy())
-            labels.extend(lbls.numpy())
-    logits = np.concatenate(logits)
-    labels = np.array(labels)
-    patient_ids = dataset.df['patient_id'].to_numpy()
-    patient_ids = patient_ids.astype(str)
-    return logits, labels, patient_ids
-
 # Clustering for Monocyte Fold 3
 data_type = 'monocyte'
 set_id = 3
@@ -73,19 +40,19 @@ CSV_PATH = MONOCYTE_CSV_PATH
 
 print(f"Clustering for {data_type} Fold {set_id}...")
 
-# Load datasets
+# load datasets and create dataloaders
 train_dataset = CustomDataset('train', CSV_PATH, set_id, transform=test_transform)
 val_dataset = CustomDataset('val', CSV_PATH, set_id, transform=test_transform)
 train_loader = DataLoader(train_dataset, batch_size=8, shuffle=False, pin_memory=True, num_workers=8)
 val_loader = DataLoader(val_dataset, batch_size=8, shuffle=False, pin_memory=True, num_workers=8)
 
-# Load model for embeddings
+# load model for embeddings
 model = models.resnet50(weights=None)
 num_ftrs = model.fc.in_features
 hidden_layer_size = 512
 num_classes = 2
 
-# First, load the model with the original fc layer to get logits
+# create the original fc layer and load the model weights to avoid errors
 model.fc = nn.Sequential(
     nn.Linear(num_ftrs, hidden_layer_size),
     nn.ReLU(),
@@ -95,66 +62,53 @@ model_path = f"experiments/{data_type}/train/{data_type}_fold_{set_id}_with_TTA/
 model.load_state_dict(torch.load(model_path))
 model = model.to(device)
 
-# Get logits for val set
+# get logits for the validation set
 val_logits, val_labels, val_patient_ids = extract_logits(model, val_loader, val_dataset, device)
 
-# Compute point-level predictions for validation points
+# compute predictions (image-level)
 val_predictions = np.argmax(val_logits, axis=1)
 
 # Patient-level predictions
-patient_ids_unique = np.unique(val_patient_ids)
-misclassified_patients = []
-patient_predictions = {}
-for pid in patient_ids_unique:
-    indices = np.where(val_patient_ids == pid)[0]
-    patient_logits = np.mean(val_logits[indices], axis=0)
-    patient_pred = patient_logits.argmax()
-    patient_true = val_labels[indices][0].astype(int)
-    patient_predictions[pid] = (patient_true, patient_pred)
-    if patient_pred != patient_true:
-        misclassified_patients.append(pid)
+patient_ids_unique = np.unique(val_patient_ids) # get unique patient ids
+misclassified_patients = [] # initialise list to store misclassified patients
+patient_predictions = {} # initialise dictionary to store patient predictions
+for pid in patient_ids_unique: # for each patient id
+    indices = np.where(val_patient_ids == pid)[0] # get indices of the patient id
+    patient_logits = np.mean(val_logits[indices], axis=0) # get the mean of the logits
+    patient_pred = patient_logits.argmax() # get the prediction
+    patient_true = val_labels[indices][0].astype(int) # get the true label
+    patient_predictions[pid] = (patient_true, patient_pred) # store the true label and prediction
+    if patient_pred != patient_true: # if the prediction is incorrect
+        misclassified_patients.append(pid) # add the patient id to the misclassified patients list
 
-# Debug: Print the misclassified patients based on logits
 print(f"Misclassified patients (based on logits): {misclassified_patients}")
 
-# Now set fc to Identity to extract embeddings
+# set fc to Identity for extracting embeddings
 model.fc = Identity()
 model = model.to(device)
 
-# Extract embeddings
+# extract train and val embeddings
 train_embeddings, train_labels, train_patient_ids, train_image_paths = extract_embeddings(model, train_loader, train_dataset, device)
 val_embeddings, val_labels, val_patient_ids, val_image_paths = extract_embeddings(model, val_loader, val_dataset, device)
 
-# Convert patient_ids to strings
+# convert train and val patient ids to string
 train_patient_ids = train_patient_ids.astype(str)
 val_patient_ids = val_patient_ids.astype(str)
 
-# Cluster on train embeddings with K-means
+# cluster train embeddings using k-means
 kmeans = KMeans(n_clusters=2, random_state=123)
 train_clusters = kmeans.fit_predict(train_embeddings)
 
-# Assign val embeddings
+# predict val embeddings clusters
 val_clusters = kmeans.predict(val_embeddings)
 
-# Determine majority label per cluster
-majority_labels = []
-text_output = []
-for cluster in range(2):
-    mask = train_clusters == cluster
-    majority = np.bincount(train_labels[mask].astype(int)).argmax()
-    majority_labels.append(majority)
-    text = f"Cluster {cluster} majority label: {majority} (0=Normal, 1=CMML)"
-    print(text)
-    text_output.append(text)
-majority_labels = np.array(majority_labels)
-
-# Visualize with t-SNE
+# visualising embeddings using t-SNE (embedding dimensionality reduction to 2D)
 tsne = TSNE(n_components=2, random_state=123)
 embeddings_2d = tsne.fit_transform(np.vstack([train_embeddings, val_embeddings]))
-train_2d = embeddings_2d[:len(train_embeddings)]
-val_2d = embeddings_2d[len(train_embeddings):]
+train_2d = embeddings_2d[:len(train_embeddings)] # train embeddings (2D)
+val_2d = embeddings_2d[len(train_embeddings):] # val embeddings (2D)
 
-# Create DataFrame for Plotly
+# create a dataframe to use with plotly
 df = pd.DataFrame({
     'x': np.concatenate([train_2d[:, 0], val_2d[:, 0]]),
     'y': np.concatenate([train_2d[:, 1], val_2d[:, 1]]),
@@ -165,68 +119,58 @@ df = pd.DataFrame({
     'image_path': np.concatenate([train_image_paths, val_image_paths])
 })
 
-# Add point-level predictions to df
-df['prediction'] = 'N/A'  # Default for training points
-val_indices = df[df['set'] == 'val'].index
-for i, pred in enumerate(val_predictions):
-    if i < len(val_indices):
-        df.loc[val_indices[i], 'prediction'] = str(pred)
+df['prediction'] = 'N/A'  # training points have no prediction
+val_indices = df[df['set'] == 'val'].index # get val indices
+for i, pred in enumerate(val_predictions): # for each prediction
+    if i < len(val_indices): # if the index is less than the number of val indices
+        df.loc[val_indices[i], 'prediction'] = str(pred) # set the prediction
 
-# Add boolean columns for train and val
+# create boolean columns for train and val (used in plotly)
 df['is_train'] = (df['set'] == 'train')
 df['is_val'] = (df['set'] == 'val')
 
-# Ensure patient_id is the same type in df and misclassified_patients
-df['patient_id'] = df['patient_id'].astype(str)
-misclassified_patients = [str(pid) for pid in misclassified_patients]
+df['patient_id'] = df['patient_id'].astype(str) # convert patient id to string
+misclassified_patients = [str(pid) for pid in misclassified_patients] # convert misclassified patients to string
 
-# Mark images as misclassified based on patient-level predictions
-df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients)
+df['patient_misclassified'] = df['patient_id'].isin(misclassified_patients) # create boolean column for patient misclassified
 
-# Mark individual points as misclassified (image-level, based on logits)
-df['point_misclassified'] = False
-for pid in patient_ids_unique:
-    indices = np.where(val_patient_ids == pid)[0]
-    patient_true, patient_pred = patient_predictions.get(pid, (None, None))
-    if patient_true is not None and patient_pred is not None:
-        df_indices = df[(df['patient_id'] == str(pid)) & (df['set'] == 'val')].index
-        for idx, val_idx in enumerate(indices):
-            if idx < len(df_indices):
-                point_pred = val_logits[val_idx].argmax()
-                true_label = patient_true
-                if point_pred != true_label:
-                    df.loc[df_indices[idx], 'point_misclassified'] = True
+df['point_misclassified'] = False # initialise point misclassified column to False
+for pid in patient_ids_unique: # for each patient id
+    indices = np.where(val_patient_ids == pid)[0] # get indices of the patient id
+    patient_true, patient_pred = patient_predictions.get(pid, (None, None)) # get the true label and prediction (patient-level)
+    if patient_true is not None and patient_pred is not None: # if the true label and prediction are not None
+        df_indices = df[(df['patient_id'] == str(pid)) & (df['set'] == 'val')].index # get the indices of the patient id in the dataframe
+        for idx, val_idx in enumerate(indices): # for each index
+            if idx < len(df_indices): # if the index is less than the number of df indices
+                point_pred = val_logits[val_idx].argmax() # get the point prediction (image-level)
+                true_label = patient_true # get the true label
+                if point_pred != true_label: # if the point prediction is incorrect
+                    df.loc[df_indices[idx], 'point_misclassified'] = True # set the point misclassified column to True
 
-# Debug: Check which patients in misclassified_patients have points in val_df
-val_df = df[df['set'] == 'val']
-for pid in misclassified_patients:
-    patient_points = val_df[val_df['patient_id'] == pid]
-    print(f"Patient {pid}: {len(patient_points)} points in val_df, {len(patient_points[patient_points['point_misclassified']])} points misclassified")
-
-# Patient-level analysis for misclassified patients (based on logits)
-text_output_misclassified = []
-for pid in misclassified_patients:
-    indices = np.where(val_patient_ids == pid)[0]
-    if len(indices) == 0:
-        print(f"Warning: Patient {pid} has no validation points for text annotation.")
+# patient-level analysis (to be printed in the plot)
+text_output_misclassified = [] # initialise list to store text output for misclassified patients
+for pid in misclassified_patients: # for each misclassified patient
+    indices = np.where(val_patient_ids == pid)[0] # get indices of the patient id
+    if len(indices) == 0: # if the length of indices is 0
+        print(f"Warning: Patient {pid} has no validation points for text annotation.") # print warning
         continue
-    patient_labels = val_labels[indices]
-    patient_logits = val_logits[indices]
-    point_preds = np.argmax(patient_logits, axis=1)
-    patient_true = patient_labels[0].astype(int)
-    patient_pred = np.bincount(point_preds).argmax()
-    percent_misclassified = 100 * np.mean(point_preds != patient_true)
-    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%"
-    print(text)
-    text_output_misclassified.append(text)
+    patient_labels = val_labels[indices] # get the patient labels
+    patient_logits = val_logits[indices] # get the patient logits
+    point_preds = np.argmax(patient_logits, axis=1) # get the point predictions
+    patient_true = patient_labels[0].astype(int) # get the true label
+    patient_pred = np.bincount(point_preds).argmax() # get the prediction
+    percent_misclassified = 100 * np.mean(point_preds != patient_true) # get the percentage of misclassified points
+    text = f"Patient {pid}: True={patient_true}, Pred={patient_pred}, % Images Misclassified={percent_misclassified:.2f}%" # create text output
+    print(text) # print text output
+    text_output_misclassified.append(text) # add text output to the list
 
-# Create traces for the plot
+# initialise traces
 traces = []
 
-# Train points trace with fixed colors
-train_df = df[df['set'] == 'train']
+# create train points traces
+train_df = df[df['set'] == 'train'] # get train dataframe
 train_colors = np.where(train_df['cluster'] == 0, '#00CED1', 'green')  # Cluster 0: Dark Turquoise, Cluster 1: Green
-traces.append(go.Scatter(
+traces.append(go.Scatter( # create scatter plot of train points
     x=train_df['x'],
     y=train_df['y'],
     mode='markers',
@@ -250,13 +194,13 @@ traces.append(go.Scatter(
                   '<b>y</b>: %{y}<extra></extra>'
 ))
 
-# Val points traces: Separate into correctly classified and misclassified patients for the "All" view
-val_correct_df = val_df[~val_df['patient_misclassified']]  # Correctly classified patients
-val_misclassified_df = val_df[val_df['patient_misclassified']]  # Misclassified patients
+val_df = df[df['set'] == 'val'] # get val dataframe
+val_correct_df = val_df[~val_df['patient_misclassified']]  # correctly classified patients
+val_misclassified_df = val_df[val_df['patient_misclassified']]  # misclassified patients
 
-# Trace for correctly classified patients (purple stars) - used in "All" view
-if len(val_correct_df) > 0:
-    traces.append(go.Scatter(
+# trace for correctly classified patients (purple stars) used in "All" view
+if len(val_correct_df) > 0: # if there are correctly classified patients
+    traces.append(go.Scatter( # create scatter plot of correctly classified patients
         x=val_correct_df['x'],
         y=val_correct_df['y'],
         mode='markers',
@@ -280,9 +224,9 @@ if len(val_correct_df) > 0:
                       '<b>y</b>: %{y}<extra></extra>'
     ))
 
-# Trace for misclassified patients (red stars) - used in "All" view
-if len(val_misclassified_df) > 0:
-    traces.append(go.Scatter(
+# trace for misclassified patients (red stars) used in "All" view
+if len(val_misclassified_df) > 0: # if there are misclassified patients
+    traces.append(go.Scatter( # create scatter plot of misclassified patients
         x=val_misclassified_df['x'],
         y=val_misclassified_df['y'],
         mode='markers',
@@ -306,17 +250,16 @@ if len(val_misclassified_df) > 0:
                       '<b>y</b>: %{y}<extra></extra>'
     ))
 
-# Create two traces for each patient for patient-specific views: one for correct points, one for incorrect points
-val_patients = np.unique(val_df['patient_id'])
-patient_correct_traces = {}
-patient_incorrect_traces = {}
-for pid in val_patients:
-    patient_df = val_df[val_df['patient_id'] == pid]
+# create two traces for the "patient specific" view - correct and incorrect points for each patient
+val_patients = np.unique(val_df['patient_id']) # get unique patient ids
+patient_correct_traces = {} # initialise dictionary to store correct traces
+patient_incorrect_traces = {} # initialise dictionary to store incorrect traces
+for pid in val_patients: # for each patient id
+    patient_df = val_df[val_df['patient_id'] == pid] # get the patient dataframe
+    correct_df = patient_df[~patient_df['point_misclassified']] # correct points
     
-    # Correct points (purple stars)
-    correct_df = patient_df[~patient_df['point_misclassified']]
-    if len(correct_df) > 0:
-        patient_correct_traces[pid] = go.Scatter(
+    if len(correct_df) > 0: # if there are correct points
+        patient_correct_traces[pid] = go.Scatter( # create scatter plot of correct points
             x=correct_df['x'],
             y=correct_df['y'],
             mode='markers',
@@ -340,20 +283,19 @@ for pid in val_patients:
                           '<b>y</b>: %{y}<extra></extra>',
             visible=False  # Hidden by default
         )
-    else:
-        patient_correct_traces[pid] = go.Scatter(
-            x=[None], y=[None],  # Dummy trace to maintain index alignment
+    else: # if there are no correct points
+        patient_correct_traces[pid] = go.Scatter( # create a dummy trace to maintain index alignment
+            x=[None], y=[None], 
             mode='markers',
             marker=dict(size=14, symbol='star', color='#9467BD'),
             name='Val (Correct)',
             visible=False
         )
-    traces.append(patient_correct_traces[pid])
+    traces.append(patient_correct_traces[pid]) # append the correct traces to the traces list
     
-    # Incorrect points (red stars)
-    incorrect_df = patient_df[patient_df['point_misclassified']]
-    if len(incorrect_df) > 0:
-        patient_incorrect_traces[pid] = go.Scatter(
+    incorrect_df = patient_df[patient_df['point_misclassified']] # get the incorrect points
+    if len(incorrect_df) > 0: # if there are incorrect points
+        patient_incorrect_traces[pid] = go.Scatter( # create scatter plot of incorrect points
             x=incorrect_df['x'],
             y=incorrect_df['y'],
             mode='markers',
@@ -376,10 +318,10 @@ for pid in val_patients:
                           '<b>x</b>: %{x}<br>' +
                           '<b>y</b>: %{y}<extra></extra>',
             visible=False  # Hidden by default
-        )
-    else:
-        patient_incorrect_traces[pid] = go.Scatter(
-            x=[None], y=[None],  # Dummy trace to maintain index alignment
+        ) 
+    else: # if there are no incorrect points
+        patient_incorrect_traces[pid] = go.Scatter( # create a dummy trace to maintain index alignment
+            x=[None], y=[None],
             mode='markers',
             marker=dict(size=14, symbol='star', color='red'),
             name='Val (Incorrect)',
@@ -387,7 +329,7 @@ for pid in val_patients:
         )
     traces.append(patient_incorrect_traces[pid])
 
-# Add dummy traces for cluster colors in the legend
+# create dummy traces for the legend
 cluster_colors = ['#00CED1', 'green']  # Cluster 0: Dark Turquoise, Cluster 1: Green
 for cluster in range(2):
     traces.append(go.Scatter(
@@ -401,64 +343,45 @@ for cluster in range(2):
         visible='legendonly'
     ))
 
-# Create dropdown menu for all patients
+# create dropdown menu for all patients
 buttons = []
 
-# Debug: Print the patients in the dropdown
-print(f"Patients in dropdown: {val_patients.tolist()}")
-
-# Debug: Print patient predictions to verify data
-print("Patient predictions:", patient_predictions)
-
-# "All" option (default view)
+# append "All" option to the buttons
 buttons.append(dict(
     label="All",
     method="update",
-    args=[{
-        "visible": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],  # Train, Val (Correct), Val (Misclassified), Patient traces (hidden), Cluster 0, Cluster 1
-        "marker": [
-            dict(size=12, opacity=0.5, symbol='circle', color=train_colors),  # Train
-            dict(size=14, opacity=1.0, symbol='star', color='#9467BD'),  # Val (Correct)
-            dict(size=14, opacity=1.0, symbol='star', color='red'),  # Val (Misclassified)
-        ] + [dict()] * (2 * len(val_patients)) + [  # Placeholder for patient traces
-            dict(size=10, color=cluster_colors[0]),  # Cluster 0
-            dict(size=10, color=cluster_colors[1])   # Cluster 1
-        ],
-        "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],
-        "annotations": [  # Update both annotations
-            dict(  # Annotation 0: Text on the right (unchanged)
-                text="<br>".join(text_output + text_output_misclassified),
-                xref="paper", yref="paper",
-                x=0.8, y=0.5,
-                xanchor="left", yanchor="middle",
-                showarrow=False,
-                font=dict(size=12),
-                align="left"
-            ),
-            dict(  # Annotation 1: Patient-specific text below the graph (hidden in "All" view)
-                text="",
-                xref="paper", yref="paper",
-                x=0.4, y=0.1,  # Adjusted y position
-                showarrow=False,
-                font=dict(size=12),
-                align="center"
-            )
-        ]
-    }]
+    args=[
+        {
+            "visible": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],  # train, val correct, val incorrect, patient traces, clusters
+            "marker": [
+                dict(size=12, opacity=0.5, symbol='circle', color=train_colors), # train
+                dict(size=14, opacity=1.0, symbol='star', color='#9467BD'), # val correct
+                dict(size=14, opacity=1.0, symbol='star', color='red'), # val incorrect
+            ] + [dict()] * (2 * len(val_patients)) + [ # patient traces (placeholder)
+                dict(size=10, color=cluster_colors[0]),  # cluster 0
+                dict(size=10, color=cluster_colors[1])   # cluster 1
+            ],
+            "showlegend": [True, True, True] + [False] * (2 * len(val_patients)) + [True, True],
+        },
+        {
+            "annotations[1].text": ""  # empty patient-specific text for "All" view
+        }
+    ]
 ))
 
-# One option per patient (all patients)
-for idx, selected_pid in enumerate(val_patients):
+# buttons for each patient
+for idx, selected_pid in enumerate(val_patients): # for each patient id
+    # initialise lists
     visibility = []
     marker_styles = []
     showlegend = []
     
-    # Train trace (always visible, never faded)
+    # add train traces (visible by default)
     visibility.append(True)
     marker_styles.append(dict(size=12, opacity=0.5, symbol='circle', color=train_colors))
     showlegend.append(True)
     
-    # Hide the "All" view traces (Val Correct and Val Misclassified)
+    # hide the val correct and val incorrect traces
     visibility.extend([False, False])
     marker_styles.extend([
         dict(),
@@ -466,10 +389,9 @@ for idx, selected_pid in enumerate(val_patients):
     ])
     showlegend.extend([False, False])
     
-    # Show only the selected patient's traces (correct and incorrect points)
-    for pid in val_patients:
-        if pid == selected_pid:
-            # Show both correct and incorrect traces for the selected patient
+    # add the patient-specific traces
+    for pid in val_patients: # for each patient id
+        if pid == selected_pid: # if the patient id is the selected patient, add the correct and incorrect traces
             visibility.extend([True, True])
             patient_correct_df = val_df[(val_df['patient_id'] == pid) & (~val_df['point_misclassified'])]
             patient_incorrect_df = val_df[(val_df['patient_id'] == pid) & (val_df['point_misclassified'])]
@@ -478,12 +400,12 @@ for idx, selected_pid in enumerate(val_patients):
                 dict(size=14, opacity=1.0, symbol='star', color='red') if len(patient_incorrect_df) > 0 else dict()
             ])
             showlegend.extend([len(patient_correct_df) > 0, len(patient_incorrect_df) > 0])  # Show legend only if trace has points
-        else:
+        else: # if the patient id is not the selected patient, add dummy traces
             visibility.extend([False, False])
             marker_styles.extend([dict(), dict()])
             showlegend.extend([False, False])
     
-    # Dummy traces for clusters
+    # add dummy traces for the clusters
     visibility.extend([True, True])
     marker_styles.extend([
         dict(size=10, color=cluster_colors[0]),
@@ -491,49 +413,32 @@ for idx, selected_pid in enumerate(val_patients):
     ])
     showlegend.extend([True, True])
     
-    # Get the patient's ground-truth and prediction for the annotation
+    # get the patient-specific text
     patient_true, patient_pred = patient_predictions.get(selected_pid, (None, None))
     if patient_true is not None and patient_pred is not None:
         patient_text = f"Patient {selected_pid}: True={patient_true}, Pred={patient_pred}"
     else:
         patient_text = f"Patient {selected_pid}: Data not available"
     
-    # Debug: Print the patient_text to confirm it's being set correctly
-    print(f"Setting patient_text for {selected_pid}: {patient_text}")
-    
-    buttons.append(dict(
+    buttons.append(dict( # add the button
         label=f"Patient {selected_pid}",
         method="update",
-        args=[{
-            "visible": visibility,
-            "marker": marker_styles,
-            "showlegend": showlegend,
-            "annotations": [  # Update both annotations
-                dict(  # Annotation 0: Text on the right (unchanged)
-                    text="<br>".join(text_output + text_output_misclassified),
-                    xref="paper", yref="paper",
-                    x=0.8, y=0.5,
-                    xanchor="left", yanchor="middle",
-                    showarrow=False,
-                    font=dict(size=12),
-                    align="left"
-                ),
-                dict(  # Annotation 1: Patient-specific text below the graph
-                    text=patient_text,
-                    xref="paper", yref="paper",
-                    x=0.5, y=-0.05,  # Adjusted y position
-                    showarrow=False,
-                    font=dict(size=12),
-                    align="center"
-                )
-            ]
-        }]
+        args=[
+            {
+                "visible": visibility,
+                "marker": marker_styles,
+                "showlegend": showlegend,
+            },
+            {
+                "annotations[1].text": patient_text
+            }
+        ]
     ))
 
-# Create the figure
+# create the figure
 fig = go.Figure(data=traces)
 
-# Add dropdown menu
+# update layout (title, legend, margin, width, height, buttons
 fig.update_layout(
     updatemenus=[
         dict(
@@ -550,7 +455,7 @@ fig.update_layout(
     legend=dict(
         title="Legend",
         x=0.55,  # Move legend inside the plot (top-left corner)
-        y=0.2,
+        y=0.27,
         xanchor="left",
         yanchor="top",
         traceorder="normal"
@@ -564,8 +469,8 @@ fig.update_layout(
     )
 )
 
-# Add text output as an annotation to the right of the plot
-text_annotation = "<br>".join(text_output + text_output_misclassified)
+# add annotation 0 (right side of the plot)
+text_annotation = "<br>".join(text_output_misclassified)
 fig.add_annotation(
     text=text_annotation,
     xref="paper", yref="paper",
@@ -578,18 +483,17 @@ fig.add_annotation(
     align="left"
 )
 
-# Add a placeholder annotation for the patient-specific text below the graph
-# Set a static text to test visibility
+# add annotation 1 (bottom of the plot) (placeholder for default view - "All")
 fig.add_annotation(
-    text="Test Annotation",  # Static text to test visibility
+    text="",  # Start with empty text
     xref="paper", yref="paper",
-    x=0.5, y=-0.05,  # Adjusted y position
+    x=0.28, y=-0.1,  # Adjusted y position
     showarrow=False,
     font=dict(size=12),
     align="center"
 )
 
-# Save the plot
+# save the plot
 output_path = f'experiments/{data_type}/train/{data_type}_fold_{set_id}_with_TTA/figures/clustering_fold_{set_id}.html'
 fig.write_html(output_path)
 

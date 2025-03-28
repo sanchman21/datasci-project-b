@@ -220,3 +220,76 @@ def assign_patient_folds_splits(data_type_path, patient_folds_path="../datasets/
     # Save the updated patient_folds.csv
     patient_folds.to_csv(patient_folds_path, index=False)
     print("Updated patient_folds.csv")
+    
+class Identity(torch.nn.Module):
+    '''
+    This class is used to extract the features from the model
+    '''
+    def forward(self, x):
+        '''
+        function: forward pass
+        parameters:
+            x: input
+        returns: input
+        '''
+        return x
+    
+def extract_embeddings(model, loader, dataset, device):
+    '''
+    function: extracts embeddings from the model
+    parameters:
+        model: model
+        loader: data loader
+        dataset: dataset
+        device: device
+    returns: embeddings, labels, patient_ids, image_paths
+    '''
+    model.eval() # set the model to evaluation mode
+    # initialise empty lists for embeddings and labels
+    embeddings = []
+    labels = []
+    with torch.no_grad(): # turn off gradient computation
+        for inputs, lbls in loader: # iterate over the data loader
+            # get and move the inputs to the device
+            inputs = inputs.to(device).float()
+            feats = model(inputs) # get the features from the model
+            embeddings.append(feats.cpu().numpy()) # append the features to the embeddings list
+            labels.extend(lbls.numpy()) # extend the labels list with the labels
+    # concatenate the embeddings and convert the labels to a numpy array
+    embeddings = np.concatenate(embeddings)
+    labels = np.array(labels)
+    # get the patient ids and image paths from the dataset
+    patient_ids = dataset.df['patient_id'].to_numpy()
+    image_paths = dataset.df['image_path'].to_numpy()
+    return embeddings, labels, patient_ids, image_paths # return the embeddings, labels, patient_ids, and image_paths
+
+def extract_logits(model, loader, dataset, device):
+    '''
+    function: extract logits from the model
+    parameters:
+        model: trained model
+        loader: DataLoader
+        dataset: CustomDataset
+        device: device to run the model
+    return:
+        logits: numpy array of logits
+        labels: numpy array of labels
+        patient_ids: numpy array of patient_ids
+    '''
+    model.eval() # set the model to evaluation mode
+    # initialise empty lists for logits and labels
+    logits = []
+    labels = []
+    with torch.no_grad(): # disable gradient calculation
+        for inputs, lbls in loader: # iterate over the loader
+            inputs = inputs.to(device).float() # get the inputs
+            outputs = model(inputs) # get the outputs
+            outputs = torch.nn.functional.softmax(outputs, dim=-1) # apply softmax
+            logits.append(outputs.cpu().numpy()) # append the outputs to logits
+            labels.extend(lbls.numpy()) # extend the labels
+    # concatenate the logits and convert labels to numpy array
+    logits = np.concatenate(logits)
+    labels = np.array(labels)
+    patient_ids = dataset.df['patient_id'].to_numpy() # get the patient_ids
+    patient_ids = patient_ids.astype(str) # convert to string
+    return logits, labels, patient_ids # return logits, labels, patient_ids

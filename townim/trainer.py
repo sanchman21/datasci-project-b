@@ -78,12 +78,12 @@ print(f"Created new experiment for {data_type}")
 root = f"./experiments/{data_type}/train"
 os.makedirs(root, exist_ok=True)  # output directory (main level)
 
-# Create data loaders
+# Set constant variables and get information from config file
+IMAGENET_MEAN = [0.485, 0.456, 0.406]  # Mean of ImageNet dataset (used for normalization)
+IMAGENET_STD = [0.229, 0.224, 0.225]  # Std of ImageNet dataset (used for normalization)
 num_epochs = config['num_epochs']
 batch_size = config['batch_size']
 IMAGE_SIZE = config['image_size']
-IMAGENET_MEAN = [0.485, 0.456, 0.406]  # Mean of ImageNet dataset (used for normalization)
-IMAGENET_STD = [0.229, 0.224, 0.225]  # Std of ImageNet dataset (used for normalization)
 use_scheduler = config['use_scheduler']
 lr = config['lr']
 weight_decay = config['weight_decay']
