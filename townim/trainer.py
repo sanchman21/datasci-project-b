@@ -148,7 +148,7 @@ with mlflow.start_run(run_name="train-val") as parent_run:
         os.makedirs(figure_dir, exist_ok=True)
             
         shutil.copyfile('./trainer.py', os.path.join(output_dir, 'trainer.py'))  # copying code file used to train the model
-        utils.set_random_seed(123)
+        utils.set_random_seed(420) # set seed
 
         # Create the test dataset and data loaders
         test_dataset = CustomDataset('val', CSV_PATH, set_id, transform=test_transform)

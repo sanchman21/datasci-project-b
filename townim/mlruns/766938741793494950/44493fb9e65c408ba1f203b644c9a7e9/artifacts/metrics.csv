@@ -1,4 +1,0 @@
-test type,accuracy,precision,recall,f1,auroc
-Image W/O TTA,0.8534,0.7472,0.995,0.8534,0.9789
-Image TTA,0.8804,0.783,0.9975,0.8773,0.9798
-Patient,0.8889,0.6,1.0,0.75,0.9944
