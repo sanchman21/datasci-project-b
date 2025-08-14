@@ -1,0 +1,21 @@
+Config:
+batch_size: 4
+learning_rate: 0.0001
+weight_decay: 0.0001
+num_epochs: 100
+patience: 10
+optimizer: Adam
+scheduler: ReduceLROnPlateau
+model_type: UNet
+pretrained: False
+augmentation: True
+normalization: ImageNet
+
+Test Metrics:
+test_loss: 0.0265
+test_dice_nucleus: 0.9673
+test_dice_cytoplasm: 0.9737
+test_dice_mean: 0.9705
+test_iou_nucleus: 0.9378
+test_iou_cytoplasm: 0.9501
+test_iou_mean: 0.9440

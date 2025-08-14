@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cluster Comparison Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        h2, h3, h4, h5 {
+            color: #444;
+        }
+        .plot-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .plot-container iframe {
+            width: 100%;
+            height: 60vh;
+            border: none;
+        }
+        .plot-row {
+            margin-bottom: 20px;
+        }
+        .image-sections {
+            display: flex;
+            width: 100%;
+            height: 60vh;
+            overflow: hidden;
+        }
+        .normal-section, .segmented-section {
+            width: 50%;
+            overflow-y: auto;
+            padding: 0 10px;
+        }
+        .normal-section {
+            border-right: 1px solid #ddd;
+        }
+        .cluster-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .cluster-images .image-container {
+            flex: 0 0 calc(33.33% - 10px);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .cluster-images img {
+            max-width: 100%;
+            max-height: 150px;
+            width: auto;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+        .cluster-images .image-container p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h2>Cluster Comparison Results</h2>
+    <div class="plot-row">
+        <div class="plot-container">
+            <h3>Clustering Plot - Normal Model: {{ normal_clustering_file.data_type }}, Fold: {{ normal_clustering_file.fold }}</h3>
+            <iframe src="{{ url_for('serve_file', file_path=normal_clustering_file.relative_html_path) }}"
+                    frameborder="0"></iframe>
+        </div>
+    </div>
+    <div class="plot-row">
+        <div class="plot-container">
+            <h3>Clustering Plot - Segmented Model: {{ segmented_clustering_file.data_type }}, Fold: {{ segmented_clustering_file.fold }}</h3>
+            <iframe src="{{ url_for('serve_file', file_path=segmented_clustering_file.relative_html_path) }}"
+                    frameborder="0"></iframe>
+        </div>
+    </div>
+    <div class="image-sections">
+        <div class="normal-section">
+            {% set clusters = [] %}
+            {% for cluster in normal_clustering_file.cluster_metadata.keys() if cluster not in ['patient_to_cluster', 'clustering_metrics', 'feature_importance', 'shap_plot'] %}
+                {% set clusters = clusters.append({'cluster': cluster, 'percentage': normal_clustering_file.cluster_metadata[cluster].get('majority_percentage', 0), 'label': normal_clustering_file.cluster_metadata[cluster].get('majority_label', 0)}) %}
+            {% endfor %}
+            {% set clusters = clusters | sort(attribute='percentage', reverse=true) | sort(attribute='label') %}
+            {% for item in clusters %}
+                {% set cluster = item.cluster %}
+                <div class="cluster-section">
+                    <div class="cluster-header">
+                        <h4>Cluster {{ cluster }}: {{ normal_clustering_file.cluster_metadata[cluster].get('majority_label', 'Unknown') }} ({{ normal_clustering_file.cluster_metadata[cluster].get('majority_percentage', 0)|round(2) }}%)</h4>
+                    </div>
+                    <div class="cluster-images">
+                        <h5>Top 5 Images (Closest to Cluster Centroid):</h5>
+                        {% for img_path in normal_clustering_file.cluster_metadata[cluster]["top_k_images"] %}
+                            <div class="image-container">
+                                <img src="{{ url_for('serve_file', file_path=img_path) }}" alt="Normal Top 5 Image">
+                                <p>Top {{ loop.index }} Image</p>
+                            </div>
+                        {% endfor %}
+                        <h5>Median Image:</h5>
+                        {% if normal_clustering_file.cluster_metadata[cluster]['median_image'] %}
+                            <div class="image-container">
+                                <img src="{{ url_for('serve_file', file_path=normal_clustering_file.cluster_metadata[cluster]['median_image']) }}" alt="Normal Median Image">
+                                <p>Median Image</p>
+                            </div>
+                        {% else %}
+                            <p>No median image available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="segmented-section">
+            {% set clusters = [] %}
+            {% for cluster in segmented_clustering_file.cluster_metadata.keys() if cluster not in ['patient_to_cluster', 'clustering_metrics', 'feature_importance', 'shap_plot'] %}
+                {% set clusters = clusters.append({'cluster': cluster, 'percentage': segmented_clustering_file.cluster_metadata[cluster].get('majority_percentage', 0), 'label': segmented_clustering_file.cluster_metadata[cluster].get('majority_label', 0)}) %}
+            {% endfor %}
+            {% set clusters = clusters | sort(attribute='percentage', reverse=true) | sort(attribute='label') %}
+            {% for item in clusters %}
+                {% set cluster = item.cluster %}
+                <div class="cluster-section">
+                    <div class="cluster-header">
+                        <h4>Cluster {{ cluster }}: {{ segmented_clustering_file.cluster_metadata[cluster].get('majority_label', 'Unknown') }} ({{ segmented_clustering_file.cluster_metadata[cluster].get('majority_percentage', 0)|round(2) }}%)</h4>
+                    </div>
+                    <div class="cluster-images">
+                        <h5>Top 5 Images (Closest to Cluster Centroid):</h5>
+                        {% for img_path in segmented_clustering_file.cluster_metadata[cluster]["top_k_images"] %}
+                            <div class="image-container">
+                                <img src="{{ url_for('serve_file', file_path=img_path) }}" alt="Segmented Top 5 Image">
+                                <p>Top {{ loop.index }} Image</p>
+                            </div>
+                        {% endfor %}
+                        <h5>Median Image:</h5>
+                        {% if segmented_clustering_file.cluster_metadata[cluster]['median_image'] %}
+                            <div class="image-container">
+                                <img src="{{ url_for('serve_file', file_path=segmented_clustering_file.cluster_metadata[cluster]['median_image']) }}" alt="Segmented Median Image">
+                                <p>Median Image</p>
+                            </div>
+                        {% else %}
+                            <p>No median image available</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

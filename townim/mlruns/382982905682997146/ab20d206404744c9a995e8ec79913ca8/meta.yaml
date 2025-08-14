@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/382982905682997146/ab20d206404744c9a995e8ec79913ca8/artifacts
+end_time: 1750149783454
+entry_point_name: ''
+experiment_id: '382982905682997146'
+lifecycle_stage: active
+run_id: ab20d206404744c9a995e8ec79913ca8
+run_name: colorful-vole-717
+run_uuid: ab20d206404744c9a995e8ec79913ca8
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750149783079
+status: 3
+tags: []
+user_id: unknown

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compare Clusters</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        h1 {
+            color: #333;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        select {
+            padding: 5px;
+            margin: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Compare Clusters</h1>
+        <form method="POST">
+            <label for="normal_data_type">Normal Data Type:</label>
+            <select name="normal_data_type" id="normal_data_type">
+                {% for data_type in data_types %}
+                <option value="{{ data_type }}">{{ data_type }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="fold">Fold:</label>
+            <select name="fold" id="fold">
+                {% for fold in folds %}
+                <option value="{{ fold }}">{{ fold }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit">Submit</button>
+            <p class="description">Select a normal data type and fold to compare its clusters with the corresponding segmented model.</p>
+        </form>
+    </div>
+</body>
+</html>

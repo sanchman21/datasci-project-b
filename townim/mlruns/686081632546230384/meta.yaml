@@ -1,4 +1,4 @@
-artifact_location: file:///workspace/CMML-v2/townim/mlruns/686081632546230384
+artifact_location: file:./mlruns/686081632546230384
 creation_time: 1741238453324
 experiment_id: '686081632546230384'
 last_update_time: 1741238453324

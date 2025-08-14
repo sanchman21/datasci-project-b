@@ -1,118 +1,182 @@
-'''
-This script is used to train a single XGBoost classifier using only clinical features.
-'''
-
-# import libraries
 import pandas as pd
 import numpy as np
 import xgboost as xgb
 import os
 import matplotlib.pyplot as plt
-from sklearn.metrics import accuracy_score, roc_auc_score
-from sklearn import metrics
-import gc 
+from sklearn.metrics import accuracy_score, roc_auc_score, precision_score, recall_score, f1_score, confusion_matrix, roc_curve
+import mlflow
+import subprocess
+import gc
+from utils import save_metrics_csv, plot_save_roc_curve, plot_confusion_matrix
 
-# load the data
-df = pd.read_csv("../datasets/patients_fold.csv")
-rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # rechecked patient ids
-df = df.loc[df["patient_id"] != 2209801848] # remove the patient with missing data
-df.loc[df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0 # set the morphology of rechecked patients to 0
+mlflow.set_tracking_uri("file:./mlruns")
 
-def train_single_sklearn(x, y, num_class, seed, feature_names, booster):
-    """
-    Train a single xgb classifier
-    """
-    dmat = xgb.DMatrix(x, y, feature_names=feature_names) # create the DMatrix
-
-    # define the objective and evaluation metric based on the number of classes (problem is binary)
-    if num_class > 2:
-        metric = 'mlogloss'
-        objective = 'multi:softprob'
-    elif num_class == 2:
-        metric = 'logloss'
-        objective = 'binary:logistic'
+experiment_name = "clinical"
+existing_experiment = mlflow.get_experiment_by_name(experiment_name)
+if existing_experiment is not None:
+    experiment_id = existing_experiment.experiment_id
+    overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {experiment_name} EXPERIMENT? [Y/N]: ")
+    if overwrite_exp.lower() == "y":
+        mlflow.delete_experiment(experiment_id)
+        subprocess.run(["mlflow", "gc", "--experiment-ids", experiment_id], check=True)
     else:
-        raise RuntimeError(f'num_class = {num_class}, must be >= 2')
+        print("To run the code further, you need to overwrite existing experiment. Please modify code otherwise.")
+        exit()
 
-    random_forest = False
+mlflow.create_experiment(experiment_name)
+mlflow.set_experiment(experiment_name)
+print(f"Created new experiment for {experiment_name}")
 
-    # define the parameters based on the booster
-    if random_forest: # params if random forest is used
-        params = dict(
-            objective=objective,
-            eval_metric=metric,
-            nthread=4,
-            colsample_bynode=0.6,
-            learning_rate=1,
-            max_depth=5,
-            num_parallel_tree=100,
-            subsample=0.6,
-        )
-        model = xgb.train(params, dmat, num_boost_round=1) # train the model
-    else: # params if random forest is not used
-        params = dict( # params if random forest is not used
-            booster=booster,
-            objective=objective,
-            eval_metric=metric,
-            nthread=4,
-        )
-        if num_class > 2: # if the number of classes is greater than 2
-            params['num_class'] = num_class
-        
-        # define the cross-validation parameters
-        xgb_cv_params = dict(
-            metrics=metric,
-            num_boost_round=200,
-            early_stopping_rounds=10,
-            stratified=True,
-            nfold=10,
-            seed=seed,
-        )
+df = pd.read_csv("../datasets/patients_fold.csv")
+rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
+df = df.loc[df["patient_id"] != 2209801848]
+df.loc[df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0
 
-        # find best num_boost_rounds for the optimal parameters
-        # cv = xgb.cv(params, dmat, **xgb_cv_params)
-        # num_boost_round = cv[f'test-{metric}-mean'].idxmin()
+base_dir = "experiments/clinical"
+os.makedirs(f"{base_dir}/train/figures", exist_ok=True)
+os.makedirs(f"{base_dir}/test/figures", exist_ok=True)
 
-        # model = xgb.train(params, dmat, num_boost_round=num_boost_round)
-        # params['num_boost_round'] = num_boost_round
-        model = xgb.XGBClassifier(**params, importance_type='gain', validate_parameters=True) # create the model
-        df_x = pd.DataFrame(x) # create a dataframe of the features
-        df_x.columns = feature_names # set the column names
-        model.fit(df_x, y) # fit the model
+feature_columns = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count',
+                   'Neutrophil count', 'Monocyte count', 'Platelet count',
+                   'Blast percentage (PB)', 'LDH']
+target_column = 'morphology'
+booster = 'gbtree'
 
-    return model, params # return the model and the parameters
+def train_single_sklearn(x, y, seed, feature_names):
+    """
+    Train a single XGBoost classifier
+    """
+    params = {
+        'booster': booster,
+        'objective': 'binary:logistic',
+        'eval_metric': 'logloss',
+        'nthread': 4,
+        'seed': seed
+    }
 
-feature_columns = ['Age', 'Gender', 'Haemoglobin',
-    'MCV', 'White cell count', 'Neutrophil count', 'Monocyte count',
-    'Platelet count', 'Blast percentage (PB)', 'LDH'
-] # clinical features
-target_column = 'morphology' # target column
-booster = 'gbtree' # booster
+    model = xgb.XGBClassifier(**params, importance_type='gain', validate_parameters=True)
+    df_x = pd.DataFrame(x, columns=feature_names)
+    model.fit(df_x, y)
+    return model, params
 
-accuracies = [] # list to store the accuracies
-aurocs = [] # list to store the AUROCs
+with mlflow.start_run(run_name="train-val") as parent_run:
+    accuracies = []
+    precisions = []
+    recalls = []
+    f1_scores = []
+    aurocs = []
 
-for i in range(5): # iterate over the 5 folds
-    set_col = f'set{i}' # set column
-    x_values = df[df[set_col] == 'train'][feature_columns].values # features
-    y_values = df[df[set_col] == 'train'][target_column].values # target
-    # train the model
-    model, params = train_single_sklearn(x_values, y_values, num_class=2, seed=123, feature_names=feature_columns, booster=booster)
-    X_test = df[df[set_col] == 'test'][feature_columns].values # test features
-    y_test = df[df[set_col] == 'test'][target_column].values # test target
-    # if booster == 'gbtree':
-    #      preds = model.predict(X_test, iteration_range=(0, model.best_iteration + 1))
-    # else:
-    preds = model.predict(X_test) # predict the target
-    preds = preds.astype(int) # convert the predictions to integers
-    accuracy = accuracy_score(y_test, preds) # calculate the accuracy
-    auroc = roc_auc_score(y_test, preds) # calculate the AUROC
-    accuracies.append(accuracy) # append the accuracy to the list
-    aurocs.append(auroc) # append the AUROC to the list
-    print(f"Accuracy: {round(accuracy*100, 2)}, AUROC: {round(auroc*100, 2)}")
-    model._Booster.__del__() # delete the booster
-    del model # delete the model
-    gc.collect() # collect the garbage
+    for i in range(5):
+        with mlflow.start_run(run_name=f"fold_{i}", nested=True):
+            set_col = f'set{i}'
+            x_train = df[df[set_col] == 'train'][feature_columns].values
+            y_train = df[df[set_col] == 'train'][target_column].values
+            x_val = df[df[set_col] == 'val'][feature_columns].values
+            y_val = df[df[set_col] == 'val'][target_column].values
+
+            model, params = train_single_sklearn(x_train, y_train, seed=123, feature_names=feature_columns)
+
+            df_x_val = pd.DataFrame(x_val, columns=feature_columns)
+            preds = model.predict(df_x_val)
+            pred_probs = model.predict_proba(df_x_val)[:, 1]
+
+            accuracy = accuracy_score(y_val, preds)
+            precision = precision_score(y_val, preds, zero_division=0)
+            recall = recall_score(y_val, preds, zero_division=0)
+            f1 = f1_score(y_val, preds, zero_division=0)
+            auroc = roc_auc_score(y_val, pred_probs)
+
+            mlflow.log_metric("accuracy", accuracy)
+            mlflow.log_metric("precision", precision)
+            mlflow.log_metric("recall", recall)
+            mlflow.log_metric("f1", f1)
+            mlflow.log_metric("auroc", auroc)
+
+            metrics_path = f"{base_dir}/train/metrics_patient.csv"
+            save_metrics_csv(i, accuracy, precision, recall, f1, auroc, metrics_path, train=True)
+
+            roc_path = f"{base_dir}/train/figures/roc_fold_{i}.png"
+            plot_save_roc_curve(y_val, pred_probs, roc_path)
+            mlflow.log_artifact(roc_path)
+
+            conf_mat = confusion_matrix(y_val, preds)
+            conf_mat_path = f"{base_dir}/train/figures/confusion_matrix_fold_{i}.png"
+            plot_confusion_matrix(conf_mat, num_classes=2, figure_path=conf_mat_path, title=f"Confusion Matrix Fold {i}")
+            mlflow.log_artifact(conf_mat_path)
+
+            accuracies.append(accuracy)
+            precisions.append(precision)
+            recalls.append(recall)
+            f1_scores.append(f1)
+            aurocs.append(auroc)
+
+            print(f"Fold {i} - Accuracy: {round(accuracy*100, 2)}%, Precision: {round(precision*100, 2)}%, "
+                  f"Recall: {round(recall*100, 2)}%, F1: {round(f1*100, 2)}%, AUROC: {round(auroc*100, 2)}%")
+
+            model._Booster.__del__()
+            del model
+            gc.collect()
+
+    mlflow.log_metric("mean_accuracy", np.mean(accuracies))
+    mlflow.log_metric("std_accuracy", np.std(accuracies))
+    mlflow.log_metric("mean_precision", np.mean(precisions))
+    mlflow.log_metric("std_precision", np.std(precisions))
+    mlflow.log_metric("mean_recall", np.mean(recalls))
+    mlflow.log_metric("std_recall", np.std(recalls))
+    mlflow.log_metric("mean_f1", np.mean(f1_scores))
+    mlflow.log_metric("std_f1", np.std(f1_scores))
+    mlflow.log_metric("mean_auroc", np.mean(aurocs))
+    mlflow.log_metric("std_auroc", np.std(aurocs))
     
-print(f"Accuracy: {round(np.mean(accuracies)*100, 2)} +- {round(np.std(accuracies)*100, 2)}")
-print(f"AUROC: {round(np.mean(aurocs)*100, 2)} +- {round(np.std(aurocs)*100, 2)}")
+    mlflow.log_artifact(metrics_path)
+
+    print(f"Mean Accuracy: {round(np.mean(accuracies)*100, 2)}% ± {round(np.std(accuracies)*100, 2)}%")
+    print(f"Mean Precision: {round(np.mean(precisions)*100, 2)}% ± {round(np.std(precisions)*100, 2)}%")
+    print(f"Mean Recall: {round(np.mean(recalls)*100, 2)}% ± {round(np.std(recalls)*100, 2)}%")
+    print(f"Mean F1: {round(np.mean(f1_scores)*100, 2)}% ± {round(np.std(f1_scores)*100, 2)}%")
+    print(f"Mean AUROC: {round(np.mean(aurocs)*100, 2)}% ± {round(np.std(aurocs)*100, 2)}%")
+    
+if mlflow.active_run():
+    mlflow.end_run()
+
+with mlflow.start_run(run_name="test"):
+    set_col = 'set0'
+    train_val_mask = (df[set_col] == 'train') | (df[set_col] == 'val')
+    x_train_val = df[train_val_mask][feature_columns].values
+    y_train_val = df[train_val_mask][target_column].values
+    x_test = df[df[set_col] == 'test'][feature_columns].values
+    y_test = df[df[set_col] == 'test'][target_column].values
+
+    model, params = train_single_sklearn(x_train_val, y_train_val, seed=123, feature_names=feature_columns)
+
+    df_x_test = pd.DataFrame(x_test, columns=feature_columns)
+    preds = model.predict(df_x_test)
+    pred_probs = model.predict_proba(df_x_test)[:, 1]
+
+    accuracy = accuracy_score(y_test, preds)
+    precision = precision_score(y_test, preds, zero_division=0)
+    recall = recall_score(y_test, preds, zero_division=0)
+    f1 = f1_score(y_test, preds, zero_division=0)
+    auroc = roc_auc_score(y_test, pred_probs)
+
+    mlflow.log_metric("accuracy", accuracy)
+    mlflow.log_metric("precision", precision)
+    mlflow.log_metric("recall", recall)
+    mlflow.log_metric("f1", f1)
+    mlflow.log_metric("auroc", auroc)
+
+    metrics_path = f"{base_dir}/test/metrics.csv"
+    save_metrics_csv("Patient", accuracy, precision, recall, f1, auroc, metrics_path, train=False)
+    mlflow.log_artifact(metrics_path)
+
+    roc_path = f"{base_dir}/test/figures/roc_final.png"
+    plot_save_roc_curve(y_test, pred_probs, roc_path)
+    mlflow.log_artifact(roc_path)
+
+    conf_mat = confusion_matrix(y_test, preds)
+    conf_mat_path = f"{base_dir}/test/figures/confusion_matrix_final.png"
+    plot_confusion_matrix(conf_mat, num_classes=2, figure_path=conf_mat_path, title="Confusion Matrix Final Model")
+    mlflow.log_artifact(conf_mat_path)
+
+    print(f"Final Model - Accuracy: {round(accuracy*100, 2)}%, Precision: {round(precision*100, 2)}%, "
+          f"Recall: {round(recall*100, 2)}%, F1: {round(f1*100, 2)}%, AUROC: {round(auroc*100, 2)}%")

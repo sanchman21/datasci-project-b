@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/382982905682997146/91b5a4c77f6e41bfb3bb31ec335b6d94/artifacts
+end_time: 1750149716142
+entry_point_name: ''
+experiment_id: '382982905682997146'
+lifecycle_stage: active
+run_id: 91b5a4c77f6e41bfb3bb31ec335b6d94
+run_name: welcoming-ant-693
+run_uuid: 91b5a4c77f6e41bfb3bb31ec335b6d94
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750149715729
+status: 3
+tags: []
+user_id: unknown

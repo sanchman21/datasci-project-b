@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/213852149767002604/da94f86839b94518ae7b0a5f753d5c40/artifacts
+end_time: 1752556521600
+entry_point_name: ''
+experiment_id: '213852149767002604'
+lifecycle_stage: active
+run_id: da94f86839b94518ae7b0a5f753d5c40
+run_name: val-metrics
+run_uuid: da94f86839b94518ae7b0a5f753d5c40
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752556521439
+status: 3
+tags: []
+user_id: unknown

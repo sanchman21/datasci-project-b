@@ -1,376 +1,370 @@
-'''
-This script is used to test and get predictions using a Multimodal approach (averaging a patient's image probabilities and clinical variables probabilities).
-'''
-
-# Import libraries
 import numpy as np
-import subprocess
 import pandas as pd
-import os
-import argparse
-import torchvision
+import os, random, sys, argparse, torchvision, shutil
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, sampler
 import torchvision.transforms as T
-import torchmetrics
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score, confusion_matrix, roc_curve
 from torchvision import models
 from tqdm import tqdm
+from PIL import Image
 import matplotlib.pyplot as plt
-import xgboost as xgb
 import mlflow
-from sklearn.metrics import roc_auc_score, accuracy_score, precision_score, recall_score, f1_score
+import subprocess
+import gc
+import xgboost as xgb
 
+sys.path.append('./towmin')
 import utils
-from utils import FixedRotation, plot_confusion_matrix, plot_save_roc_curve, save_metrics_csv, assign_patient_folds_splits
-from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH
+from dataset import CustomDataset, NEUTROPHIL_CSV_PATH, MONOCYTE_CSV_PATH, MONOCYTE_NEW_NORMALS_CSV_PATH, SEGMENTED_MONOCYTE_CSV_PATH, SEGMENTED_MONOCYTE_NEW_NORMALS_CSV_PATH
 
-# Create a cache directory to store the downloaded models
 cache_dir = "../cache"
 os.makedirs(cache_dir, exist_ok=True)
-os.environ['TORCH_HOME'] = cache_dir  # Set cache directory
-os.environ["MLFLOW_TRACKING_URI"] = "file:./mlruns"
+os.environ['TORCH_HOME'] = cache_dir
 
-torch.cuda.empty_cache()  # Empty cache
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")  # Set the device
-print(f"Using device: {device}")
+rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
 
-# Argument parser for data type
+def save_metrics_csv(fold, accuracy, precision, recall, f1, auroc, metrics_path):
+    new_metrics = pd.DataFrame([[fold, round(accuracy, 3), round(precision, 3), round(recall, 3), round(f1, 3), round(auroc, 3)]], 
+                                columns=["fold", "accuracy", "precision", "recall", "f1", "auroc"])
+
+    if os.path.exists(metrics_path):
+        df = pd.read_csv(metrics_path)
+        if fold in df['fold'].values:
+            df.loc[df['fold'] == fold, 'accuracy'] = round(accuracy, 4)
+            df.loc[df['fold'] == fold, 'precision'] = round(precision, 4)
+            df.loc[df['fold'] == fold, 'recall'] = round(recall, 4)
+            df.loc[df['fold'] == fold, 'f1'] = round(f1, 4)
+            df.loc[df['fold'] == fold, 'auroc'] = round(auroc, 4)
+        else:
+            df = pd.concat([df, new_metrics], ignore_index=True)
+    else:
+        df = new_metrics
+    
+    df.to_csv(metrics_path, index=False)
+
+def plot_save_roc_curve(labels, logits, figure_path):
+    if labels.ndim > 1:
+        labels = labels[:, 1]
+        
+    if logits.ndim > 1:
+        logits = logits[:, 1]
+    fpr, tpr, _ = roc_curve(labels, logits)
+    roc_auc = roc_auc_score(labels, logits)
+
+    plt.figure()
+    plt.plot(fpr, tpr, label=f'ROC curve (area = {roc_auc:.2f})')
+
+    plt.plot([0, 1], [0, 1], 'k--')
+
+    plt.xlim([0.0, 1.0])
+    plt.ylim([0.0, 1.0])
+    plt.xlabel('False Positive Rate')
+    plt.ylabel('True Positive Rate')
+    plt.title('ROC Curve')
+    plt.legend(loc="lower right")
+    
+    plt.xticks(np.arange(0.0, 1.1, step=0.1))
+    plt.yticks(np.arange(0.0, 1.1, step=0.1))
+
+    plt.savefig(figure_path)
+    plt.close()
+
+def plot_confusion_matrix(confmat_vals, num_classes, figure_path, title):
+    fig, ax = plt.subplots()
+    im = ax.imshow(confmat_vals)
+    ax.set_xticks(np.arange(num_classes))
+    ax.set_yticks(np.arange(num_classes))
+    ax.set_xlabel('Predicted class')
+    ax.set_ylabel('True class')
+
+    for i in range(num_classes):
+        for j in range(num_classes):
+            ax.text(j, i, confmat_vals[i, j], ha="center", va="center", color="black", fontsize=12)
+
+    ax.set_title(title)
+    plt.savefig(figure_path)
+    plt.close()
+
+torch.cuda.empty_cache()
+
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 parser = argparse.ArgumentParser()
-parser.add_argument('--data_type', type=str, default='neutrophil', choices=('monocyte', 'neutrophil'), help='data type')
+parser.add_argument('--data_type', type=str, default='monocyte', choices=('monocyte', 'neutrophil', 'monocyte_new_normals', 'segmented_monocyte', 'segmented_monocyte_new_normals'), help='data type')
 args = parser.parse_args()
 
-# Define the dataset path based on the data type
-data_type = args.data_type  # neutrophil or monocyte
-CSV_PATH = NEUTROPHIL_CSV_PATH if data_type == 'neutrophil' else MONOCYTE_CSV_PATH
-assign_patient_folds_splits(CSV_PATH)
-batch_size = 32  # Batch size
-IMAGE_SIZE = 352  # Image size
-IMAGENET_MEAN = [0.485, 0.456, 0.406]  # Mean of ImageNet dataset (used for normalization)
-IMAGENET_STD = [0.229, 0.224, 0.225]  # Std of ImageNet dataset (used for normalization)
+data_type = args.data_type
+if data_type == "neutrophil":
+    CSV_PATH = NEUTROPHIL_CSV_PATH
+elif data_type == "monocyte":
+    CSV_PATH = MONOCYTE_CSV_PATH
+elif data_type == "monocyte_new_normals":
+    CSV_PATH = MONOCYTE_NEW_NORMALS_CSV_PATH
+elif data_type == "segmented_monocyte":
+    CSV_PATH = SEGMENTED_MONOCYTE_CSV_PATH
+elif data_type == "segmented_monocyte_new_normals":
+    CSV_PATH = SEGMENTED_MONOCYTE_NEW_NORMALS_CSV_PATH
+else:
+    raise ValueError("Invalid data type")
 
-# Define the test transforms
+batch_size = 32
+IMAGE_SIZE = 352
+IMAGENET_MEAN = [0.485, 0.456, 0.406]
+IMAGENET_STD = [0.229, 0.224, 0.225]
+
 test_transform = T.Compose([
     T.Resize((IMAGE_SIZE, IMAGE_SIZE)),
     T.ToTensor(),
     T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)
 ])
 
-# Define the test-time augmentations (TTA)
 TTAs = [
-    test_transform,
-    T.Compose([T.RandomHorizontalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
-    T.Compose([T.RandomVerticalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
-    T.Compose([FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
-    T.Compose([T.RandomHorizontalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
-    T.Compose([T.RandomVerticalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
+    test_transform, 
+    T.Compose([T.RandomHorizontalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]), 
+    T.Compose([T.RandomVerticalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]), 
+    T.Compose([T.RandomRotation(45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),  
+    T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomRotation(45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]), 
+    T.Compose([T.RandomVerticalFlip(p=1.0), T.RandomRotation(45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]), 
     T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)]),
-    T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), FixedRotation(angle=45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)])
+    T.Compose([T.RandomHorizontalFlip(p=1.0), T.RandomVerticalFlip(p=1.0), T.RandomRotation(45), T.Resize((IMAGE_SIZE, IMAGE_SIZE)), T.ToTensor(), T.Normalize(mean=IMAGENET_MEAN, std=IMAGENET_STD)])
 ]
 
-experiment_name = f"{data_type}_clinical" # experiment name
+test_dataset = CustomDataset('test', CSV_PATH, 0, transform=test_transform)
+test_loaders =[
+    DataLoader(CustomDataset('test', CSV_PATH, 0, transform=transform), batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
+    for transform in TTAs
+]
+
+num_classes = len(set(test_dataset.labels))
+print("Model: Resnet50")
+model = models.resnet50(weights='IMAGENET1K_V1')
+hidden_layer_size = 512
+num_ftrs = model.fc.in_features
+model.fc = nn.Sequential(
+    nn.Linear(num_ftrs, hidden_layer_size),
+    nn.ReLU(),
+    nn.Linear(hidden_layer_size, num_classes)
+)
+
+model = model.to(device)
+exp_dir = f'./experiments/{data_type}'
+exp_subdir = exp_dir + f'/test/{data_type}_fold_0_with_TTA'
+model_dir = exp_subdir + "/model"
+figure_dir = exp_subdir + "/figures"
+os.makedirs(figure_dir, exist_ok=True)
+
+model.load_state_dict(torch.load(os.path.join(model_dir, f'model_fold_0.pth')))
+model.eval()
+print(model_dir)
+
+mlflow.set_tracking_uri("file:./mlruns")
+experiment_name = f"{data_type}_clinical_test"
 existing_experiment = mlflow.get_experiment_by_name(experiment_name)
-if existing_experiment: # experiment handling if it already exists
-    experiment_id = existing_experiment.experiment_id  # Reuse existing ID
-    overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {experiment_name} EXPERIMENT? [Y/N]")
+if existing_experiment is not None:
+    experiment_id = existing_experiment.experiment_id
+    overwrite_exp = input(f"DO YOU WANT TO OVERWRITE EXISTING {experiment_name} EXPERIMENT? [Y/N]: ")
     if overwrite_exp.lower() == "y":
         mlflow.delete_experiment(experiment_id)
         subprocess.run(["mlflow", "gc", "--experiment-ids", experiment_id], check=True)
     else:
         print("To run the code further, you need to overwrite existing experiment. Please modify code otherwise.")
         exit()
-        
-# set experiment
+
 mlflow.create_experiment(experiment_name)
 mlflow.set_experiment(experiment_name)
+print(f"Created new experiment for {experiment_name}")
 
-# xgboost params
-params = {
-    'objective': 'binary:logistic',
-    'eval_metric': 'logloss',
-    'nthread': 4,
-    'booster': 'gbtree',
-}
+if os.path.exists(figure_dir):
+    shutil.rmtree(figure_dir)
+os.makedirs(figure_dir, exist_ok=True)
 
-new_dir = f"./experiments/{data_type}_clinical"
-new_dir_train = new_dir + "/train"
-new_dir_test = new_dir + "/test"
-new_dir_test_figures = new_dir_test + "/figures"
-os.makedirs(new_dir, exist_ok=True)
-os.makedirs(new_dir_train, exist_ok=True)
-os.makedirs(new_dir_test, exist_ok=True)
-os.makedirs(new_dir_test_figures, exist_ok=True)
-
-with mlflow.start_run(run_name="train-val") as parent_run: # parent run
-    mlflow.log_params(params) # log xgboost params
-
-    for fold_id in range(5): # for each fold
-        with mlflow.start_run(run_name=f"fold_{fold_id}", nested=True): # initialise child run
-            print(f"Fold {fold_id}")
-            # Define directories
-            model_dir = f"./experiments/{data_type}/train/{data_type}_fold_{fold_id}_with_TTA/model"
-            new_dir_with_fold = os.path.join(new_dir_train, f"fold_{fold_id}")
-            new_dir_train_figures = new_dir_with_fold + "/figures"
-            os.makedirs(new_dir_with_fold, exist_ok=True)
-            os.makedirs(new_dir_train_figures, exist_ok=True)
-
-            num_classes = 2  # binary classification
-            model = models.resnet50(weights='IMAGENET1K_V1') # resnet
-            hidden_layer_size = 512
-            num_ftrs = model.fc.in_features
-            model.fc = nn.Sequential(
-                nn.Linear(num_ftrs, hidden_layer_size),
-                nn.ReLU(),
-                nn.Linear(hidden_layer_size, num_classes)
-            )
-            model = model.to(device)
-            model.load_state_dict(torch.load(os.path.join(model_dir, f'model_fold_{fold_id}.pth'))) # load model weights
-            model.eval() # set to eval
-
-            val_dataset = CustomDataset('val', CSV_PATH, fold_id, transform=test_transform) # val set
-            val_loaders = [
-                DataLoader(val_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
-                for _ in TTAs
-            ] # val loader
-
-            with torch.no_grad(): # get patient predictions
-                # initialise empty variables to store data
-                preds = []
-                logits = []
-                labels = []
-                correct = 0
-                for i, data in enumerate(zip(*val_loaders)): # for each batch
-                    inputs = torch.cat([img for img, _ in data], dim=0).to(device).float() # get input
-                    targets = data[0][1].to(device).long() # get labels
-                    outputs = model(inputs) # get output
-                    outputs = F.softmax(outputs, dim=-1) # get output softmax
-                    outputs = outputs.reshape(len(TTAs), int(inputs.shape[0]/len(TTAs)), -1).mean(dim=0) # scores for each tta batch
-                    _, predicted = torch.max(outputs, 1) # predictions for class 1
-                    # append preds and other data
-                    preds.append(predicted.detach().cpu().numpy())
-                    labels.append(targets.detach().cpu().numpy())
-                    logits.append(outputs.detach().cpu().numpy().astype(np.float32))
-                preds = np.concatenate(preds, axis=0)
-                labels = np.concatenate(labels, axis=0)
-                print(f"Fold {fold_id} - Image-level labels: {np.unique(labels, return_counts=True)}")
-                logits = np.concatenate(logits, axis=0)
-
-            # Patient-level evaluation with clinical variables
-            clinical_variable_df = pd.read_csv('../datasets/patients_fold.csv') # patient data
-            feature_columns = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count', 
-                               'Neutrophil count', 'Monocyte count', 'Platelet count', 
-                               'Blast percentage (PB)', 'LDH'] # patient features
-            target_column = 'morphology' # target
-            rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # rechecked ids
-            clinical_variable_df = clinical_variable_df.loc[clinical_variable_df["patient_id"] != 2209801848] # remove this patient
-            clinical_variable_df.loc[clinical_variable_df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0 # correct label for rechecked patient
-
-            set_col = f'set{fold_id}' # fold
-            X_train = clinical_variable_df[clinical_variable_df[set_col] == 'train'][feature_columns] # get train features
-            y_train = clinical_variable_df[clinical_variable_df[set_col] == 'train'][target_column] # get train label
-            X_val = clinical_variable_df[clinical_variable_df[set_col] == 'val'][feature_columns] # get val features
-            y_val = clinical_variable_df[clinical_variable_df[set_col] == 'val'][target_column] # get val label
-
-            model_xgb = xgb.XGBClassifier(**params, importance_type='gain', validate_parameters=True) # define xgb
-            model_xgb.fit(X_train, y_train) # train xgb
-            preds_prob_clinical_variables = model_xgb.predict_proba(X_val) # predict using xgb
-            patient_ids_clinical_variables = clinical_variable_df[clinical_variable_df[set_col] == 'val']['patient_id'].values # get patient ids
-
-            # intialise lists to store data
-            id_patients = []
-            id_patient_logits = []
-            id_patient_preds = []
-            id_patient_labels = []
-            patient_ids = val_dataset.df['patient_id'].to_numpy()
-            correct = 0
-            
-            for id in np.unique(patient_ids): # for each unique patient
-                indices = np.where(patient_ids == id)[0] # get the indices
-                id_patients.append(id) # append patient id
-                mean_cnn_logit = np.mean(logits[indices, :], axis=0) # get the cnn prediction (mean logit)
-                ind = np.where(patient_ids_clinical_variables == id)[0] # get patient ind
-                if len(ind) > 0:
-                    xgb_logit = preds_prob_clinical_variables[ind, :][0]
-                    combined_logit = (mean_cnn_logit + xgb_logit) / 2
-                else:
-                    combined_logit = mean_cnn_logit  # Use CNN logit only if no clinical data
-                    print(f"Fold {fold_id} - Patient {id}: No clinical data, using CNN logit only")
-                id_patient_logits.append(combined_logit) # append the logit
-                id_patient_labels.append(np.mean(labels[indices], axis=0).round()) # append label
-                id_patient_preds.append(combined_logit.argmax()) # append prediction
-                correct += int(id_patient_preds[-1] == id_patient_labels[-1]) # see if prediction is correct or not
-
-            # convert to array
-            id_patient_logits = np.array(id_patient_logits)
-            id_patient_labels = np.array(id_patient_labels)
-            id_patient_preds = np.array(id_patient_preds)
-            # get metrics
-            accuracy = accuracy_score(id_patient_labels, id_patient_preds) if len(id_patients) > 0 else 0
-            precision = precision_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-            recall = recall_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-            f1 = f1_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-            auc = roc_auc_score(id_patient_labels, id_patient_logits[:, 1]) if len(id_patients) > 0 else 0
-            # print metrics
-            print(f'[Fold {fold_id}] Patient level with clinical variable => Accuracy: {accuracy*100:.2f}% AUC: {auc*100:.2f}%')
-            # log metrics
-            mlflow.log_metric("patient_level_accuracy", accuracy * 100)
-            mlflow.log_metric("patient_level_precision", precision * 100)
-            mlflow.log_metric("patient_level_recall", recall * 100)
-            mlflow.log_metric("patient_level_f1", f1 * 100)
-            mlflow.log_metric("patient_level_auc", auc * 100)
-
-            metrics_path = os.path.join(new_dir_train, "metrics_patient.csv") # metrics path
-            save_metrics_csv(fold_id, accuracy, precision, recall, f1, auc, metrics_path, train=True)
-            mlflow.log_artifact(metrics_path)
-
-            # Save predictions and logits
-            np.savez_compressed(os.path.join(new_dir_with_fold, 'patient_level_with_clinical_variables_results'),
-                                labels=id_patient_labels,
-                                preds=id_patient_preds,
-                                logits=id_patient_logits,
-                                patient_ids=np.array(id_patients))
-            # mlflow.log_artifact(os.path.join(new_dir_with_fold, 'patient_level_with_clinical_variables_results.npz'))
-
-            confmat_vals = np.zeros((num_classes, num_classes))
-            for true, pred in zip(id_patient_labels, id_patient_preds):
-                confmat_vals[int(true), int(pred)] += 1
-            plot_confusion_matrix(confmat_vals, num_classes,
-                                  os.path.join(new_dir_train_figures, "patient_level_with_clinical_variables_conf_mat.png"),
-                                  f"Confusion Matrix [Patient level] Fold {fold_id}")
-            mlflow.log_artifact(os.path.join(new_dir_train_figures, "patient_level_with_clinical_variables_conf_mat.png"))
-
-            # ROC curve using utils.plot_save_roc_curve
-            plot_save_roc_curve(id_patient_labels, id_patient_logits,
-                                os.path.join(new_dir_train_figures, "patient_level_roc_curve_fold_{}.png".format(fold_id)))
-            mlflow.log_artifact(os.path.join(new_dir_train_figures, "patient_level_roc_curve_fold_{}.png".format(fold_id)))
-
-if mlflow.active_run():
-    mlflow.end_run()
-
-with mlflow.start_run(run_name="test"):
-    print("Final Model")
-    final_model_dir = f"./experiments/{data_type}/train/model" # final cnn model path
-
-    final_model = models.resnet50(weights='IMAGENET1K_V1') # load cnn
-    num_ftrs = final_model.fc.in_features
-    final_model.fc = nn.Sequential(
-        nn.Linear(num_ftrs, hidden_layer_size),
-        nn.ReLU(),
-        nn.Linear(hidden_layer_size, num_classes)
-    )
-    final_model = final_model.to(device)
-    final_model.load_state_dict(torch.load(os.path.join(final_model_dir, 'final.pth'))) # load weights
-    final_model.eval() # set to eval mode
-
-    test_dataset = CustomDataset('test', CSV_PATH, 0, transform=test_transform)  # test dataset
-    test_loaders = [
-        DataLoader(test_dataset, batch_size=batch_size, shuffle=False, pin_memory=True, num_workers=8)
-        for _ in TTAs
-    ] # test loader
-
-    with torch.no_grad(): # no gradient updates
-        # initialise empty variables to store data
-        preds = []
-        logits = []
-        labels = []
+with mlflow.start_run(run_name="clinical_test"):
+    with torch.no_grad():
         correct = 0
-        for i, data in enumerate(zip(*test_loaders)): # for each batch
-            inputs = torch.cat([img for img, _ in data], dim=0).to(device).float() # get inputs
-            targets = data[0][1].to(device).long() # get labels
-            outputs = final_model(inputs) # get outputs
-            outputs = F.softmax(outputs, dim=-1) # get output softmax
-            outputs = outputs.reshape(len(TTAs), int(inputs.shape[0]/len(TTAs)), -1).mean(dim=0) # get preds for each tta and batch
-            _, predicted = torch.max(outputs, 1) # get preds of class 1
+        preds = []
+        labels = []
+        logits = []
+        for i, (inputs, targets) in enumerate(test_loaders[0]):
+            inputs, targets = inputs.to(device).float(), targets.to(device).long()
+            outputs = model(inputs)
+            outputs = F.softmax(outputs, dim=-1)
+            _, predicted = torch.max(outputs, 1)
             correct += (predicted == targets).sum().item()
-            # append data
             preds.append(predicted.detach().cpu().numpy())
             labels.append(targets.detach().cpu().numpy())
             logits.append(outputs.detach().cpu().numpy().astype(np.float32))
-        # concatenate everything
+
         preds = np.concatenate(preds, axis=0)
         labels = np.concatenate(labels, axis=0)
         logits = np.concatenate(logits, axis=0)
 
-    clinical_variable_df = pd.read_csv('../datasets/patients_fold.csv') # clinical data
-    feature_columns = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count', 
-                        'Neutrophil count', 'Monocyte count', 'Platelet count', 
-                        'Blast percentage (PB)', 'LDH'] # clinical features
-    target_column = 'morphology' # target column
-    rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125] # rechecked patient ids
-    clinical_variable_df = clinical_variable_df.loc[clinical_variable_df["patient_id"] != 2209801848] # remove this id
-    clinical_variable_df.loc[clinical_variable_df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0 # assign right label for rechecked patients
+        accuracy = accuracy_score(labels, preds)
+        precision = precision_score(labels, preds, average="binary")
+        recall = recall_score(labels, preds, average="binary")
+        f1 = f1_score(labels, preds, average="binary")
+        auc = roc_auc_score(labels, logits[:, 1])
 
-    X_train_final = clinical_variable_df[clinical_variable_df['set0'] != 'test'][feature_columns] # get train features
-    y_train_final = clinical_variable_df[clinical_variable_df['set0'] != 'test'][target_column] # get train labels
-    X_test_final = clinical_variable_df[clinical_variable_df['set0'] == 'test'][feature_columns] # get test features
-    y_test_final = clinical_variable_df[clinical_variable_df['set0'] == 'test'][target_column] # get test labels
+        save_metrics_csv(0, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image.csv"))
 
-    model_xgb_final = xgb.XGBClassifier(**params, importance_type='gain', validate_parameters=True) # initialise xgb
-    model_xgb_final.fit(X_train_final, y_train_final) # train xgb
-    preds_prob_clinical_variables = model_xgb_final.predict_proba(X_test_final) # get predicted probabilities
-    patient_ids_clinical_variables = clinical_variable_df[clinical_variable_df['set0'] == 'test']['patient_id'].values # get the values
+        confmat_vals = confusion_matrix(labels, preds)
+        plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "image_level_conf_mat.png"), "Confusion Matrix on Test [Image level]")
 
-    # initialise empty variables to store data
+        plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "image_level_roc_curve.png"))
+        
+        print(f'[W/O TTA] Image level Accuracy: {accuracy} AUC: {auc}')
+        
+        preds = []
+        logits = []
+        labels = []
+        correct = 0
+
+        for i, data in enumerate(zip(*test_loaders)):
+            inputs, targets = torch.cat([img for img,_ in data], dim=0).to(device).float(), data[0][1].to(device).long()
+            outputs = model(inputs)
+            outputs = F.softmax(outputs, dim=-1)
+            outputs = outputs.reshape(len(data), int(inputs.shape[0]/len(data)), -1).mean(dim=0)
+
+            _, predicted = torch.max(outputs, 1)
+            correct += (predicted == targets).sum().item()
+            preds.append(predicted.detach().cpu().numpy())
+            labels.append(targets.detach().cpu().numpy())
+            logits.append(outputs.detach().cpu().numpy().astype(np.float32))
+
+        preds = np.concatenate(preds, axis=0)
+        labels = np.concatenate(labels, axis=0)
+        logits = np.concatenate(logits, axis=0)
+
+        accuracy = accuracy_score(labels, preds)
+        precision = precision_score(labels, preds, average="binary")
+        recall = recall_score(labels, preds, average="binary")
+        f1 = f1_score(labels, preds, average="binary")
+        auc = roc_auc_score(labels, logits[:, 1])
+
+        save_metrics_csv(0, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_image_tta.csv"))
+
+        confmat_vals = confusion_matrix(labels, preds)
+        plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "tta_image_level_conf_mat.png"), "Confusion Matrix on Test [Image level with TTA]")
+
+        plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
+        print(f'[TTA] Image level Accuracy: {accuracy} AUC: {auc}')
+        
+        np.savez_compressed(os.path.join(model_dir, 'image_level_results'),
+                labels=labels, 
+                preds=preds,
+                logits=logits,
+        )
+
     id_patients = []
     id_patient_logits = []
     id_patient_preds = []
     id_patient_labels = []
-    patient_ids = test_dataset.df['patient_id'].to_numpy() # get patient ids
+    patient_ids = test_dataset.df['patient_id'].to_numpy()
     correct = 0
+    incorrect_ids = []
 
-    for id in np.unique(patient_ids): # for each patient id
-        indices = np.where(patient_ids == id)[0] # get index
-        id_patients.append(id) # append id
-        mean_cnn_logit = np.mean(logits[indices, :], axis=0) # get mean of cnn logit
-        ind = np.where(patient_ids_clinical_variables == id)[0] # get index for xgb
-        if len(ind) == 0: # if no index, continue since no patient
-            continue
-        xgb_logit = preds_prob_clinical_variables[ind, :][0] # get xgb logit
-        combined_logit = (mean_cnn_logit + xgb_logit) / 2 # combine logits
-        id_patient_logits.append(combined_logit) # append
-        id_patient_labels.append(np.mean(labels[indices], axis=0).round()) # append label
-        id_patient_preds.append(combined_logit.argmax()) # append pred
-        correct += int(id_patient_preds[-1] == id_patient_labels[-1]) # see if pred is correct or not
+    for id in np.unique(patient_ids):
+        indices = np.where(patient_ids==id)[0]
+        id_patient_logits.append(np.mean(logits[indices,:], axis=0))
+        id_patient_labels.append(np.mean(labels[indices], axis=0))
+        id_patient_preds.append(id_patient_logits[-1].argmax())
+        if id in rechecked_patient_ids:
+            print(f"Patient Id: {id}, Ground Truth: {id_patient_labels[-1]}, Predicted: {id_patient_preds[-1]}")
+        if id_patient_labels[-1] != id_patient_preds[-1]:
+            incorrect_ids.append((id, id_patient_labels[-1], id_patient_preds[-1]))
+        correct += int(id_patient_preds[-1]==id_patient_labels[-1])
+        id_patients.append(id)
+        
+    for id_data in incorrect_ids:
+        print(f"Patient Id: {id_data[0]}, Ground Truth: {id_data[1]}, Predicted: {id_data[2]}")
+
+    preds = np.array(id_patient_preds)
+    labels = np.array(id_patient_labels)
+    logits = np.array(id_patient_logits)
+
+    accuracy = accuracy_score(labels, preds)
+    precision = precision_score(labels, preds, average="binary")
+    recall = recall_score(labels, preds, average="binary")
+    f1 = f1_score(labels, preds, average="binary")
+    auc = roc_auc_score(labels, logits[:, 1])
+
+    save_metrics_csv(0, accuracy, precision, recall, f1, auc, os.path.join(exp_dir, "metrics_patient.csv"))
+
+    confmat_vals = confusion_matrix(labels, preds)
+    plot_confusion_matrix(confmat_vals, num_classes, os.path.join(figure_dir, "patient_level_conf_mat.png"), "Confusion Matrix on Test [Patient level]")
+
+    plot_save_roc_curve(np.eye(num_classes)[labels], logits, os.path.join(figure_dir, "patient_level_roc_curve.png"))
+
+    print(f'[TTA] Patient level Accuracy: {accuracy} AUC: {auc}')
     
-    # convert to arrays
-    id_patient_logits = np.array(id_patient_logits)
-    id_patient_labels = np.array(id_patient_labels)
-    id_patient_preds = np.array(id_patient_preds)
-    # get metrics
-    accuracy = accuracy_score(id_patient_labels, id_patient_preds) if len(id_patients) > 0 else 0
-    precision = precision_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-    recall = recall_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-    f1 = f1_score(id_patient_labels, id_patient_preds, zero_division=0) if len(id_patients) > 0 else 0
-    auc = roc_auc_score(id_patient_labels, id_patient_logits[:, 1]) if len(id_patients) > 0 else 0
-    print(f'[Final Model] Patient level with clinical variable => Accuracy: {accuracy*100:.2f}% AUC: {auc*100:.2f}%')
-    # log metrics
-    mlflow.log_metric("final_patient_level_accuracy", accuracy * 100)
-    mlflow.log_metric("final_patient_level_precision", precision * 100)
-    mlflow.log_metric("final_patient_level_recall", recall * 100)
-    mlflow.log_metric("final_patient_level_f1", f1 * 100)
-    mlflow.log_metric("final_patient_level_auc", auc * 100)
+    df = pd.read_csv("../datasets/patients_fold.csv")
+    rechecked_patient_ids = [2209722160, 2209801259, 2209801421, 2209802027, 2209802125]
+    df = df.loc[df["patient_id"] != 2209801848]
+    df.loc[df["patient_id"].isin(rechecked_patient_ids), "morphology"] = 0
 
-    metrics_path = os.path.join(new_dir_test, "metrics.csv") # save metrics
-    save_metrics_csv("Patient", accuracy, precision, recall, f1, auc, metrics_path, train=False) # save metrics
-    mlflow.log_artifact(metrics_path) # log metrics
+    feature_columns = ['Age', 'Gender', 'Haemoglobin', 'MCV', 'White cell count',
+                       'Neutrophil count', 'Monocyte count', 'Platelet count',
+                       'Blast percentage (PB)', 'LDH']
+    target_column = 'morphology'
+    booster = 'gbtree'
 
-    np.savez_compressed(os.path.join(new_dir_test, 'patient_level_with_clinical_variables_results'),
-                        labels=id_patient_labels,
-                        preds=id_patient_preds,
-                        logits=id_patient_logits,
-                        patient_ids=np.array(id_patients)) # save preds and logits
+    def train_single_sklearn(x, y, seed, feature_names):
+        params = {
+            'booster': booster,
+            'objective': 'binary:logistic',
+            'eval_metric': 'logloss',
+            'nthread': 4,
+            'seed': seed
+        }
 
-    # plot and save confusion matrix
-    confmat_vals = np.zeros((num_classes, num_classes))
-    for true, pred in zip(id_patient_labels, id_patient_preds):
-        confmat_vals[int(true), int(pred)] += 1
-    plot_confusion_matrix(confmat_vals, num_classes,
-                            os.path.join(new_dir_test_figures, "patient_level_with_clinical_variables_conf_mat.png"),
-                            "Confusion Matrix [Patient level] Final Model")
-    mlflow.log_artifact(os.path.join(new_dir_test_figures, "patient_level_with_clinical_variables_conf_mat.png"))
+        model = xgb.XGBClassifier(**params, importance_type='gain', validate_parameters=True)
+        df_x = pd.DataFrame(x, columns=feature_names)
+        model.fit(df_x, y)
+        return model, params
 
-    # plot and save roc curve
-    plot_save_roc_curve(id_patient_labels, id_patient_logits,
-                        os.path.join(new_dir_test_figures, "patient_level_roc_curve_final.png"))
-    mlflow.log_artifact(os.path.join(new_dir_test_figures, "patient_level_roc_curve_final.png"))
+    set_col = 'set0'
+    train_val_mask = (df[set_col] == 'train') | (df[set_col] == 'val')
+    x_train_val = df[train_val_mask][feature_columns].values
+    y_train_val = df[train_val_mask][target_column].values
+    x_test = df[df[set_col] == 'test'][feature_columns].values
+    y_test = df[df[set_col] == 'test'][target_column].values
+
+    model, params = train_single_sklearn(x_train_val, y_train_val, seed=123, feature_names=feature_columns)
+
+    df_x_test = pd.DataFrame(x_test, columns=feature_columns)
+    preds = model.predict(df_x_test)
+    pred_probs = model.predict_proba(df_x_test)[:, 1]
+
+    accuracy = accuracy_score(y_test, preds)
+    precision = precision_score(y_test, preds, zero_division=0)
+    recall = recall_score(y_test, preds, zero_division=0)
+    f1 = f1_score(y_test, preds, zero_division=0)
+    auroc = roc_auc_score(y_test, pred_probs)
+
+    print(f"Clinical Model - Accuracy: {round(accuracy*100, 2)}%, Precision: {round(precision*100, 2)}%, "
+          f"Recall: {round(recall*100, 2)}%, F1: {round(f1*100, 2)}%, AUROC: {round(auroc*100, 2)}%")
+    
+    mlflow.log_metric("image_level_accuracy", accuracy)
+    mlflow.log_metric("image_level_precision", precision)
+    mlflow.log_metric("image_level_recall", recall)
+    mlflow.log_metric("image_level_f1", f1)
+    mlflow.log_metric("image_level_auroc", auc)
+    
+    mlflow.log_metric("clinical_accuracy", accuracy)
+    mlflow.log_metric("clinical_precision", precision)
+    mlflow.log_metric("clinical_recall", recall)
+    mlflow.log_metric("clinical_f1", f1)
+    mlflow.log_metric("clinical_auroc", auroc)
+    
+    mlflow.log_artifact(os.path.join(figure_dir, "image_level_conf_mat.png"))
+    mlflow.log_artifact(os.path.join(figure_dir, "image_level_roc_curve.png"))
+    mlflow.log_artifact(os.path.join(figure_dir, "tta_image_level_conf_mat.png"))
+    mlflow.log_artifact(os.path.join(figure_dir, "tta_image_level_roc_curve.png"))
+    mlflow.log_artifact(os.path.join(figure_dir, "patient_level_conf_mat.png"))
+    mlflow.log_artifact(os.path.join(figure_dir, "patient_level_roc_curve.png"))
+    
+    mlflow.log_artifact(os.path.join(exp_dir, "metrics_image.csv"))
+    mlflow.log_artifact(os.path.join(exp_dir, "metrics_image_tta.csv"))
+    mlflow.log_artifact(os.path.join(exp_dir, "metrics_patient.csv"))

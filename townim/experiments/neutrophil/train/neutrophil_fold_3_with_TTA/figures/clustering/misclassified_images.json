@@ -1,0 +1,935 @@
+{
+    "2131307812": {
+        "images": [
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721723.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721723.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721725.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721725.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721524.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721524.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721699.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721699.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721622.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721622.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721550.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721550.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721603.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721603.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721527.jpg",
+                "cluster": 2,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721527.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721428.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721428.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721432.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721432.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721646.jpg",
+                "cluster": 1,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721646.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721742.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721742.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721697.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721697.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721408.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721408.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721519.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721519.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721465.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721465.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721513.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721513.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721589.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721589.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721386.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721386.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721427.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721427.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721484.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721484.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721478.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721478.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721590.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721590.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721615.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721615.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721703.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721703.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721592.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721592.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721642.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721642.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721705.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721705.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721621.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721621.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721400.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721400.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721468.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721468.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721391.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721391.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721538.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721538.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721617.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721617.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721486.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721486.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721647.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721647.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721479.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721479.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721377.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721377.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721450.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721450.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721506.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721506.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721387.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721387.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721431.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721431.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721652.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721652.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721507.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721507.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721447.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721447.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721585.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721585.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721707.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721707.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721728.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721728.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721474.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721474.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721563.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721563.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721739.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721739.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721470.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721470.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721380.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721380.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721509.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721509.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721406.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721406.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721698.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721698.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721471.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721471.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721688.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721688.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721645.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721645.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721606.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721606.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721548.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721548.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721381.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721381.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721473.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721473.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721444.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721444.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721446.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721446.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721434.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721434.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721616.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721616.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721598.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721598.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721481.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721481.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721526.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721526.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721588.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721588.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721702.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721702.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721623.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721623.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721736.jpg",
+                "cluster": 2,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721736.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721516.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721516.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721716.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721716.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721511.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721511.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721458.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721458.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721536.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721536.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721517.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721517.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721390.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721390.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721523.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721523.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721529.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721529.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721477.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721477.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721459.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721459.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721437.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721437.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721449.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721449.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721512.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721512.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721394.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721394.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721518.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721518.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721402.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721402.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721445.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721445.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721537.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721537.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721455.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721455.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721429.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721429.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721746.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721746.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721443.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721443.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721609.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721609.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721515.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721515.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721525.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721525.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721535.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721535.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721451.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721451.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721514.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2131307812/SNE_43721514.jpg_gradcam.png"
+            }
+        ]
+    },
+    "2204000443": {
+        "images": [
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455918.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455918.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456026.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456026.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456036.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456036.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456112.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456112.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456092.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456092.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455986.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455986.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455992.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455992.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456018.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456018.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455951.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455951.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455904.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455904.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455942.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455942.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456065.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456065.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456082.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456082.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455983.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455983.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455864.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455864.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456024.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456024.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455876.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455876.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456059.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456059.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455889.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455889.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455945.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455945.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456081.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456081.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455879.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455879.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455838.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455838.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456058.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456058.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455938.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455938.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456118.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456118.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455899.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455899.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456091.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456091.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455917.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455917.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455926.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455926.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456050.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456050.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455987.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455987.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456048.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456048.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456089.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456089.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455957.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455957.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456060.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456060.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455937.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455937.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456008.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456008.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455946.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455946.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455964.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455964.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456038.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456038.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455934.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455934.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456119.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456119.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456084.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456084.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455900.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455900.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456085.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456085.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456080.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456080.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456093.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456093.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456004.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456004.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456109.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456109.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456034.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456034.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455915.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455915.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456088.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456088.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456030.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456030.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455981.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455981.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456102.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456102.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456009.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456009.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456006.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456006.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456021.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456021.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455949.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455949.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455914.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455914.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456071.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456071.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456121.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456121.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455955.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455955.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455913.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455913.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456090.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456090.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456047.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456047.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456037.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456037.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456075.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456075.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456039.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456039.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455944.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455944.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455869.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455869.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456078.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456078.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455960.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455960.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456057.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456057.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456098.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456098.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456007.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456007.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455912.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455912.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455906.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455906.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455890.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455890.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456051.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49456051.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455976.jpg",
+                "cluster": 3,
+                "gradcam_path": "experiments/neutrophil/train/neutrophil_fold_3_with_TTA/figures/clustering/misclassified/2204000443/SNE_49455976.jpg_gradcam.png"
+            }
+        ]
+    }
+}

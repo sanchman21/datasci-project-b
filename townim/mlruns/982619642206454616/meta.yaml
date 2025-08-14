@@ -1,0 +1,6 @@
+artifact_location: file:./mlruns/982619642206454616
+creation_time: 1751856929574
+experiment_id: '982619642206454616'
+last_update_time: 1751856929574
+lifecycle_stage: active
+name: segmented_monocyte_new_normals

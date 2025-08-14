@@ -1,0 +1,130 @@
+{
+    "0": {
+        "majority_label": "Normal",
+        "majority_percentage": 100.0,
+        "median_image": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/median_image.png",
+        "median_gradcam": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/median_gradcam.png",
+        "top_k_images": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/1.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/2.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/3.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/4.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/1_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/2_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/3_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/4_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_0/5_gradcam.png"
+        ]
+    },
+    "1": {
+        "majority_label": "CMML",
+        "majority_percentage": 97.15808170515098,
+        "median_image": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/median_image.png",
+        "median_gradcam": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/median_gradcam.png",
+        "top_k_images": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/1.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/2.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/3.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/4.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/1_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/2_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/3_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/4_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_1/5_gradcam.png"
+        ]
+    },
+    "2": {
+        "majority_label": "CMML",
+        "majority_percentage": 58.1787521079258,
+        "median_image": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/median_image.png",
+        "median_gradcam": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/median_gradcam.png",
+        "top_k_images": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/1.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/2.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/3.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/4.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/1_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/2_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/3_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/4_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_2/5_gradcam.png"
+        ]
+    },
+    "3": {
+        "majority_label": "Normal",
+        "majority_percentage": 97.8978978978979,
+        "median_image": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/median_image.png",
+        "median_gradcam": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/median_gradcam.png",
+        "top_k_images": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/1.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/2.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/3.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/4.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/1_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/2_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/3_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/4_gradcam.png",
+            "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/cluster_3/5_gradcam.png"
+        ]
+    },
+    "patient_to_cluster": {
+        "2131501646": 0,
+        "2129203632": 1,
+        "2204702182": 1,
+        "2204806336": 1,
+        "2204806400": 1,
+        "2207609261": 1,
+        "2209802027": 0,
+        "2209800295": 2,
+        "2209800308": 0,
+        "2224801839": 3,
+        "2224813109": 0,
+        "2224815387": 0,
+        "2224815446": 3,
+        "2224900264": 3,
+        "2224900492": 3,
+        "2224900792": 3,
+        "2224901145": 3,
+        "2224901497": 3,
+        "2224901827": 0,
+        "2224902632": 2,
+        "2224903423": 0,
+        "2224903466": 3,
+        "2224905439": 3,
+        "2224905493": 3,
+        "2224906036": 0,
+        "2224906135": 0,
+        "2224906590": 3,
+        "2225101094": 1
+    },
+    "clustering_metrics": {
+        "davies_bouldin_index": 2.3801149487656827
+    },
+    "feature_importance": {
+        "top_features": [
+            1469,
+            1196,
+            863,
+            907,
+            1462,
+            1770,
+            1106,
+            1889,
+            329,
+            663
+        ]
+    },
+    "shap_plot": "shap_summary.png"
+}

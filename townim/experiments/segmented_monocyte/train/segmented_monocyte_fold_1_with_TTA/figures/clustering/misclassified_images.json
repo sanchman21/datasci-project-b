@@ -1,0 +1,31 @@
+{
+    "2225101094": {
+        "images": [
+            {
+                "path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_1.png",
+                "cluster": 1,
+                "gradcam_path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_1.png_gradcam.png"
+            },
+            {
+                "path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_2.png",
+                "cluster": 1,
+                "gradcam_path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_2.png_gradcam.png"
+            },
+            {
+                "path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_3.png",
+                "cluster": 1,
+                "gradcam_path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_3.png_gradcam.png"
+            },
+            {
+                "path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_4.png",
+                "cluster": 1,
+                "gradcam_path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_4.png_gradcam.png"
+            },
+            {
+                "path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_5.png",
+                "cluster": 1,
+                "gradcam_path": "experiments/segmented_monocyte/train/segmented_monocyte_fold_1_with_TTA/figures/clustering/misclassified/2225101094/segmented____2225101094B_1_MO_5.png_gradcam.png"
+            }
+        ]
+    }
+}

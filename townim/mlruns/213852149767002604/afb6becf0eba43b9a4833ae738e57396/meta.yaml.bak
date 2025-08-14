@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/213852149767002604/afb6becf0eba43b9a4833ae738e57396/artifacts
+end_time: 1752556521598
+entry_point_name: ''
+experiment_id: '213852149767002604'
+lifecycle_stage: active
+run_id: afb6becf0eba43b9a4833ae738e57396
+run_name: patient
+run_uuid: afb6becf0eba43b9a4833ae738e57396
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752556521586
+status: 3
+tags: []
+user_id: unknown

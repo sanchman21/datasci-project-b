@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/374962351828065521/e8aa3f1cb81d49d3923613111cd852ae/artifacts
+end_time: 1754991778159
+entry_point_name: ''
+experiment_id: '374962351828065521'
+lifecycle_stage: active
+run_id: e8aa3f1cb81d49d3923613111cd852ae
+run_name: morphology_metrics
+run_uuid: e8aa3f1cb81d49d3923613111cd852ae
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1754991778129
+status: 3
+tags: []
+user_id: unknown

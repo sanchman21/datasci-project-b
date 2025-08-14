@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/382982905682997146/284d7e68d5554bae869bd55b6cf1d90c/artifacts
+end_time: 1750149800885
+entry_point_name: ''
+experiment_id: '382982905682997146'
+lifecycle_stage: active
+run_id: 284d7e68d5554bae869bd55b6cf1d90c
+run_name: selective-midge-338
+run_uuid: 284d7e68d5554bae869bd55b6cf1d90c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1750149800430
+status: 3
+tags: []
+user_id: unknown

@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/107116455188229017/4e9a58c899d44348bbb24dceb3ea79e0/artifacts
+end_time: 1749531701451
+entry_point_name: ''
+experiment_id: '107116455188229017'
+lifecycle_stage: active
+run_id: 4e9a58c899d44348bbb24dceb3ea79e0
+run_name: useful-steed-732
+run_uuid: 4e9a58c899d44348bbb24dceb3ea79e0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1749531158104
+status: 3
+tags: []
+user_id: unknown

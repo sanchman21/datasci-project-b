@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/866653571566988467/217c591d02b549739a1b6659084c6708/artifacts
+end_time: 1755056966783
+entry_point_name: ''
+experiment_id: '866653571566988467'
+lifecycle_stage: active
+run_id: 217c591d02b549739a1b6659084c6708
+run_name: morphology_metrics
+run_uuid: 217c591d02b549739a1b6659084c6708
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1755056966754
+status: 3
+tags: []
+user_id: unknown

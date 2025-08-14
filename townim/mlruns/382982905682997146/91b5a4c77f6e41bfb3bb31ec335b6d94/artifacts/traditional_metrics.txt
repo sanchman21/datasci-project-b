@@ -1,0 +1,7 @@
+Traditional Segmentation Metrics:
+test_dice_nucleus: 0.8462
+test_dice_cytoplasm: 0.0051
+test_dice_mean: 0.4257
+test_iou_nucleus: 0.7587
+test_iou_cytoplasm: 0.0026
+test_iou_mean: 0.3806

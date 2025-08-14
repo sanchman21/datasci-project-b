@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/453993155695678002/da15cea3a8354525b8d70070bcadff68/artifacts
+end_time: 1751277171298
+entry_point_name: ''
+experiment_id: '453993155695678002'
+lifecycle_stage: active
+run_id: da15cea3a8354525b8d70070bcadff68
+run_name: invincible-rat-815
+run_uuid: da15cea3a8354525b8d70070bcadff68
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751272656389
+status: 3
+tags: []
+user_id: unknown

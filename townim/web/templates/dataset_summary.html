@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dataset Summary</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+            margin-top: 40px;
+        }
+        h3 {
+            color: #777;
+            margin-top: 20px;
+        }
+        table {
+            width: 80%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        .back-button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dataset Summary</h1>
+    <h2>Monocyte</h2>
+    <h3>Train Summary</h3>
+    <table id="monocyte-train-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Validation Summary</h3>
+    <table id="monocyte-val-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Test Summary</h3>
+    <table id="monocyte-test-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h2>Monocyte New Normals</h2>
+    <h3>Train Summary</h3>
+    <table id="monocyte_new_normals-train-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Validation Summary</h3>
+    <table id="monocyte_new_normals-val-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Test Summary</h3>
+    <table id="monocyte_new_normals-test-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h2>Neutrophil</h2>
+    <h3>Train Summary</h3>
+    <table id="neutrophil-train-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Validation Summary</h3>
+    <table id="neutrophil-val-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <h3>Test Summary</h3>
+    <table id="neutrophil-test-table">
+        <thead>
+            <tr>
+                <th>Fold</th>
+                <th>Total Patients</th>
+                <th>CMML (patients)</th>
+                <th>Normal (patients)</th>
+                <th>Images</th>
+                <th>CMML (images)</th>
+                <th>Normal (images)</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
+    <script>
+        const datasets = ['monocyte', 'neutrophil', 'monocyte_new_normals'];
+        const summaryTypes = ['train', 'val', 'test'];
+        async function loadCSV(dataset, summaryType) {
+            const filePath = `/file/dataset_summaries/summary_${summaryType}_${dataset}.csv`;
+            const tableBody = document.querySelector(`#${dataset}-${summaryType}-table tbody`);
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`Failed to load ${filePath}: ${response.statusText}`);
+                }
+                const csvText = await response.text();
+                Papa.parse(csvText, {
+                    header: true,
+                    skipEmptyLines: true,
+                    complete: function(results) {
+                        const data = results.data;
+                        tableBody.innerHTML = '';
+                        data.forEach(row => {
+                            const tr = document.createElement('tr');
+                            tr.innerHTML = `
+                                <td>${row['Fold'] || ''}</td>
+                                <td>${row['Total Patients'] || ''}</td>
+                                <td>${row['CMML (patients)'] || ''}</td>
+                                <td>${row['Normal (patients)'] || ''}</td>
+                                <td>${row['Images'] || ''}</td>
+                                <td>${row['CMML (images)'] || ''}</td>
+                                <td>${row['Normal (images)'] || ''}</td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                    },
+                    error: function(error) {
+                        console.error(`Error parsing CSV ${filePath}:`, error);
+                        tableBody.innerHTML = '<tr><td colspan="7">Error loading data</td></tr>';
+                    }
+                });
+            } catch (error) {
+                console.error(`Error fetching ${filePath}:`, error);
+                tableBody.innerHTML = '<tr><td colspan="7">Error loading data</td></tr>';
+            }
+        }
+        datasets.forEach(dataset => {
+            summaryTypes.forEach(summaryType => {
+                loadCSV(dataset, summaryType);
+            });
+        });
+    </script>
+</body>
+</html>

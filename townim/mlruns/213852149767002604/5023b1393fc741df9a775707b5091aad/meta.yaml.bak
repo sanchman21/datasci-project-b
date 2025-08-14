@@ -1,0 +1,15 @@
+artifact_uri: file:///workspace/CMML-v2/townim/mlruns/213852149767002604/5023b1393fc741df9a775707b5091aad/artifacts
+end_time: 1752556521654
+entry_point_name: ''
+experiment_id: '213852149767002604'
+lifecycle_stage: active
+run_id: 5023b1393fc741df9a775707b5091aad
+run_name: image_tta
+run_uuid: 5023b1393fc741df9a775707b5091aad
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752556521645
+status: 3
+tags: []
+user_id: unknown

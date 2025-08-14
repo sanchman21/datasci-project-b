@@ -1,4 +1,0 @@
-data_type,accuracy_mean,accuracy_std,precision_mean,precision_std,recall_mean,recall_std,f1_mean,f1_std,auroc_mean,auroc_std
-neutrophil,92.54,2.56,67.27,17.68,73.95,10.35,69.6,11.88,94.84,2.82
-monocyte,84.72,12.1,79.15,16.8,77.83,18.39,78.33,17.03,89.69,14.41
-monocyte_new_normals,99.11,0.45,78.05,14.28,88.11,12.31,82.05,10.69,99.64,0.33

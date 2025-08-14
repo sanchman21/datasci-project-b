@@ -1,4 +1,0 @@
-data_type,accuracy,precision,recall,f1,auroc
-neutrophil,93.84,82.87,80.69,81.77,97.61
-monocyte,88.04,78.3,99.75,87.73,97.98
-monocyte_new_normals,98.8,75.0,93.5,83.2,99.8

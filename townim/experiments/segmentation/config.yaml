@@ -1,0 +1,25 @@
+augmentation:
+  affine_scale:
+  - 0.9
+  - 1.1
+  affine_shear: 10
+  affine_translate_percent: 0.1
+  brightness_limit: 0.2
+  contrast_limit: 0.2
+  gauss_noise_var_limit:
+  - 10.0
+  - 50.0
+  horizontal_flip: 0.3
+  pad_if_needed: 360
+  rotation_limit: 15
+  vertical_flip: 0.3
+batch_size: 4
+learning_rate: 0.0001
+model_type: UNet
+normalization: ImageNet
+num_epochs: 100
+optimizer: Adam
+patience: 10
+pretrained: false
+scheduler: ReduceLROnPlateau
+weight_decay: 0.0001

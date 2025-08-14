@@ -1,0 +1,6 @@
+artifact_location: file:./mlruns/866653571566988467
+creation_time: 1755056966500
+experiment_id: '866653571566988467'
+last_update_time: 1755056966500
+lifecycle_stage: active
+name: monocyte-morphology-analysis

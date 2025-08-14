@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/124044996640434618/3a4e25cb5059425bab40bb70bce270aa/artifacts
+end_time: 1744963744203
+entry_point_name: ''
+experiment_id: '124044996640434618'
+lifecycle_stage: active
+run_id: 3a4e25cb5059425bab40bb70bce270aa
+run_name: fold_1
+run_uuid: 3a4e25cb5059425bab40bb70bce270aa
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1744963669282
+status: 3
+tags: []
+user_id: unknown

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clustering Analysis</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            text-align: center;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        select {
+            padding: 5px;
+            margin: 10px;
+            border-radius: 3px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .summary-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #008CBA;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .summary-button:hover {
+            background-color: #007bb5;
+        }
+        .mlflow-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #FF9800;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .mlflow-button:hover {
+            background-color: #e68900;
+        }
+        .compare-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #9C27B0;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .compare-button:hover {
+            background-color: #7B1FA2;
+        }
+        .description {
+            font-size: 14px;
+            color: #555;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Clustering Analysis</h1>
+        <form method="POST">
+            <label for="data_type">Data Type:</label>
+            <select name="data_type" id="data_type">
+                {% for data_type in data_types %}
+                <option value="{{ data_type }}">{{ data_type }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <label for="fold">Fold:</label>
+            <select name="fold" id="fold">
+                {% for fold in folds %}
+                <option value="{{ fold }}">{{ fold }}</option>
+                {% endfor %}
+            </select>
+            <br>
+            <button type="submit">Submit</button>
+            <p class="description">Select None to see the clustering analysis on the final model trained on training + validation dataset and tested on the test set.</p>
+        </form>
+        <a href="dataset_summary.html" class="summary-button">Dataset Summary</a>
+        <a href="/mlflow" class="mlflow-button">MLflow Metrics</a>
+        <a href="{{ url_for('compare_clusters') }}" class="compare-button">Compare Clusters</a>
+    </div>
+</body>
+</html>

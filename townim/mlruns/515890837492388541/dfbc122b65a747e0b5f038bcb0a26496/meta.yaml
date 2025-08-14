@@ -1,4 +1,4 @@
-artifact_uri: file:///workspace/CMML-v2/townim/mlruns/515890837492388541/dfbc122b65a747e0b5f038bcb0a26496/artifacts
+artifact_uri: file:./mlruns/515890837492388541/dfbc122b65a747e0b5f038bcb0a26496/artifacts
 end_time: 1743324390422
 entry_point_name: ''
 experiment_id: '515890837492388541'

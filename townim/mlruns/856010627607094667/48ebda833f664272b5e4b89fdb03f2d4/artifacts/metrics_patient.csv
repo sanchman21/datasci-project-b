@@ -1,2 +1,0 @@
-test type,accuracy,precision,recall,f1,auroc
-Patient,0.9444,0.75,1.0,0.8571,0.9889

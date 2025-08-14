@@ -1,0 +1,6 @@
+artifact_location: file:./mlruns/107116455188229017
+creation_time: 1749531157311
+experiment_id: '107116455188229017'
+last_update_time: 1749531157311
+lifecycle_stage: active
+name: segmentation_unet

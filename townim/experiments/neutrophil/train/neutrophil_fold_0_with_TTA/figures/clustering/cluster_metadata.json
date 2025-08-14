@@ -1,0 +1,130 @@
+{
+    "0": {
+        "majority_label": "CMML",
+        "majority_percentage": 93.7994722955145,
+        "median_image": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/median_image.png",
+        "median_gradcam": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/median_gradcam.png",
+        "top_k_images": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/1.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/2.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/3.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/4.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/1_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/2_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/3_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/4_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_0/5_gradcam.png"
+        ]
+    },
+    "1": {
+        "majority_label": "Normal",
+        "majority_percentage": 100.0,
+        "median_image": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/median_image.png",
+        "median_gradcam": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/median_gradcam.png",
+        "top_k_images": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/1.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/2.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/3.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/4.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/1_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/2_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/3_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/4_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_1/5_gradcam.png"
+        ]
+    },
+    "2": {
+        "majority_label": "Normal",
+        "majority_percentage": 98.31932773109243,
+        "median_image": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/median_image.png",
+        "median_gradcam": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/median_gradcam.png",
+        "top_k_images": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/1.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/2.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/3.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/4.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/1_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/2_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/3_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/4_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_2/5_gradcam.png"
+        ]
+    },
+    "3": {
+        "majority_label": "Normal",
+        "majority_percentage": 99.92179353493222,
+        "median_image": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/median_image.png",
+        "median_gradcam": "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/median_gradcam.png",
+        "top_k_images": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/1.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/2.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/3.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/4.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/5.png"
+        ],
+        "top_k_gradcam_paths": [
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/1_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/2_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/3_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/4_gradcam.png",
+            "experiments/neutrophil/train/neutrophil_fold_0_with_TTA/figures/clustering/cluster_3/5_gradcam.png"
+        ]
+    },
+    "patient_to_cluster": {
+        "2224810539": 3,
+        "2209720931": 2,
+        "2224901398": 1,
+        "2204000614": 2,
+        "2209720288": 2,
+        "2224815363": 3,
+        "2224900246": 1,
+        "2224802485": 3,
+        "2224815242": 3,
+        "2224901822": 2,
+        "2224815282": 2,
+        "2131501366": 2,
+        "2224900580": 1,
+        "2224904909": 3,
+        "2207602153": 2,
+        "2224900417": 2,
+        "2207001505": 2,
+        "2131501613": 0,
+        "2224907662": 1,
+        "2224900179": 1,
+        "2209801421": 2,
+        "2224900585": 2,
+        "2224901268": 1,
+        "2206800529": 0,
+        "2224904664": 1,
+        "2207402646": 2,
+        "2224906135": 3,
+        "2225100293": 1
+    },
+    "clustering_metrics": {
+        "davies_bouldin_index": 2.6352770970616164
+    },
+    "feature_importance": {
+        "top_features": [
+            1190,
+            1678,
+            279,
+            331,
+            2035,
+            655,
+            1777,
+            667,
+            2018,
+            1972
+        ]
+    },
+    "shap_plot": "shap_summary.png"
+}

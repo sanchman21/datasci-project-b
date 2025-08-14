@@ -1,0 +1,31 @@
+Config:
+batch_size: 4
+learning_rate: 0.0001
+weight_decay: 0.0001
+num_epochs: 100
+patience: 10
+optimizer: Adam
+scheduler: ReduceLROnPlateau
+model_type: UNet
+pretrained: False
+normalization: ImageNet
+Augmentation:
+horizontal_flip: 0.3
+vertical_flip: 0.3
+rotation_limit: 15
+affine_translate_percent: 0.1
+affine_scale: [0.9, 1.1]
+affine_shear: 10
+brightness_limit: 0.2
+contrast_limit: 0.2
+gauss_noise_var_limit: [10.0, 50.0]
+pad_if_needed: 360
+
+Test Metrics:
+test_loss: 0.0178
+test_dice_nucleus: 0.9660
+test_dice_cytoplasm: 0.9784
+test_dice_mean: 0.9722
+test_iou_nucleus: 0.9354
+test_iou_cytoplasm: 0.9580
+test_iou_mean: 0.9467

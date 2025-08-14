@@ -1,0 +1,15 @@
+artifact_uri: file:./mlruns/676268087348577719/aa67c3a92dc14b5285eb7edae08d3633/artifacts
+end_time: 1752076322287
+entry_point_name: ''
+experiment_id: '676268087348577719'
+lifecycle_stage: active
+run_id: aa67c3a92dc14b5285eb7edae08d3633
+run_name: train-val
+run_uuid: aa67c3a92dc14b5285eb7edae08d3633
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1752064181603
+status: 3
+tags: []
+user_id: unknown

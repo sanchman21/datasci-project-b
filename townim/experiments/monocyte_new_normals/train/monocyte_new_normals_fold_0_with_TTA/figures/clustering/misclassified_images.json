@@ -1,0 +1,492 @@
+{
+    "2204000443": {
+        "images": [
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_1.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_1.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_10.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_10.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_12.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_12.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_13.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_13.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_15.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_15.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_17.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_17.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_18.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_18.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_19.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_19.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_2.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_2.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_21.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_21.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_24.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_24.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_25.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_25.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_26.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_26.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_27.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_27.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_28.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_28.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_29.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_29.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_30.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_30.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_31.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_31.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_37.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_37.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_39.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_39.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_40.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_40.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_41.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_41.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_42.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_42.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_43.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_43.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_47.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_47.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_51.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_51.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_52.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_52.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_53.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_53.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_54.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_54.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_55.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_55.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_56.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_56.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_6.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_6.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_60.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_60.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_61.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_61.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_63.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_63.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_66.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_66.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_67.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_67.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_68.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_68.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_69.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_69.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_70.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_70.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_71.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_71.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_73.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_73.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_8.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_8.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_9.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000443/___2204000443C_1_MO_9.jpg_gradcam.png"
+            }
+        ]
+    },
+    "2204000724": {
+        "images": [
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_11.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_11.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_12.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_12.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_13.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_13.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_14.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_14.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_15.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_15.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_16.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_16.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_17.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_17.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_19.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_19.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_20.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_20.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_3.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_3.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_4.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_4.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_5.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_5.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_6.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_6.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_9.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2204000724/___2204000724B_1_MO_9.jpg_gradcam.png"
+            }
+        ]
+    },
+    "2209720288": {
+        "images": [
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_10.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_10.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_16.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_16.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_17.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_17.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_18.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_18.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_2.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_2.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_21.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_21.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_22.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_22.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_5.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_5.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_6.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_6.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_7.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_7.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_8.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209720288/___2209720288A_1_MO_8.jpg_gradcam.png"
+            }
+        ]
+    },
+    "2209800310": {
+        "images": [
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_1.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_1.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_5.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_5.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_6.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_6.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_7.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_7.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_8.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_8.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_9.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209800310/___2209800310A_1_MO_9.jpg_gradcam.png"
+            }
+        ]
+    },
+    "2209801421": {
+        "images": [
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_1.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_1.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_10.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_10.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_11.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_11.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_12.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_12.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_13.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_13.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_14.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_14.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_15.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_15.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_16.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_16.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_17.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_17.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_18.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_18.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_19.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_19.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_2.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_2.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_20.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_20.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_3.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_3.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_4.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_4.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_6.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_6.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_7.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_7.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_8.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_8.jpg_gradcam.png"
+            },
+            {
+                "path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_9.jpg",
+                "cluster": 0,
+                "gradcam_path": "experiments/monocyte_new_normals/train/monocyte_new_normals_fold_0_with_TTA/figures/clustering/misclassified/2209801421/___2209801421B_1_MO_9.jpg_gradcam.png"
+            }
+        ]
+    }
+}
