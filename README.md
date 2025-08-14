@@ -1,10 +1,10 @@
-# readme (incomplete)
+# readme
 
 Note: Please keep the neutrophil_images_kevin and a dated folder, both containing images into a directory named data which is in the same folder as the github repository (not inside the repository). This is because relative paths have been used in the code.
 
 # Code Structure
 
-All the code files are inside the folder named townim.
+All the necessary code files are inside the folder named **townim**. Note readme is incomplete after this.
 
 1. dataset_summary.py - This file generates a summary of the training and testing dataset and stores it in the datasets folder.
 2. dataset.py - This file contains code for the PyTorch dataset class created to train the pure CNN models (no clincial variables).
