@@ -1,6 +1,6 @@
 # readme
 
-Note: Please keep the neutrophil_images_kevin and a dated folder, both containing images into a directory named data which is in the same folder as the github repository (not inside the repository). This is because relative paths have been used in the code.
+Note: Please keep the neutrophil_images_kevin and a dated folder, both containing images into a directory named data which is in the same folder as the github repository (not inside the repository). This is because relative paths have been used in the code. You can use the following link to access the interactive website (might have a 1-2 minute wait time): https://cmml-sanchman21.whitehill-d0e79bfd.australiasoutheast.azurecontainerapps.io/
 
 # Code Structure
 
